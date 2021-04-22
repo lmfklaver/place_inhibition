@@ -15,6 +15,8 @@ function [segmentTime] = RealTime_Convert_RecordingTime(basePath, SegmentStr)
     % SegmentTime.Start - start time of segment in reference to recording start
     % SegmentTime.Stop  - stop time of segment in reference to recording
     % start
+    
+% Reagan Bullins 4/22/21
 
 basename = bz_BasenameFromBasepath(basePath);
     
