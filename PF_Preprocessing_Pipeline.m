@@ -26,7 +26,6 @@
     addpath(genpath('E:\Reagan\Packages\buzcode'));
     addpath(genpath('E:\Reagan\Packages\TStoolbox'));
     addpath(genpath('E:\Reagan\Code'));
-% Graph Defauls
     SetGraphDefaults;
 %% Run Once 
 % Run Kilosort2 (updatepath rootZ first with datapath!)
@@ -92,14 +91,6 @@
     analogin_VR.ts = analogin.ts(VR_Time.start*30000:VR_Time.stop*30000);
     analogin_VR.sr = analogin.sr;
     [len_ep, ts_ep, vel_ep, tr_ep, len_ep_fast, ts_ep_fast, vel_ep_fast] = getWheelTrials_RB(analogin_VR);
-    
-    %check wheel trials with this
-%         plot(analogin.pos)
-%         hold on
-%         for i = 1:length(tr_ep)
-%             xline(tr_ep(i,1)*30000,'g')
-%             xline(tr_ep(i,2)*30000,'r')
-%         end
     [pulseIdx, noPulseIdx, pulseEpochs] = getPulseTrialIdx(analogin_VR, tr_ep);
 % Split up baseline, stim, and post baseline times
     load([basename '_pulseEpochs_rz.mat']);
@@ -113,196 +104,88 @@
         pulseEpch.LT(:,1) = pulseEpochs(stimEpochs_LT(:,1));
         pulseEpch.LT(:,2) = pulseEpochs(stimEpochs_LT(:,2));
 % Velocity from wheel chan getVelocity
-
+% Figure out baseline vs stim laps in Virtual Reality (CHECK WITH LIANNE)
+%     VR_Stim_Trial_logical(:,1) = zeros(length(tr_ep),1);
+%      for iwheeltrial = 1:length(tr_ep)
+%             if stimEpochs_VR(1,1) > tr_ep(iwheeltrial,1) && stimEpochs_VR(1,2) < tr_ep(iwheeltrial,2)
+%                 VR_Stim_Trial_logical(iwheeltrial,1) = 1;
+%             else
+%                 VR_Stim_Trial_logical(iwheeltrial,1) = 0;
+%             end
+%      end
+     VR_stim_epch_idx = find(stimEpochs_VR(1,1) > tr_ep(:,1) & stimEpochs_VR(1,2) < tr_ep(:,2));
+     find_stim2bL = diff(VR_stim_epch_idx);
+     %start and stop trials of manipulation
+     VR_BL1_Trials(:,1) = tr_ep(1:find(find_stim2bL == 1),1);
+     VR_BL1_Trials(:,2) = tr_ep(1:find(find_stim2bL == 1),2);
+     VR_Stim_Trials(:,1) = tr_ep(find(find_stim2bL == 1)+1:find(find_stim2bL == -1),1);
+     VR_Stim_Trials(:,2) = tr_ep(find(find_stim2bL == 1)+1:find(find_stim2bL == -1),2);
+     VR_BL2_Trials(:,1) = tr_ep(find(find_stim2bL == -1)+1:end,1);
+     VR_BL2_Trials(:,2) = tr_ep(find(find_stim2bL == -1)+1:end,2);
+     % start and stop times of manipulation
+     VR_Stim_Time.start = tr_ep(find(find_stim2bL == 1))+1);
+     VR_Stim_Time.stop = tr_ep(find(find_stim2bL == -1));
+     VR_BL1_Time.start = VR_Time.start;
+     VR_BL1_Time.stop = VR_Stim_Time.start;
+     VR_BL2_Time.start = VR_Stim_Time.stop; 
+     VR_BL2_Time.stop = VR_Time.stop;
                     
- %%  LFP Analysis  - Define experimental paradigm
-exper_paradigm = 'VR'; %'LT' 'OF'
-Time_exper = VR_Time; %'.OF' '.LT'
-cell_idx = 1;
-lfp_channel = 4;
-% Poweranalysis run/no-run
-    % getPowerSpectrum in utilities (or something very similar)
-    %lfp_exp = bz_GetLFP('all','intervals', [Time_exper.start Time_exper.stop]);
-    lfp_exp = bz_GetLFP(lfp_channel, 'intervals',[Time_exper.start Time_exper.stop]);
-    [runEpochs] = getRunEpochs(basePath, vel_ep);%check this
-    %make lfp run and no run interval for power spectrum (something wrong
-    %here)
-          %[pow] = getPowerSpectrum(basePath, lfp_exp); 
-    %for each exper setup
-    
-    % power analysis - reagan from sujiths class
-        sampling_freq=lfp_exp.samplingRate; % Set Sampling frequency
-        dt=1/sampling_freq; % Sampling interval 
-        rec_time=length(lfp.data(:,1))./sampling_freq; % total recording time 
-        freq_dat_1= fft(lfp.data(:,1)); %Calculate the Fourier Transform 
-        Pow_spec=(2*(dt^2)/rec_time)*abs(freq_dat_1); 
-        Pow_spec2=Pow_spec(1:(length(lfp.data(:,1))/(2))+1);
-        df=1/max(rec_time);
-        fnq= sampling_freq/2; 
-        freq_axis=(0:df:fnq); 
-        plot(freq_axis,Pow_spec2) % Plot power spectrum
-        xlim([0 150]) 
-        xlabel('Frequency Hz')
-        ylabel ('Power') 
-    
-% lfp analyses
+%%  LFP Analysis - Define experimental paradigm
+% Power Spectra  
+     lfp_channel = 21;
+     getPowerSpectrum_PlaceInhibition(basePath, lfp_channel, Sleep1_Time, Sleep2_Time, Sleep3_Time, Sleep4_Time, VR_Time, OF_Time, LT_Time)
+
+    %[runEpochs] = getRunEpochs(basePath, vel_ep);
+% Ripples
     % Detect ripples bz_FindRipples
     % Validate in Neuroscope if ripples are correctly detected
 
-
+%% Single Cell Characteristics
+ cell_idx = 1;
+ plot(spikes.rawWaveform{cell_idx});
+ 
+ % Get firing rate for different experimental setups
+     fr_VR_baseline = InIntervals(spikes, [VR_Time.start ])
+ % boxplot (x axis is cell type or exper chunk (y is firing rate)
+     
 %% OptoStim Analysis - Define experimental paradigm
 exper_paradigm = 'VR'; %'LT' 'OF'
-pulseEpochs_exper = pulseEpch.VR; %'.OF' '.LT'
+pulseEpochs_exper = pulseEpch.VR; %'.OF' '.LT' pulseEpochs
 cell_idx = 1;
-timwin = [-0.4 0.4];
-binSize = 0.01;
 
-load([basename '.spikes.cellinfo.mat']);
-% Perstimulus time histogram all stims together(rate) 
-     [peth] = getPETH_epochs(basePath,'epochs', pulseEpochs,'timwin',timewin, ...
-        'binSize', binSize, 'saveAs', ['.pethPulse' exper_paradigm '.analysis.mat']);
-      figure;
-      bar(1:length(peth.timeEdges)-1, peth.rate(cell_idx,:));
-      title(['PSTH centered to all stims: Cell ' num2str(cell_idx)]);
-      ylabel('Count');
-      xlabel('Time to Pulse (ms)');
-      xticks([0 20 40 60 80]);
-      xticklabels({'-400','-200','0','200','400'});
-% Perstimulus time histogram ONLY specified stim experiment
-     [peth] = getPETH_epochs(basePath,'epochs', pulseEpochs_exper,'timwin',timewin, ...
-        'binSize', binSize, 'saveAs', ['.pethPulse' exper_paradigm '.analysis.mat']);
-      figure;
-      bar(1:length(peth.timeEdges)-1, peth.rate(cell_idx,:));
-      title(['PSTH centered to ' exper_paradigm ' stims: Cell' num2str(cell_idx)]);
-      ylabel('Count');
-      xlabel('Time to Pulse (ms)');
-      xticks([0 20 40 60 80]);
-      xticklabels({'-400','-200','0','200','400'});
-% Raster Plot for all stims of ONE cell
-      figure;
-%       for itrial = 1:length(pulseEpochs)
-%           [status, interval, index] = InIntervals(spikes.times{cell_idx}, pulseEpochs(itrial,:));
-%           spikes_during_trial = spikes.times{cell_idx}(status);
-%           plot(spikes_during_trial, itrial*ones(length(spikes_during_trial)),'.r');
-%           hold on
-%       end
-        timeEdges   = timwin(1):binSize:timwin(2);
-        timeBefore  = abs(timwin(1));
-        timeAfter   = timwin(2);
-        trlCenteredEpochStart   = pulseEpochs(:,1)-timeBefore;
-        trlCenteredEpochStop    = pulseEpochs(:,1)+timeAfter;
-        trlCenteredEpoch = [trlCenteredEpochStart trlCenteredEpochStop];
-        % Align the spikes to be centered around epoch start
-        spike_toEpochStart = realignSpikes(spikes, trlCenteredEpoch);
-        figure;
-        for iEpoch = 1:length(pulseEpochs)
-         spikeTrl{iEpoch} = spike_toEpochStart{cell_idx}{iEpoch} - pulseEpochs(iEpoch,1);
-         plot(spikeTrl{iEpoch}, iEpoch*ones(length(spikeTrl{iEpoch})),'.r');
-         hold on;
-        end 
-        
-        title(['Raster centered to all stims: Cell ' num2str(cell_idx)])
-        ylabel('Trial');
-        xlabel('Time to Pulse(ms)');
-        xticklabels({'-400','-200','0','200','400'});
-% Raster Plot for ONLY specified stim experiment of ONE cell
-        figure;
-        timeEdges   = timwin(1):binSize:timwin(2);
-        timeBefore  = abs(timwin(1));
-        timeAfter   = timwin(2);
-        trlCenteredEpochStart   =  pulseEpochs_exper(:,1)-timeBefore;
-        trlCenteredEpochStop    =  pulseEpochs_exper(:,1)+timeAfter;
-        trlCenteredEpoch = [trlCenteredEpochStart trlCenteredEpochStop];
-        % Align the spikes to be centered around epoch start
-        spike_toEpochStart = realignSpikes(spikes, trlCenteredEpoch);
-        figure;
-        for iEpoch = 1:length( pulseEpochs_exper)
-         spikeTrl{iEpoch} = spike_toEpochStart{cell_idx}{iEpoch} -  pulseEpochs_exper(iEpoch,1);
-         plot(spikeTrl{iEpoch}, iEpoch*ones(length(spikeTrl{iEpoch})),'.r');
-         hold on;
-        end 
-        title(['Raster centered to ' exper_paradigm ' stims: Cell ' num2str(cell_idx)]);
-        ylabel('Trial');
-        xlabel('Time to Pulse (ms)'); 
-        xticklabels({'-400','-200','0','200','400'});
-% getCCGinout
+% PSTH of one cell around opto stim time (can specify which pulses)
+    getPSTHplots_PlaceInhibition(basePath, pulseEpochs_exper, exper_paradigm, cell_idx);
+% Plot Raster of one cell around opto stim time (can specify which pulses)
+    getRasterPlots_PlaceInhibition(basePath, pulseEpochs, exper_paradigm, cell_idx, varargin) 
+% Plot autocorrelation of specified cell inside and outside opto stim
+% epochs
     [ccginout] = getCCGinout(basePath, spikes, pulseEpochs_exper); %I changed this function to have spikes as an input
-    plot(ccginout.ccgIN(:,cell_idx, cell_idx));
-    plot(ccginout.ccgOUT(:,cell_idx, cell_idx));
+    plot(ccginout.ccgIN(:,cell_idx, cell_idx)); %in pulse
+    plot(ccginout.ccgOUT(:,cell_idx, cell_idx));  %out of pulse
     
-%run CellExplorer
+% Run CellExplorer
     
 
 %% Virtual Reality
-    cell_idx = 1;
-%1D VR - VR STIM and NO STIM
-    % should work with some messy place cell code from Lianne ->
-    % optimization is necessary & maybe combine or use buzcode scripts - check
-    % it out bz_findPlaceFields1D
-    % getWheelTrials;plotRastersTrials
-        %Process: for each timestamp -- find corresponding wheel voltage
-                 % split into wheel trials 
-                 % bin voltage 
-                 % average all trials
-                 % place in a matrix (each row = 1 cell)
-                 % sort the rows by increasing index value (pretty picture)
-    % load analogin 
-        load([basename '_analogin.mat']);
-    % get wheel trials
-        [len_ep, ts_ep, vel_ep, tr_ep, len_ep_fast, ts_ep_fast, vel_ep_fast] = getWheelTrials(analogin_VR);
-    % define time and position of wheel using analogin  
-        ts  = analogin.ts;
-        pos = analogin.pos;
-    %Generate spk_ep (find the position of each spike in each trial lap)
-        for iUnit = 1:length(spikes.UID)
-            for iTr = 1:length(tr_ep)
-               [status,interval] = InIntervals(spikes.times{iUnit},tr_ep);
-               spk_ep{iUnit}.trial{iTr} = spikes.times{iUnit}(interval==iTr); 
-
-              % find associated voltage to each spike in the trial
-              spkEpVoltIdx = find(ismember(ts,spk_ep{iUnit}.trial{iTr}));
-              spkEpVoltage{iUnit}.trial{iTr} = pos(spkEpVoltIdx);
-            end
-
-        end
-         bin_voltage = max(analogin.pos)/100; %check length of VR track
-    % for one cell over many trials
-         spkCt_Position = zeros(length(tr_ep), length(0:bin_voltage:max(analogin.pos))-1);
-         for itrial = 1:length(tr_ep)
-          [count, edges] = histcounts(cell2mat(spkEpVoltage{cell_idx}.trial(itrial)),0:bin_voltage:max(analogin.pos)); % 100 for each cm?
-          %make the first row of the matrix equal to the spikes per spatial
-          %bin just found
-          spkCt_Position(itrial,:) = count; 
-         end 
-         figure;
-         imagesc(spkCt_Position);
+      cell_idx = 1;
+%sanity check - do not quite get how
+%     [SpkVoltage, SpkTime, VelocityatSpk] = rastersToVoltage(analogin_VR, spikes)
+%     plot(SpkTime{2}, SpkVoltage{2})
+    
+% Get the corresponding voltage position of each spike timestamp
+      [spkEpVoltIdx] = getWheelPositionPerSpike(basePath, tr_ep);
+% Singular place field over many trials (x = position, y = trials, color =
+% spikes per spatial bin) **FIGURE OUT CM OF TRACK VR*
+      getPlaceField_VR(basePath, spkEpVoltage, tr_ep);
+% Multiple place cells averaged over multiple trials (x = position, y =
+% cell, color = averaged over trials spikes per spatial bin)
+    getPopulationPlaceField_VR(basePath, spkEpVoltage, tr_ep)
          
-    % for multiple cells averaged over multiple trials
-         avg_spk_ct_position = zeros(size(spikes.times,2),length(0:bin_voltage:max(analogin.pos))-1);
-        for icell = 1:size(spikes.times,2) 
-            spkCt_Position = zeros(length(tr_ep), length(0:bin_voltage:max(analogin.pos))-1);
-         for itrial = 1:length(tr_ep)
-          [count, edges] = histcounts(cell2mat(spkEpVoltage{cell_idx}.trial(itrial)),0:bin_voltage:max(analogin.pos)); % 100 for each cm?
-          %make the first row of the matrix equal to the spikes per spatial
-          %bin just found
-          spkCt_Position(itrial,:) = count; 
-         end 
-             avg_spk_ct_position(icell,:) = mean(spkCt_Position);
-             %normalize for time spent in area
-        end
-         sorted_cells_by_ct = sortrows(avg_spk_ct_position);
-         figure;
-         imagesc(sorted_cells_by_ct);
-         title('All Cells')
-         ylabel('Cell Number')
-         xlabel('Position')
-         
-        % split up analogin by wheel trials REMOVE this??
-        bin_voltage = max(analogin.pos)/100; %check length of VR track
-        [status, interval] = cellfun(@(a) InIntervals(a, wheel_trial_bin), spikes.times);
-        [count, edges] = histcounts(spikes.times{status},0:bin_voltage:length(analogin.pos)); % 100 for each cm?
-    % average over trials (down columns for each cell)
-        
+ % Colorful Raster of all cells over position (y trials, x position) dots different color for
+ % different cells
+    getRasterOverPosition(spikes, VR_BL1_Trials);
+    getRasterOverPosition(spikes, VR_VR_Trials);
+    getRasterOverPosition(spikes, VR_BL2_Trials);
         
 %% Videos with spiking on top
     
@@ -338,12 +221,14 @@ load([basename '.spikes.cellinfo.mat']);
         end
     end
  %%%%%%%%%%%%%%%%%%% Linear Track %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ %run over dlc - get estimated position with timestamps
+ %have a raster plot above the video with cells on y axis, and position on
+ %x axis - dots appear when the cell fires for 1 second
  
 
  %%%%%%%%%%%%%%%%%%% Virtual Reality %%%%%%%%%%%%%%%%%%%%%%%%%
- % trials baseline (y trials, x position) dots different color for
- % different cells
 
+ 
 %%
 %1D Linear Track
     % First run DLC (also on Blink Light)
