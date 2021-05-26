@@ -35,7 +35,7 @@ binSize         = p.Results.binSize;
         basename = bz_BasenameFromBasepath(basePath);
         load([basename '.spikes.cellinfo.mat']);
       %Plot raster of specified cell centered around pulse epochs
-        figure;
+%         figure;
         timeEdges   = timwin(1):binSize:timwin(2);
         timeBefore  = abs(timwin(1));
         timeAfter   = timwin(2);
@@ -44,17 +44,20 @@ binSize         = p.Results.binSize;
         trlCenteredEpoch = [trlCenteredEpochStart trlCenteredEpochStop];
         % Align the spikes to be centered around epoch start
         spike_toEpochStart = realignSpikes(spikes, trlCenteredEpoch);
-        figure;
+%         figure;
         for iEpoch = 1:length(pulseEpochs)
          spikeTrl{iEpoch} = spike_toEpochStart{cell_idx}{iEpoch} - pulseEpochs(iEpoch,1);
          plot(spikeTrl{iEpoch}, iEpoch*ones(length(spikeTrl{iEpoch})),'.r');
          hold on;
         end 
+                 set(gca,'YDir','reverse')
+
         title(['Raster centered to' exper_paradigm ' stims: Cell ' num2str(cell_idx)])
         ylabel('Trial');
-        xlabel('Time to Pulse(ms)');
-        xaxis_limit = abs(timwin(1))*2*100;
-        num_axis_ticks = xaxis_limit/4;
-        xticks([0 num_axis_ticks num_axis_ticks*2 num_axis_ticks*3 xaxis_limit]);
-        xticklabels({num2str(timwin(1)*1000),num2str((timwin(1)*1000)/2),'0',num2str(abs((timwin(1)*1000)/2)),num2str(abs(timwin(1)*1000))});
+        xlabel('Time to Pulse(s)');
+        xlim([timwin(1) timwin(2)]);
+%         xaxis_limit = abs(timwin(1))*2*100;
+%         num_axis_ticks = xaxis_limit/4;
+%         xticks([0 num_axis_ticks num_axis_ticks*2 num_axis_ticks*3 xaxis_limit]);
+%         xticklabels({num2str(timwin(1)*1000),num2str((timwin(1)*1000)/2),'0',num2str(abs((timwin(1)*1000)/2)),num2str(abs(timwin(1)*1000))});
 end

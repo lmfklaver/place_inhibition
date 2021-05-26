@@ -36,7 +36,7 @@ cm_per_spatial_bin = p.Results.cm_per_spatial_bin;
 for icell = 1:size(spikes.times,2) 
       [fig, fr_position] = getPlaceField_VR(basePath, icell, spkEpVoltage, tr_ep, len_ep, ts_ep, analogin_VR);
       cd('/home/reagan4/Results/PI_Results');
-      savefig(['Cell' num2str(icell) '_PlaceField.fig'], '-v7.3')
+      savefig(['Cell' num2str(icell) '_PlaceField.fig'])
       delete(fig);
       pop_fr_pos(icell,:) = mean(fr_position,1);
 end
@@ -47,7 +47,7 @@ end
       title('All Cells: not sorted');
       ylabel('Cell Number');
       xlabel('Position (cm)');
-      savefig('Population_PlaceField.fig', '-v7.3');
+      savefig('Population_PlaceField.fig');
       hold off;
       figure;
       imagesc(sortrows(pop_fr_pos));
@@ -55,7 +55,7 @@ end
       title('All Cells: sorted');
       ylabel('Cell Number');
       xlabel('Position (cm)');
-      savefig('Population_PlaceField_Sorted.fig', '-v7.3');
+      savefig('Population_PlaceField_Sorted.fig');
       hold off;
       figure
       zscore_pop = zscore(pop_fr_pos,0,2);
@@ -66,7 +66,7 @@ end
       xlabel('Position (cm)');
       savefig('Population_PlaceField_Sorted_Zscored.fig', '-v7.3');
       hold off;
-     save('Pop_FR_position.mat','pop_fr_pos', '-v7.3');
+     save('Pop_FR_position.mat','pop_fr_pos');
   
   
 %% Original - not time including

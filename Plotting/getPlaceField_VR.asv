@@ -1,4 +1,4 @@
-function [fig, fr_position] = getPlaceField_VR(basePath,cell_idx, spkEpVoltage, tr_ep, len_ep,ts_ep, analogin_VR, varargin)
+function [fig] = getPlaceField_VR(basePath,cell_idx, spkEpVoltage, tr_ep, len_ep,ts_ep, varargin)
 
 % Purpose: See activity of a singular cell over spatial bins, for many
 % trials
@@ -32,7 +32,7 @@ cm_per_spatial_bin = p.Results.cm_per_spatial_bin;
     %min of analogin signal (this is different when the unity maze is not
     %on)
         basename = bz_BasenameFromBasepath(basePath);
-        %load([basename '_analogin_VR.mat']); %may adapt later BUT make sure the scale of analogin --> cm is still accurate.
+        load([basename '_analogin_VR.mat']); %may adapt later BUT make sure the scale of analogin --> cm is still accurate.
     
     % find the spatial bin size in analogin values (depends on how many cm
     % you want in a spatial bin) ie. assiging each analogin value a cm value
@@ -103,12 +103,12 @@ cm_per_spatial_bin = p.Results.cm_per_spatial_bin;
     ylabel(h, 'Firing Rate')
     ylabel('Trial');
     xlabel('Position (cm)');
-    num_ticks = 4;
+    num_ticks = 10;
     tick_ct = num_spatial_bins/num_ticks;
-    xticks([tick_ct tick_ct*2 tick_ct*3 tick_ct*4 tick_ct*5 tick_ct*6]);
+    xticks([tick_ct tick_ct*2 tick_ct*3 tick_ct*4 tick_ct*5 tick_ct*6 tick_ct*7 tick_ct*8 tick_ct*9 tick_ct*10]);
     bin_ct = length_cm_track/num_ticks;
-    xticklabels({[(num2str(bin_ct))],[num2str(bin_ct*2)],[num2str(bin_ct*3)],[num2str(bin_ct*4)],[num2str(bin_ct*5)],...
-                [num2str(bin_ct*6)]});
+    xticklabels({[num2str(bin_ct)],[num2str(bin_ct*2)],[num2str(bin_ct*3)],[num2str(bin_ct*4)],[num2str(bin_ct*5)],...
+                [num2str(bin_ct*6],[num2str(bin_ct*7)],[num2str(bin_ct*8)],[num2str(bin_ct*9)],[num2str(bin_ct*10)]});
     title(['Place Field: Cell ' num2str(cell_idx)]);
     hold off;
     figure;
