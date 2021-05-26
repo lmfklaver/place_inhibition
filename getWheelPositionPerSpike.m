@@ -1,10 +1,9 @@
-function [spkEpVoltIdx] = getWheelPositionPerSpike(basePath, tr_ep)
+function [spkEpVoltIdx, spkEpVoltage] = getWheelPositionPerSpike(basePath, tr_ep, analogin, spikes)
 
 % Purpose: Gets wheel voltage at every spike time
 
 % Input:  basePath: path with data
 %         tr_ep: start and stop of each trial
-%         length_cm_track: how long the running wheel track is in cm
 %         
 % Output: spkEpVoltIdx (an array of voltages correpsonding to each spike
 % split into wheel trials)
@@ -13,8 +12,8 @@ function [spkEpVoltIdx] = getWheelPositionPerSpike(basePath, tr_ep)
 
 %%
         basename = bz_BasenameFromBasepath(basePath);
-        load([basename '_analogin.mat']);
-        load([basename '.spikes.cellinfo.mat']);
+%         load([basename '_analogin.mat']);
+%         load([basename '.spikes.cellinfo.mat']);
         ts  = analogin.ts;
         pos = analogin.pos;
     %Generate spk_ep (find the position of each spike in each trial lap)
