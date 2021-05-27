@@ -1,4 +1,4 @@
-function [] = getPopulationPlaceField_VR(basePath, tr_ep, len_ep, ts_ep, spikes, analogin_VR,analogin,varargin)
+function [] = getPopulationPlaceField_VR(basePath, tr_ep, len_ep, ts_ep, varargin)
 % Purpose: See averaged activity of all cells over trials across spatial bins
 
 % Input:  basePath: path with data
@@ -11,7 +11,7 @@ function [] = getPopulationPlaceField_VR(basePath, tr_ep, len_ep, ts_ep, spikes,
 
 % Reagan 2021.05.04
 
-%%
+%% Parser Inputs
 p = inputParser;
 addParameter(p,'basePath',basePath,@isstr);
 addParameter(p,'tr_ep',tr_ep,@isnumeric);
@@ -19,55 +19,68 @@ addParameter(p,'length_cm_track',236,@isnumeric);
 addParameter(p,'cm_per_spatial_bin',1,@isnumeric);
 
 parse(p,varargin{:});
-basePath        = p.Results.basePath;
-tr_ep           = p.Results.tr_ep;
-length_cm_track = p.Results.length_cm_track;
+basePath           = p.Results.basePath;
+tr_ep              = p.Results.tr_ep;
+length_cm_track    = p.Results.length_cm_track;
 cm_per_spatial_bin = p.Results.cm_per_spatial_bin;
-%%
-     [spkEpVoltIdx, spkEpVoltage] = getWheelPositionPerSpike(basePath, tr_ep, analogin,spikes);
+%% Load in variables
+    % Get the position of the wheel at every spike time
+      [spkEpVoltIdx, spkEpVoltage] = getWheelPositionPerSpike(basePath, tr_ep);
       basename = bz_BasenameFromBasepath(basePath);
-      %load([basename '.spikes.cellinfo.mat']);
-      %load([basename '_analogin_VR.mat']); %may adapt later BUT make sure the scale of analogin --> cm is still accurate.
-
-     bin_voltage = ((max(analogin_VR.pos)-min(analogin_VR.pos))/length_cm_track)*cm_per_spatial_bin; 
-     num_spatial_bins = length(min(analogin_VR.pos):bin_voltage:max(analogin_VR.pos))-1; 
-     
-     pop_fr_pos = zeros(size(spikes.times,2), num_spatial_bins);
-for icell = 1:size(spikes.times,2) 
-      [fig, fr_position] = getPlaceField_VR(basePath, icell, spkEpVoltage, tr_ep, len_ep, ts_ep, analogin_VR);
-      cd('/home/reagan4/Results/PI_Results');
-      savefig(['Cell' num2str(icell) '_PlaceField.fig'], '-v7.3')
-      delete(fig);
-      pop_fr_pos(icell,:) = mean(fr_position,1);
-end
-      cd('/home/reagan4/Results/PI_Results');
-      figure;
-      imagesc(pop_fr_pos);
-      hold on;
-      title('All Cells: not sorted');
-      ylabel('Cell Number');
-      xlabel('Position (cm)');
-      savefig('Population_PlaceField.fig', '-v7.3');
-      hold off;
-      figure;
-      imagesc(sortrows(pop_fr_pos));
-      hold on;
-      title('All Cells: sorted');
-      ylabel('Cell Number');
-      xlabel('Position (cm)');
-      savefig('Population_PlaceField_Sorted.fig', '-v7.3');
-      hold off;
-      figure
-      zscore_pop = zscore(pop_fr_pos,0,2);
-      imagesc(sortrows(zscore_pop));
-      hold on;
-      title('All Cells: zscore and sorted');
-      ylabel('Cell Number');
-      xlabel('Position (cm)');
-      savefig('Population_PlaceField_Sorted_Zscored.fig', '-v7.3');
-      hold off;
-     save('Pop_FR_position.mat','pop_fr_pos', '-v7.3');
-  
+      load([basename '.spikes.cellinfo.mat']);
+      load([basename '_analogin_VR.mat']); %may adapt later BUT make sure the scale of analogin --> cm is still accurate.
+   
+%% Find mean firing rate per spatial bin for all cells 
+    % Find the voltage step you want to take to define your spaital bins
+    % - Find the max and min of the analogin during virtual reality, and
+    % divide it evenly with the length of the virtual reality track
+        bin_voltage = ((max(analogin_VR.pos)-min(analogin_VR.pos))/length_cm_track)*cm_per_spatial_bin; 
+        num_spatial_bins = length(min(analogin_VR.pos):bin_voltage:max(analogin_VR.pos))-1; 
+    % Initialize a matrix to store the average firing rate for each cell in each spatial bin (rows = cells, columns = spatial bins) 
+        pop_fr_pos = zeros(size(spikes.times,2), num_spatial_bins);
+    % For Every cell, find the firing rate in each spatial bin for all
+    % trials, graph it, and save the figure
+        for icell = 5:size(spikes.times,2) 
+              [fig, fr_position] = getPlaceField_VR(basePath, icell, spkEpVoltage, tr_ep, len_ep, ts_ep, analogin_VR);
+              cd([basePath '/Figures/PlaceFields']);
+              savefig(fig,['Cell' num2str(icell) '_PlaceField.fig'])
+              delete(fig);
+              pop_fr_pos(icell,:) = mean(fr_position);
+              cd([basePath]);
+        end
+%% Plot population figures
+        cd([basePath '/Figures/PlaceFields']);
+        figure;
+    % Make all the nan values = 0 (voltages that did not exist in some
+    % laps)
+        pop_fr_pos(isnan(pop_fr_pos))=0; 
+        imagesc(pop_fr_pos);
+        hold on;
+        title('All Cells: not sorted');
+        ylabel('Cell Number');
+        xlabel('Position (cm)');
+        savefig('Population_PlaceField.fig');
+        hold off;
+    % Make a figure with the population data sorted
+        figure;
+        imagesc(sortrows(pop_fr_pos));
+        hold on;
+        title('All Cells: sorted');
+        ylabel('Cell Number');
+        xlabel('Position (cm)');
+        savefig('Population_PlaceField_Sorted.fig');
+        hold off;
+    % Make a figure of the zscored population graph
+        figure
+        zscore_pop = zscore(pop_fr_pos,0,2);
+        imagesc(sortrows(zscore_pop));
+        hold on;
+        title('All Cells: zscore and sorted');
+        ylabel('Cell Number');
+        xlabel('Position (cm)');
+        savefig('Population_PlaceField_Sorted_Zscored.fig');
+        hold off;
+        save('Pop_FR_position.mat','pop_fr_pos');
   
 %% Original - not time including
 %     basename = bz_BasenameFromBasepath(basePath);

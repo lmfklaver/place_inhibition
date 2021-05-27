@@ -40,7 +40,7 @@ runAllInterneurons = p.Results.runAllInterneurons;
         'binSize', binSize, 'saveMat', false);
 %      figure;
      % plot(peth.count(cell_idx,:));
-      histogram('BinEdges', peth.timeEdges, 'BinCounts', peth.count(cell_idx,:))
+      histogram('BinEdges', peth.timeEdges, 'BinCounts', peth.count(cell_idx,:));
       title(['PSTH centered to ' exper_paradigm ' stims: Cell' num2str(cell_idx)]);
       ylabel('Count');
       xlabel('Time to Pulse (s)');

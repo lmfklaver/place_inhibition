@@ -1,4 +1,4 @@
-function [IRASA] = getPowerSpectum_PlaceInhibition(basePath, lfp_channel, Sleep1_Time, Sleep2_Time, Sleep3_Time, Sleep4_Time, VR_Time, OF_Time, LT_Time, varargin)
+function [IRASA] = getPowerSpectum_PlaceInhibition(basePath, lfp_channel, Time, varargin)
 
 % Purpose: Makes power spectrum plots comparing sleep sessions in one plot
 % and VR vs OF vs LT in another (also makes these plots with fractals
@@ -39,19 +39,19 @@ warm_colors = hot(20); %3,7,10,12
 cool_colors = cool(20);%3, 7, 11, 18
 color_all = [warm_colors(3,:);cool_colors(3,:);cool_colors(7,:);cool_colors(11,:);warm_colors(7,:);warm_colors(10,:);warm_colors(12,:)]%sleeps: 1, 5, 6, 7
       % get lfp of each section independently
-          lfp_S1 = bz_GetLFP(lfp_channel, 'intervals',[Sleep1_Time.start Sleep1_Time.stop]);
+          lfp_S1 = bz_GetLFP(lfp_channel, 'intervals',[Time.Sleep1.start Time.Sleep1.stop]);
           lfp_S1.data = lfp_S1.data*0.195;
-          lfp_S2 = bz_GetLFP(lfp_channel, 'intervals',[Sleep2_Time.start Sleep2_Time.stop]);
+          lfp_S2 = bz_GetLFP(lfp_channel, 'intervals',[Time.Sleep2.start Time.Sleep2.stop]);
           lfp_S2.data = lfp_S2.data*0.195;
-          lfp_S3 = bz_GetLFP(lfp_channel, 'intervals',[Sleep3_Time.start Sleep3_Time.stop]);
+          lfp_S3 = bz_GetLFP(lfp_channel, 'intervals',[Time.Sleep3.start Time.Sleep3.stop]);
           lfp_S3.data = lfp_S3.data*0.195;
-          lfp_S4 = bz_GetLFP(lfp_channel, 'intervals',[Sleep4_Time.start Sleep4_Time.stop]);
+          lfp_S4 = bz_GetLFP(lfp_channel, 'intervals',[Time.Sleep4.start Time.Sleep4.stop]);
           lfp_S4.data = lfp_S4.data*0.195;
-          lfp_VR = bz_GetLFP(lfp_channel, 'intervals',[VR_Time.start VR_Time.stop]);
+          lfp_VR = bz_GetLFP(lfp_channel, 'intervals',[Time.VR.start Time.VR.stop]);
           lfp_VR.data = lfp_VR.data*0.195;
-          lfp_OF = bz_GetLFP(lfp_channel, 'intervals',[OF_Time.start OF_Time.stop]);
+          lfp_OF = bz_GetLFP(lfp_channel, 'intervals',[Time.OF.start Time.OF.stop]);
           lfp_OF.data = lfp_OF.data*0.195;
-          lfp_LT = bz_GetLFP(lfp_channel, 'intervals',[LT_Time.start LT_Time.stop]);
+          lfp_LT = bz_GetLFP(lfp_channel, 'intervals',[Time.LT.start Time.LT.stop]);
           lfp_LT.data = lfp_LT.data*0.195;
           
           if doLFPClean
@@ -242,7 +242,7 @@ color_all = [warm_colors(3,:);cool_colors(3,:);cool_colors(7,:);cool_colors(11,:
         all_fig = axes;
         plot(all_fig, specS1.freq,movmean(specS1.osci,movmean_win),'Color',color_all(1,:));
         hold on;
-        if (VR_Time.start < OF_Time.start & VR_Time.start < LT_Time.start)
+        if (Time.VR.start < Time.OF.start & Time.VR.start < Time.LT.start)
              figure;
              plot(specS1.freq,movmean(specS1.osci,movmean_win),'Color',color_all(1,:));
              hold on;
@@ -263,7 +263,7 @@ color_all = [warm_colors(3,:);cool_colors(3,:);cool_colors(7,:);cool_colors(11,:
                  hold off;
              plot(all_fig, specVR.freq,movmean(specVR.osci,movmean_win),'Color',color_all(2,:));
              exper_one = 'VR';
-            elseif (OF_Time.start<VR_Time.start & OF_Time.start < LT_Time.start)
+            elseif (Time.OF.start<Time.VR.start & Time.OF.start < Time.LT.start)
              figure;
              plot(specS1.freq,movmean(specS1.osci,movmean_win),'Color',color_all(1,:));
              hold on;
@@ -284,7 +284,7 @@ color_all = [warm_colors(3,:);cool_colors(3,:);cool_colors(7,:);cool_colors(11,:
                  hold off;
              plot(all_fig, specOF.freq,movmean(specOF.osci,movmean_win),'Color',color_all(4,:));
              exper_one = 'OF';
-        elseif (LT_Time.start < VR_Time.start & LT_Time.start< OF_Time.start)
+        elseif (Time.LT.start < Time.VR.start & Time.LT.start< Time.OF.start)
              figure;
              plot(specS1.freq,movmean(specS1.osci,movmean_win),'Color',color_all(1,:));
              hold on;
@@ -309,7 +309,7 @@ color_all = [warm_colors(3,:);cool_colors(3,:);cool_colors(7,:);cool_colors(11,:
         
         plot(all_fig, specS2.freq,movmean(specS2.osci,movmean_win),'Color',color_all(5,:));
         %find middle session and plot to sleep 2
-        if (VR_Time.start < OF_Time.start & VR_Time.start > LT_Time.start || VR_Time.start > OF_Time.start & VR_Time.start < LT_Time.start)
+        if (Time.VR.start < Time.OF.start & Time.VR.start > Time.LT.start || Time.VR.start > Time.OF.start & Time.VR.start < Time.LT.start)
              figure;
              plot(specS2.freq,movmean(specS2.osci,movmean_win),'Color',color_all(5,:));
              hold on;
@@ -330,7 +330,7 @@ color_all = [warm_colors(3,:);cool_colors(3,:);cool_colors(7,:);cool_colors(11,:
                  hold off;
              plot(all_fig, specVR.freq,movmean(specVR.osci,movmean_win),'Color',color_all(2,:));
              exper_two = 'VR';
-        elseif (LT_Time.start < OF_Time.start & LT_Time.start > VR_Time.start || LT_Time.start > OF_Time.start & LT_Time.start < VR_Time.start)
+        elseif (Time.LT.start < Time.OF.start & Time.LT.start > Time.VR.start || Time.LT.start > Time.OF.start & Time.LT.start < Time.VR.start)
              figure;
              plot(specS2.freq,movmean(specS2.osci,movmean_win),'Color',color_all(5,:));
              hold on;
@@ -351,7 +351,7 @@ color_all = [warm_colors(3,:);cool_colors(3,:);cool_colors(7,:);cool_colors(11,:
                  hold off;
              plot(all_fig, specLT.freq,movmean(specLT.osci,movmean_win),'Color',color_all(3,:));
              exper_two = 'LT';
-        elseif (OF_Time.start < LT_Time.start & OF_Time.start > VR_Time.start || OF_Time.start > LT_Time.start & OF_Time.start < VR_Time.start)
+        elseif (Time.OF.start < Time.LT.start & Time.OF.start > Time.VR.start || Time.OF.start > Time.LT.start & Time.OF.start < Time.VR.start)
              figure;
              plot(specS2.freq,movmean(specS2.osci,movmean_win),'Color',color_all(5,:));
              hold on;
@@ -375,7 +375,7 @@ color_all = [warm_colors(3,:);cool_colors(3,:);cool_colors(7,:);cool_colors(11,:
         end
         plot(all_fig, specS3.freq,movmean(specS3.osci,movmean_win),'Color',color_all(6,:));
     %find last session and plot to sleep 3
-        if (VR_Time.start > LT_Time.start & VR_Time.start > OF_Time.start)
+        if (Time.VR.start > Time.LT.start & Time.VR.start > Time.OF.start)
              figure;
              plot(specS3.freq,movmean(specS3.osci,movmean_win),'Color',color_all(6,:));
              hold on;
@@ -396,7 +396,7 @@ color_all = [warm_colors(3,:);cool_colors(3,:);cool_colors(7,:);cool_colors(11,:
                  hold off;
              plot(all_fig, specVR.freq,movmean(specVR.osci,movmean_win),'Color',color_all(2,:));
              exper_three = 'VR';
-        elseif (LT_Time.start> VR_Time.start & LT_Time.start >OF_Time.start)
+        elseif (Time.LT.start> Time.VR.start & Time.LT.start >Time.OF.start)
              figure;
              plot(specS3.freq,movmean(specS3.osci,movmean_win),'Color',color_all(6,:));
              hold on;
@@ -417,7 +417,7 @@ color_all = [warm_colors(3,:);cool_colors(3,:);cool_colors(7,:);cool_colors(11,:
                  hold off;
              plot(all_fig, specLT.freq,movmean(specLT.osci,movmean_win),'Color',color_all(3,:));
              exper_three = 'LT';
-        elseif (OF_Time.start > VR_Time.start & OF_Time.start >LT_Time.start)
+        elseif (Time.OF.start > Time.VR.start & Time.OF.start >Time.LT.start)
              figure;
              plot(specS3.freq,movmean(specS3.osci,movmean_win),'Color',color_all(6,:));
              hold on;
