@@ -21,6 +21,7 @@
 % Make mat analysis files, mat files made by English lab code
     PF_Preprocessing_MakeMatFiles
 %% Load Mat Files Commonly Used
+    cd([basePath]);
 % Load in start and stop times of each sleep and experimental segment
     load([basename '_TimeSegments.analysis.mat']);
     load([basename '_wheelTrials.analysis.mat']);
@@ -75,7 +76,7 @@
 % Experiments BEFORE this date, should use the variable
 % 'stim_pos_old' - go into the script and change the input variable to
 % such.
-    getWavespecsAroundEvents
+    getWavespecsAroundEvents_VR
 
 % Ripples
     % Detect ripples bz_FindRipples
@@ -129,16 +130,7 @@
         ylabel('Correlation');
         axis square;
      end     
-% plotting raster over whole trial
-% Plot raster over one cell for each trial - need to align to start of each
-% trial
-%     for itrial = 1:length(trial_exper)
-%          spikeTrl{itrial} = InIntervals(spikes.times{cell_idx}, trial_exper(itrial,:));
-%          spike_trial = spikes.times{cell_idx}(spikeTrl{itrial});
-%          subplot(2,3,4);
-%          plot(spike_trial, itrial*ones(length(spike_trial)),'.r');
-%          hold on
-%     end     
+  
 %% Spiking Analysis - Single Cell characteristics for all units
 % Gets out PETH and Raster around stim for each cell and saves each to a
 % figure. Also calculate auto corr and cross corr for each cell and saves
@@ -216,7 +208,12 @@
             delete([unitStr '.pdf'])
             close gcf
         end 
-%% Virtual Reality - Place Fields
+%% Virtual Reality - Load and define
+    icell = 1;
+    load('m247_210421_083423.spikes.cellinfo.mat');
+    load('m247_210421_083423_analogin_VR.analysis.mat');
+    
+%% Virtual Reality Place Fields
     
 %sanity check - do not quite get how
 %     [SpkVoltage, SpkTime, VelocityatSpk] = rastersToVoltage(analogin_VR, spikes)
@@ -225,15 +222,14 @@
 % Get the corresponding voltage position of each spike timestamp
       [spkEpVoltIdx, spkEpVoltage] = getWheelPositionPerSpike(basePath, tr_ep);
 % Singular place field over many trials (x = position, y = trials, color =
-% spikes per spatial bin) **FIGURE OUT CM OF TRACK VR*
-      icell = 1;
-      [fig, fr_position] = getPlaceField_VR(basePath, icell, spkEpVoltage, tr_ep, len_ep, ts_ep);
+% spikes per spatial bin)
+      [fig, fr_position] = getPlaceField_VR(basePath, icell, spkEpVoltage, tr_ep, len_ep, ts_ep, analogin_VR);
       savefig(['Cell' num2str(icell) '_PlaceField.fig'])
       delete(fig);
 
 % Multiple place cells averaged over multiple trials (x = position, y =
 % cell, color = averaged over trials spikes per spatial bin)
-    getPopulationPlaceField_VR(basePath, tr_ep_all, len_ep, ts_ep_all)
+    getPopulationPlaceField_VR(basePath, tr_ep_all, len_ep, ts_ep_all, spikes, analogin_VR)
          
  % Colorful Raster of all cells over position (y trials, x position) dots different color for
  % different cells

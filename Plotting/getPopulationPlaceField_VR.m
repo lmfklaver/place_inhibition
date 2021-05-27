@@ -1,4 +1,4 @@
-function [] = getPopulationPlaceField_VR(basePath, tr_ep, len_ep, ts_ep, varargin)
+function [] = getPopulationPlaceField_VR(basePath, tr_ep, len_ep, ts_ep, spikes, analogin_VR,varargin)
 % Purpose: See averaged activity of all cells over trials across spatial bins
 
 % Input:  basePath: path with data
@@ -27,8 +27,8 @@ cm_per_spatial_bin = p.Results.cm_per_spatial_bin;
     % Get the position of the wheel at every spike time
       [spkEpVoltIdx, spkEpVoltage] = getWheelPositionPerSpike(basePath, tr_ep);
       basename = bz_BasenameFromBasepath(basePath);
-      load([basename '.spikes.cellinfo.mat']);
-      load([basename '_analogin_VR.mat']); %may adapt later BUT make sure the scale of analogin --> cm is still accurate.
+%       load([basename '.spikes.cellinfo.mat']);
+%       load([basename '_analogin_VR.mat']); %may adapt later BUT make sure the scale of analogin --> cm is still accurate.
    
 %% Find mean firing rate per spatial bin for all cells 
     % Find the voltage step you want to take to define your spaital bins

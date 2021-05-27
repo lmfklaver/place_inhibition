@@ -1,4 +1,4 @@
-function [IRASA] = getPowerSpectrum_VRnoVR(basePath, lfp_channel, Sleep1_Time, Sleep2_Time, VR_Time, noVR_Time, varargin)
+function [IRASA] = getPowerSpectrum_VRnoVR(basePath, lfp_channel,Time, varargin)
 
 % Purpose: Makes power spectrum plots comparing sleep sessions in one plot
 % and VR vs OF vs LT in another (also makes these plots with fractals
@@ -38,13 +38,13 @@ warm_colors = hot(20); %3,7,10,12
 cool_colors = cool(20);%3, 7, 11, 18
 color_all = [warm_colors(3,:);warm_colors(7,:);cool_colors(3,:);cool_colors(7,:)]
       % get lfp of each section independently
-          lfp_S1 = bz_GetLFP(lfp_channel, 'intervals',[Sleep1_Time.start Sleep1_Time.stop]);
+          lfp_S1 = bz_GetLFP(lfp_channel, 'intervals',[Time.Sleep1.start Time.Sleep1.stop]);
           lfp_S1.data = lfp_S1.data*0.195;
-          lfp_S2 = bz_GetLFP(lfp_channel, 'intervals',[Sleep2_Time.start Sleep2_Time.stop]);
+          lfp_S2 = bz_GetLFP(lfp_channel, 'intervals',[Time.Sleep2.start Time.Sleep2.stop]);
           lfp_S2.data = lfp_S2.data*0.195;
-          lfp_VR = bz_GetLFP(lfp_channel, 'intervals',[VR_Time.start VR_Time.stop]);
+          lfp_VR = bz_GetLFP(lfp_channel, 'intervals',[Time.VR.start Time.VR.stop]);
           lfp_VR.data = lfp_VR.data*0.195;
-          lfp_noVR = bz_GetLFP(lfp_channel, 'intervals',[noVR_Time.start noVR_Time.stop]);
+          lfp_noVR = bz_GetLFP(lfp_channel, 'intervals',[Time.noVR.start Time.noVR.stop]);
           lfp_noVR.data = lfp_noVR.data*0.195;
           
           if doLFPClean
@@ -188,13 +188,13 @@ color_all = [warm_colors(3,:);warm_colors(7,:);cool_colors(3,:);cool_colors(7,:)
         all_fig = axes;
         plot(all_fig, specS1.freq,movmean(specS1.osci,movmean_win),'Color',color_all(1,:));
         hold on;
-        if (VR_Time.start < noVR_Time.start)
+        if (Time.VR.start < Time.noVR.start)
              plot(all_fig, specVR.freq,movmean(specVR.osci,movmean_win),'Color',color_all(3,:));
              hold on
              plot(all_fig, specnoVR.freq,movmean(specnoVR.osci,movmean_win),'Color',color_all(4,:));
              exper_one = 'VR';
              exper_two = 'noVR';
-        elseif (noVR_Time.start < VR_Time.start)
+        elseif (Time.noVR.start < Time.VR.start)
              plot(all_fig, specnoVR.freq,movmean(specnoVR.osci,movmean_win),'Color',color_all(4,:));
              hold on
              plot(all_fig, specVR.freq,movmean(specVR.osci,movmean_win),'Color',color_all(3,:));
