@@ -5,7 +5,6 @@
 %   Data folder (new computer), csv position and timestamps files & videos
 %   (old computer)
 % Make a txt doc of recording information
-%   List on data overview sheet in notion
 %   Copy and paste chanMap for certain probe in data folder
 %   Edit chan map varibales for the mouse
 % Rename Variables
@@ -14,7 +13,9 @@
 %   30000Hz)
 %   basename_whatever else
 %   keep info rhd same
-% Define Recording session path
+% Update Data Directory
+%   On lab sheets
+%   Matlab script : RecordingDirectory_PlaceTuning
 
 %% Run Once 
 % Run Kilosort2 (updatepath rootZ first with datapath!)
@@ -28,12 +29,17 @@
     sessionInfo = bz_getSessionInfo;
 % bz_GetLFP
     bz_LFPfromDat(basePath);
-    %lfpChan = 'all';
-    %lfp = bz_GetLFP(lfpChan);
+    lfpChan = 21; %by eye pick channel
+    lfp = bz_GetLFP(lfpChan);
 % bz_FindRipples
-    bz_FindRipples(lfp.data, lfp.timestamps);
-
-% getAnaloginVals FIX THIS (8 channels, 30000Hz)
+    ripples = bz_FindRipples(lfp.data, lfp.timestamps, 'saveMat',true);
+    ripples.detectorinfo.detectionchannel = lfpChan;
+    save([basename '.ripples.events.mat'], 'ripples');
+    % make rip file
+    makeRipFile
+    
+% getAnaloginVals (make sure xml is 8 channels, 30000Hz)
+        % wheel = 5,blinklight = 6
     analogin = getAnaloginVals(basePath,'wheelChan',5,'pulseChan','none','rewardChan','none','blinkChan',6, 'downsampleFactor',100);
     
 % getDigitalinVals (4= reward, 2 = stim)
@@ -46,7 +52,7 @@
     digital_input_reward = (bitand(digital_word, 2^4) > 0);
     
     save([basename '_digitalin.analysis.mat'], 'digital_input_reward', 'digital_input_stim')
-  
+    %makePulseFile
 % getPulseEpochs % get optoStim
     digitalin.ts = analogin.ts;
     digitalin.pulse = digital_input_stim;
@@ -57,6 +63,3 @@
 % Get Spikes
     spikes = bz_GetSpikes;
     
-     %makeRipFile.m
-     %makePulseFile.m
-

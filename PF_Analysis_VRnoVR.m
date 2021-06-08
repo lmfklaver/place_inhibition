@@ -21,7 +21,12 @@
     PF_Preprocessing_Pipeline
 % Make mat analysis files, mat files made by English lab code
     VRnoVR_Preprocessing_MakeMatFiles
-    
+% Find State of Sleep
+    lfp_chans2check = [10 30 60]; %make sure channels are good ones
+    [SleepState, SleepEditorInput] = PF_Preprocessing_SleepValidation(basePath,lfp_chans2check, Time.Sleep1.start, Time.Sleep2.stop);      
+    save([basename '_SleepState.analysis.mat'],'SleepState','SleepEditorInput');
+        % sleep
+              TheStateEditor(basename, SleepEditorInput)
 %% Load Mat Files Commonly Used
     cd([basePath]);
 % Load in start and stop times of each sleep and experimental segment
@@ -32,7 +37,7 @@
     cd([animalPath]);
     load('Maze_Characteristic_Analog_Positions.mat');
     cd([basePath]);
-    load([basename '_analogin_VR.analysis.mat']);
+    load([basename '_analogin_VRnoVR.analysis.mat']); %load analogin seperately for VR and no VR segments
 %%  LFP Analysis - Power Spec 
 % Power Spectra: Compares each setup to previous sleep, also compares all
 % sleep parts to all experimental parts in one figure, compares all sleep
@@ -58,6 +63,7 @@
 %fix velocity code, runEpochs work?
     [IRASA_VR_velocity] = getPowerSpectrum_Velocity(basePath, lfp_channel, Time.VR, 'doLFPClean', false, 'doSplitLFP', false);
     [IRASA_noVR_velocity] = getPowerSpectrum_Velocity(basePath, lfp_channel, Time.noVR, 'doLFPClean', false, 'doSplitLFP', false);
+% Sleep State spectum comparisoin:
 %% Velocity analysis
     
     [vel_VR] = getVelocity(analogin_VR,'circDisk',236, 'doFigure', true);%236cm/unity lap

@@ -10,7 +10,7 @@
     [Time.OF] = RealTime_Convert_RecordingTime(basePath, 'OFTime');
     [Time.LT] = RealTime_Convert_RecordingTime(basePath, 'LTTime');
     save([basename '_TimeSegments.analysis.mat'],'Time');
-%% 
+%% Make an analogin just for VR
 % Trials from wheel chan - use getWheelTrials (only want wheel trials during VR
 % time) AND make an analogin_VR variable that is correct in time
 % referencing the recording - VR position and time
@@ -24,7 +24,7 @@
     [len_ep, ts_ep, vel_ep, tr_ep, len_ep_fast, ts_ep_fast, vel_ep_fast] = getWheelTrials(analogin_VR);
     save([basename '_wheelTrials.analysis.mat'],'len_ep','ts_ep','vel_ep','tr_ep','len_ep_fast','ts_ep_fast','vel_ep_fast');
     %[pulseIdx, noPulseIdx, pulseEpochs] = getPulseTrialIdx(analogin_VR, tr_ep);
-% Split up baseline, stim, and post baseline times
+%% Split up baseline, stim, and post baseline times
     load([basename '_pulseEpochs.analysis.mat']);
     stimEpochs_VR = pulseEpochs(:,:)> Time.VR.start & pulseEpochs(:,:) < Time.VR.stop;
         pulseEpch.VR(:,1) = pulseEpochs(stimEpochs_VR(:,1));
@@ -36,7 +36,7 @@
         pulseEpch.LT(:,1) = pulseEpochs(stimEpochs_LT(:,1));
         pulseEpch.LT(:,2) = pulseEpochs(stimEpochs_LT(:,2));
     save([basename '_pulseEpochs_splitPerSetup.analysis.mat'],'pulseEpch');
- % Split up virtual reality experimental section into prebaseline, stim,
+%% Split up virtual reality experimental section into prebaseline, stim,
  % and post baseline time 
      %find where first pulse happens
      VR_Stim_First = pulseEpch.VR(1,1);
@@ -60,3 +60,4 @@
      VR_BL2_Trials = tr_ep(VR_BL2_Trials_idx,:);
      clear VR_Stim_First VR_Stim_Last VR_Stim_Trials_idx VR_BL1_Trials_idx VR_BL2_Trials_idx;
      save([basename '_VRTime_BL_Stim.analysis.mat'],'VR_Stim_Time','VR_BL1_Time','VR_BL2_Time','VR_Stim_Trials','VR_BL1_Trials','VR_BL2_Trials');
+%% LT and OF trials

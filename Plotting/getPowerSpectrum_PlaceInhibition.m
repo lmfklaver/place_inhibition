@@ -79,43 +79,22 @@ color_all = [warm_colors(3,:);cool_colors(3,:);cool_colors(7,:);cool_colors(11,:
               [powOF] = getPowerSpectrum(basePath, lfp_OF, 'doIRASA', false,'doPlot', false);
               [powLT] = getPowerSpectrum(basePath, lfp_LT, 'doIRASA', false,'doPlot', false);
           elseif doSplitLFP
-                  minutes = 5; 
-                  timeMin = 1250*60*minutes;
-              for iseg = 1:length(1:timeMin:length(lfp_S1.timestamps))
-                  [powS1_temp] = getPowerSpectrum(basePath, lfp_S1, 'doIRASA', false, 'doPlot', false); 
-                  pow1_mat(iseg,:) = powS1_temp.fma.spectrum;
-              end
-                  powS1.fma.spectrum = mean(pow1_mat);
-              for iseg = 1:length(1:timeMin:length(lfp_S2.timestamps))
-                  [powS2_temp] = getPowerSpectrum(basePath, lfp_S2, 'doIRASA', false, 'doPlot', false); 
-                  pow2_mat(iseg,:) = powS2_temp.fma.spectrum;
-              end
-                  powS2.fma.spectrum = mean(pow2_mat);
-              for iseg = 1:length(1:timeMin:length(lfp_S3.timestamps))
-                  [powS3_temp] = getPowerSpectrum(basePath, lfp_S3, 'doIRASA', false, 'doPlot', false); 
-                  pow3_mat(iseg,:) = powS3_temp.fma.spectrum;
-              end
-                  powS3.fma.spectrum = mean(pow3_mat);
-              for iseg = 1:length(1:timeMin:length(lfp_S4.timestamps))
-                  [powS4_temp] = getPowerSpectrum(basePath, lfp_S4, 'doIRASA', false, 'doPlot', false); 
-                  pow4_mat(iseg,:) = powS4_temp.fma.spectrum;
-              end
-                  powS4.fma.spectrum = mean(pow4_mat);
-              for iseg = 1:length(1:timeMin:length(lfp_VR.timestamps))
-                  [powVR_temp] = getPowerSpectrum(basePath, lfp_VR, 'doIRASA', false, 'doPlot', false); 
-                  powVR_mat(iseg,:) = powVR_temp.fma.spectrum;
-              end
-                  powVR.fma.spectrum = mean(powVR_mat); 
-              for iseg = 1:length(1:timeMin:length(lfp_OF.timestamps))
-                  [powOF_temp] = getPowerSpectrum(basePath, lfp_OF, 'doIRASA', false, 'doPlot', false); 
-                  powOF_mat(iseg,:) = powOF_temp.fma.spectrum;
-              end
-                  powOF.fma.spectrum = mean(powOF_mat);
-              for iseg = 1:length(1:timeMin:length(lfp_LT.timestamps))
-                  [powLT_temp] = getPowerSpectrum(basePath, lfp_LT, 'doIRASA', false, 'doPlot', false); 
-                  powLT_mat(iseg,:) = powLT_temp.fma.spectrum;
-              end
-                  powLT.fma.spectrum = mean(powLT_mat);
+               minutes = 5; 
+               timeMin = lfp_S1.samplingRate*60*minutes;
+          % Sleep 1
+               [powS1] = makePowerspec_AvgChunk_Vector(basePath, timeMin, lfp_S1);           
+          % Sleep 2
+               [powS2] = makePowerspec_AvgChunk_Vector(basePath, timeMin, lfp_S2);
+          % Sleep 3
+               [powS3] = makePowerspec_AvgChunk_Vector(basePath, timeMin, lfp_S3);
+          % Sleep 4
+               [powS4] = makePowerspec_AvgChunk_Vector(basePath, timeMin, lfp_S4);
+          % VR
+               [powVR] = makePowerspec_AvgChunk_Vector(basePath, timeMin, lfp_VR);
+          % LT
+               [powLT] = makePowerspec_AvgChunk_Vector(basePath, timeMin, lfp_LT);
+          % OF
+               [powOF] = makePowerspec_AvgChunk_Vector(basePath, timeMin, lfp_OF);
           end
       % Compare Sleep sessions
           figure;

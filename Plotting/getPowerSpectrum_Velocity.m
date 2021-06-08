@@ -67,16 +67,10 @@ load([basename '_analogin.mat']);
           elseif doSplitLFP
                   minutes = 5; 
                   timeMin = 1250*60*minutes;
-              for iseg = 1:length(1:timeMin:length(lfp_Run.timestamps))
-                  [powRun_temp] = getPowerSpectrum(basePath, lfp_Run, 'doIRASA', false, 'doPlot', false); 
-                  powRun_mat(iseg,:) = powRun_temp.fma.spectrum;
-              end
-                  powRun.fma.spectrum = mean(powRun_mat);
-              for iseg = 1:length(1:timeMin:length(lfp_noRun.timestamps))
-                  [pownoRun_temp] = getPowerSpectrum(basePath, lfp_noRun, 'doIRASA', false, 'doPlot', false); 
-                  pownoRun_mat(iseg,:) = pownoRun_temp.fma.spectrum;
-              end
-                  pownoRun.fma.spectrum = mean(pownoRun_mat);
+              % Run
+                 [powRun] = makePowerspec_AvgChunk_Vector(basePath, timeMin, lfp_Run);
+              % no Run
+                 [pownoRun] = makePowerspec_AvgChunk_Vector(basePath, timeMin, lfp_noRun);
           end
 %% take out fractals
          specRun = amri_sig_fractal(lfp_Run.data, lfp_Run.samplingRate,'detrend',1,'frange', [1 150]);

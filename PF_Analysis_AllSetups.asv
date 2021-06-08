@@ -1,8 +1,7 @@
 %PF_Analysis_AllSetups
 %For LT, VR, OF 
 %% Set Paths
-    %basePath = 'F:\Data\PlaceTuning_VR_OF_LT\m247\m247_210421_083423';
-    basePath = 'F:\Data\PlaceTuning_VR_OF_LT\m246\m246_210607_081650';
+    basePath = 'F:\Data\PlaceTuning_VR_OF_LT\m247\m247_210421_083423';
     basename = bz_BasenameFromBasepath(basePath);
     animalPath = 'F:\Data\AnimalSpecs_ExperimentalParadigms';
 % Add paths
@@ -21,8 +20,7 @@
     PF_Preprocessing_Pipeline
 % Make mat analysis files, mat files made by English lab code
     PF_Preprocessing_MakeMatFiles
-% Validate Sleep (can put part of this is in the script above if want to -
-% after troubleshooting is over)
+% Validate Sleep
     lfp_chans2check = [10 30 60]; %make sure channels are good ones
     [SleepState, SleepEditorInput] = PF_Preprocessing_SleepValidation(basePath,lfp_chans2check, Time.Sleep1.start, Time.Sleep4.stop);      
     save([basename '_SleepState.analysis.mat'],'SleepState','SleepEditorInput');
@@ -74,8 +72,7 @@
     [IRASA_velocity] = getPowerSpectrum_Velocity(basePath, lfp_channel, Time.VR, 'doLFPClean', false, 'doSplitLFP', false);
 % Sleep Spectrum NREM REM
     load([basename '_SleepState.analysis.mat']);
-    [IRASA_SleepState] = getPowerSpectrum_SleepState(basePath, lfp_channel, Time, SleepState.S1,'doLFPClean',false,'doSplitLFP',false);
-    save([basename '_IRASA_SleepState.analysis.mat'],'IRASA_SleepState');
+    [IRASA_SleepState] = getPowerSpectrum_SleepState(basePath, lfp_channel, Time.Sleep1, SleepState,'doLFPClean',false,'doSplitLFP',false);
 %% LFP Analysis - Power Spec over many recordings
 % this script requires you to have each session you want to look at already
 % ran over the getPowerSpectrum_PlaceInhibition Script

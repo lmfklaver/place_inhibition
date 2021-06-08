@@ -65,26 +65,14 @@ color_all = [warm_colors(3,:);warm_colors(7,:);cool_colors(3,:);cool_colors(7,:)
           elseif doSplitLFP
                   minutes = 5; 
                   timeMin = 1250*60*minutes;
-              for iseg = 1:length(1:timeMin:length(lfp_S1.timestamps))
-                  [powS1_temp] = getPowerSpectrum(basePath, lfp_S1, 'doIRASA', false, 'doPlot', false); 
-                  pow1_mat(iseg,:) = powS1_temp.fma.spectrum;
-              end
-                  powS1.fma.spectrum = mean(pow1_mat);
-              for iseg = 1:length(1:timeMin:length(lfp_S2.timestamps))
-                  [powS2_temp] = getPowerSpectrum(basePath, lfp_S2, 'doIRASA', false, 'doPlot', false); 
-                  pow2_mat(iseg,:) = powS2_temp.fma.spectrum;
-              end
-                  powS2.fma.spectrum = mean(pow2_mat);
-              for iseg = 1:length(1:timeMin:length(lfp_VR.timestamps))
-                  [powVR_temp] = getPowerSpectrum(basePath, lfp_VR, 'doIRASA', false, 'doPlot', false); 
-                  powVR_mat(iseg,:) = powVR_temp.fma.spectrum;
-              end
-                  powVR.fma.spectrum = mean(powVR_mat); 
-              for iseg = 1:length(1:timeMin:length(lfp_noVR.timestamps))
-                  [pownoVR_temp] = getPowerSpectrum(basePath, lfp_noVR, 'doIRASA', false, 'doPlot', false); 
-                  pownoVR_mat(iseg,:) = pownoVR_temp.fma.spectrum;
-              end
-                  pownoVR.fma.spectrum = mean(pownoVR_mat);
+              % Sleep 1
+                 [powS1] = makePowerspec_AvgChunk_Vector(basePath, timeMin, lfp_S1);
+              % Sleep 2
+                 [powS2] = makePowerspec_AvgChunk_Vector(basePath, timeMin, lfp_S2);
+              % VR
+                 [powVR] = makePowerspec_AvgChunk_Vector(basePath, timeMin, lfp_VR);
+              % no VR
+                 [pownoVR] = makePowerspec_AvgChunk_Vector(basePath, timeMin, lfp_noVR);
           end
       % Compare Sleep sessions
           figure;

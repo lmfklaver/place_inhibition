@@ -1,4 +1,4 @@
-function [wavespec_gratings] = getPowerSpectrum_Gratings(basePath, analogin_segment, lfp_channel, Segment_Time, trials_time, switch_point, varargin)
+function [wavespec_gratings] = getWavespec_AroundEvent(basePath, analogin_segment, lfp_channel, Segment_Time, trials_time, switch_point, varargin)
 % Purpose: Makes power spectrum comparing different VR gratings 
 
 % Inputs:  - Start and Stop struct for VR
