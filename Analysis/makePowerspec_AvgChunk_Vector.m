@@ -8,7 +8,7 @@ function [avg_pow] = makePowerspec_AvgChunk_Vector(basePath, timeMin, lfp)
 % Input: basePath (data location)
 %        timeMin  (how long each chunk to average over is)
 %        lfp      (lfp of data to chunk)
-
+% Reagan Bullins 6/8/21
 %% 
 % Split lfp data into chunks
       [~, edges] = hist(lfp.timestamps, (1:timeMin:length(lfp.timestamps)));

@@ -34,73 +34,29 @@ movmean_win     = p.Results.movmean_win;
 max_ylim          = p.Results.max_ylim;
 
 %%
-warm_colors = hot(20); %3,7,10,12 Sleep1
-cool_colors = cool(20);%3, 7, 11, 18  Sleep 2
-color_all = [warm_colors(3,:);warm_colors(7,:);warm_colors(10,:);cool_colors(3,:);cool_colors(7,:);cool_colors(11,:)]
-      % get lfp of each section independently
-          WAKE_sleep1_intervals(:,1) = SleepState.ints.WAKEstate(find((SleepState.ints.WAKEstate(:,1) > Time.Sleep1.start ...
-                                                               & SleepState.ints.WAKEstate(:,1) < Time.Sleep1.stop) ...
-                                                              & (SleepState.ints.WAKEstate(:,2) > Time.Sleep1.start ...
-                                                               & SleepState.ints.WAKEstate(:,2) < Time.Sleep1.stop)),1);
-          WAKE_sleep1_intervals(:,2) = SleepState.ints.WAKEstate(find((SleepState.ints.WAKEstate(:,1) > Time.Sleep1.start ...
-                                                               & SleepState.ints.WAKEstate(:,1) < Time.Sleep1.stop) ...
-                                                              & (SleepState.ints.WAKEstate(:,2) > Time.Sleep1.start ...
-                                                               & SleepState.ints.WAKEstate(:,2) < Time.Sleep1.stop)),2);
-          WAKE_sleep2_intervals(:,1) = SleepState.ints.WAKEstate(find((SleepState.ints.WAKEstate(:,1) > Time.Sleep2.start ...
-                                                               & SleepState.ints.WAKEstate(:,1) < Time.Sleep2.stop) ...
-                                                              & (SleepState.ints.WAKEstate(:,2) > Time.Sleep2.start ...
-                                                               & SleepState.ints.WAKEstate(:,2) < Time.Sleep2.stop)),1);
-          WAKE_sleep2_intervals(:,2) = SleepState.ints.WAKEstate(find((SleepState.ints.WAKEstate(:,1) > Time.Sleep2.start ...
-                                                               & SleepState.ints.WAKEstate(:,1) < Time.Sleep2.stop) ...
-                                                              & (SleepState.ints.WAKEstate(:,2) > Time.Sleep2.start ...
-                                                               & SleepState.ints.WAKEstate(:,2) < Time.Sleep2.stop)),2);
-          NREM_sleep1_intervals(:,1) = SleepState.ints.NREMstate(find((SleepState.ints.NREMstate(:,1) > Time.Sleep1.start ...
-                                                               & SleepState.ints.NREMstate(:,1) < Time.Sleep1.stop) ...
-                                                              & (SleepState.ints.NREMstate(:,2) > Time.Sleep1.start ...
-                                                               & SleepState.ints.NREMstate(:,2) < Time.Sleep1.stop)),1);
-          NREM_sleep1_intervals(:,2) = SleepState.ints.NREMstate(find((SleepState.ints.NREMstate(:,1) > Time.Sleep1.start ...
-                                                               & SleepState.ints.NREMstate(:,1) < Time.Sleep1.stop) ...
-                                                              & (SleepState.ints.NREMstate(:,2) > Time.Sleep1.start ...
-                                                               & SleepState.ints.NREMstate(:,2) < Time.Sleep1.stop)),2);
-          NREM_sleep2_intervals(:,1) = SleepState.ints.NREMstate(find((SleepState.ints.NREMstate(:,1) > Time.Sleep2.start ...
-                                                               & SleepState.ints.NREMstate(:,1) < Time.Sleep2.stop) ...
-                                                              & (SleepState.ints.NREMstate(:,2) > Time.Sleep2.start ...
-                                                               & SleepState.ints.NREMstate(:,2) < Time.Sleep2.stop)),1);
-          NREM_sleep2_intervals(:,2) = SleepState.ints.NREMstate(find((SleepState.ints.NREMstate(:,1) > Time.Sleep2.start ...
-                                                               & SleepState.ints.NREMstate(:,1) < Time.Sleep2.stop) ...
-                                                              & (SleepState.ints.NREMstate(:,2) > Time.Sleep2.start ...
-                                                               & SleepState.ints.NREMstate(:,2) < Time.Sleep2.stop)),2);
-          REM_sleep1_intervals(:,1) = SleepState.ints.REMstate(find((SleepState.ints.REMstate(:,1) > Time.Sleep1.start ...
-                                                               & SleepState.ints.REMstate(:,1) < Time.Sleep1.stop) ...
-                                                              & (SleepState.ints.REMstate(:,2) > Time.Sleep1.start ...
-                                                               & SleepState.ints.REMstate(:,2) < Time.Sleep2.stop)),1);
-          REM_sleep1_intervals(:,2) = SleepState.ints.REMstate(find((SleepState.ints.REMstate(:,1) > Time.Sleep1.start ...
-                                                               & SleepState.ints.REMstate(:,1) < Time.Sleep1.stop) ...
-                                                              & (SleepState.ints.REMstate(:,2) > Time.Sleep1.start ...
-                                                               & SleepState.ints.REMstate(:,2) < Time.Sleep2.stop)),2);
-          REM_sleep2_intervals(:,1) = SleepState.ints.REMstate(find((SleepState.ints.REMstate(:,1) > Time.Sleep2.start ...
-                                                               & SleepState.ints.REMstate(:,1) < Time.Sleep2.stop) ...
-                                                              & (SleepState.ints.REMstate(:,2) > Time.Sleep2.start ...
-                                                               & SleepState.ints.REMstate(:,2) < Time.Sleep2.stop)),1);
-          REM_sleep2_intervals(:,2) = SleepState.ints.REMstate(find((SleepState.ints.REMstate(:,1) > Time.Sleep2.start ...
-                                                               & SleepState.ints.REMstate(:,1) < Time.Sleep2.stop) ...
-                                                              & (SleepState.ints.REMstate(:,2) > Time.Sleep2.start ...
-                                                               & SleepState.ints.REMstate(:,2) < Time.Sleep2.stop)),2);
+
+% Set colors now, to be used for all graphs
+    warm_colors = hot(20); %3,7,10,12 Sleep1
+    cool_colors = cool(20);%3, 7, 11, 18  Sleep 2
+    color_all = [warm_colors(3,:);warm_colors(7,:);warm_colors(10,:);cool_colors(3,:);cool_colors(7,:);cool_colors(11,:)]
+% get lfp of each section independently (sperate wake, REM, NREM by which
+% sleep they were in)
+          [WAKE_sleep1_intervals] = getIntervals_InBiggerIntervals(SleepState.ints.WAKEstate, Time.Sleep1);
+          [WAKE_sleep2_intervals] = getIntervals_InBiggerIntervals(SleepState.ints.WAKEstate, Time.Sleep2);
+          [NREM_sleep1_intervals] = getIntervals_InBiggerIntervals(SleepState.ints.NREMstate, Time.Sleep1);
+          [NREM_sleep2_intervals] = getIntervals_InBiggerIntervals(SleepState.ints.NREMstate, Time.Sleep2);
+          [REM_sleep1_intervals] = getIntervals_InBiggerIntervals(SleepState.ints.REMstate, Time.Sleep1);
+          [REM_sleep2_intervals] = getIntervals_InBiggerIntervals(SleepState.ints.REMstate, Time.Sleep2);
+         
                                                
           cd(basePath);    
-%% commented code -- performed below 
+%% Get LFP for intervals
           lfp_S1_Wake = bz_GetLFP(lfp_channel, 'intervals', WAKE_sleep1_intervals);
-         % lfp_S1_Wake.data =  lfp_S1_Wake(1).data * 0.195;
           lfp_S2_Wake = bz_GetLFP(lfp_channel, 'intervals', WAKE_sleep2_intervals);
-        %  lfp_S2_Wake.data =  lfp_S2_Wake.data*0.195;
           lfp_S1_NREM = bz_GetLFP(lfp_channel, 'intervals', NREM_sleep1_intervals);
-        %  lfp_S1_NREM.data =  lfp_S1_NREM.data*0.195;
           lfp_S2_NREM = bz_GetLFP(lfp_channel, 'intervals', NREM_sleep2_intervals);
-         % lfp_S2_NREM.data =  lfp_S2_NREM.data*0.195;
           lfp_S1_REM = bz_GetLFP(lfp_channel, 'intervals', REM_sleep1_intervals);
-       %   lfp_S1_REM.data =  lfp_S1_REM.data*0.195;
           lfp_S2_REM = bz_GetLFP(lfp_channel, 'intervals', REM_sleep2_intervals);
-      %    lfp_S2_REM.data =  lfp_S2_REM.data*0.195;
           
           if doLFPClean
                lfp_S1_Wake_clean = notchFilterMyLFP(lfp_S1_Wake);
@@ -116,85 +72,19 @@ color_all = [warm_colors(3,:);warm_colors(7,:);warm_colors(10,:);cool_colors(3,:
                lfp_S2_REM_clean = notchFilterMyLFP(lfp_S2_REM);
                lfp_S2_REM.data = lfp_S2_REM_clean';
           end
- %% average over chunks of time
+ %% average over chunks of time that vary in length to get lfp and power
         % Sleep 1 : Wake
-              sec2take = min(WAKE_sleep1_intervals(:,2)-WAKE_sleep1_intervals(:,1))
-              timeMin = 1250*sec2take;
-              for iseg = 1:size(WAKE_sleep1_intervals,1)
-                  lfp_S1_Wake_sub.timestamps = lfp_S1_Wake(iseg).timestamps;
-                  lfp_S1_Wake_sub.data = lfp_S1_Wake(iseg).data *.195;
-                  lfp_S1_Wake_sub.samplingRate = lfp_S1_Wake(iseg).samplingRate
-                  [powS1_wtemp] = getPowerSpectrum(basePath, lfp_S1_Wake_sub, 'doIRASA', false, 'doPlot', false); 
-                  powS1_wake_mat(iseg,:) = powS1_wtemp.fma.spectrum;
-                  lfp_S1_Wake_avg_mat(iseg,:) = lfp_S1_Wake(iseg).data(1:timeMin);
-              end
-                  powS1_wake.fma.spectrum = mean(powS1_wake_mat,1);
-                  lfp_S1_Wake_avg = mean(lfp_S1_Wake_avg_mat,1);
-         % Sleep 2 : Wake                
-              sec2take = min(WAKE_sleep2_intervals(:,2)-WAKE_sleep2_intervals(:,1))
-              timeMin = 1250*sec2take;
-              for iseg = 1:size(WAKE_sleep2_intervals,1)
-                  lfp_S2_Wake_sub.timestamps = lfp_S2_Wake(iseg).timestamps;
-                  lfp_S2_Wake_sub.data = lfp_S2_Wake(iseg).data;
-                  lfp_S2_Wake_sub.samplingRate = lfp_S2_Wake(iseg).samplingRate
-                  [powS2_wtemp] = getPowerSpectrum(basePath, lfp_S2_Wake_sub, 'doIRASA', false, 'doPlot', false); 
-                  powS2_wake_mat(iseg,:) = powS2_wtemp.fma.spectrum;
-                  lfp_S2_Wake_avg_mat(iseg,:) = lfp_S2_Wake(iseg).data(1:timeMin);
-              end
-                  powS2_wake.fma.spectrum = mean(powS2_wake_mat,1);
-                  lfp_S2_Wake_avg = mean(lfp_S2_Wake_avg_mat,1);
+              [lfp_S1_Wake_avg, powS1_wake] = makePowersperc_Avg_MixedIntervalSizes(basePath,WAKE_sleep1_intervals,lfp_S1_Wake);
+         % Sleep 2 : Wake
+              [lfp_S2_Wake_avg, powS2_wake] = makePowersperc_Avg_MixedIntervalSizes(basePath,WAKE_sleep2_intervals,lfp_S2_Wake);
          % Sleep 1: NREM
-              sec2take = min(NREM_sleep1_intervals(:,2)-NREM_sleep1_intervals(:,1))
-              timeMin = 1250*sec2take;
-              for iseg = 1:size(NREM_sleep1_intervals,1)
-                  lfp_S1_NREM_sub.timestamps = lfp_S1_NREM(iseg).timestamps;
-                  lfp_S1_NREM_sub.data = lfp_S1_NREM(iseg).data;
-                  lfp_S1_NREM_sub.samplingRate = lfp_S1_NREM(iseg).samplingRate
-                  [powS1_ntemp] = getPowerSpectrum(basePath, lfp_S1_NREM_sub, 'doIRASA', false, 'doPlot', false); 
-                  powS1_NREM_mat(iseg,:) = powS1_ntemp.fma.spectrum;
-                  lfp_S1_NREM_avg_mat(iseg,:) = lfp_S1_NREM(iseg).data(1:timeMin);
-              end
-                  powS1_NREM.fma.spectrum = mean(powS1_NREM_mat,1); 
-                  lfp_S1_NREM_avg = mean(lfp_S1_NREM_avg_mat,1);
+              [lfp_S1_NREM_avg, powS1_NREM] = makePowersperc_Avg_MixedIntervalSizes(basePath,NREM_sleep1_intervals,lfp_S1_NREM);
          % Sleep 2: NREM
-              sec2take = min(NREM_sleep2_intervals(:,2)-NREM_sleep2_intervals(:,1))
-              timeMin = 1250*sec2take;
-              for iseg = 1:size(NREM_sleep2_intervals,1)
-                  lfp_S2_NREM_sub.timestamps = lfp_S2_NREM(iseg).timestamps;
-                  lfp_S2_NREM_sub.data = lfp_S2_NREM(iseg).data;
-                  lfp_S2_NREM_sub.samplingRate = lfp_S2_NREM(iseg).samplingRate
-                  [powS2_ntemp] = getPowerSpectrum(basePath, lfp_S2_NREM_sub, 'doIRASA', false, 'doPlot', false); 
-                  powS2_NREM_mat(iseg,:) = powS2_ntemp.fma.spectrum;
-                  lfp_S2_NREM_avg_mat(iseg,:) = lfp_S2_NREM(iseg).data(1:timeMin);
-              end
-                  powS2_NREM.fma.spectrum = mean(powS2_NREM_mat,1);
-                  lfp_S2_NREM_avg = mean(lfp_S2_NREM_avg_mat,1);
+              [lfp_S2_NREM_avg, powS2_NREM] = makePowersperc_Avg_MixedIntervalSizes(basePath,NREM_sleep2_intervals,lfp_S2_NREM);
          % Sleep 1: REM
-              sec2take = min(REM_sleep1_intervals(:,2)-REM_sleep1_intervals(:,1))
-              timeMin = 1250*sec2take;
-              for iseg = 1:size(REM_sleep1_intervals,1)
-                  lfp_S1_REM_sub.timestamps = lfp_S1_REM(iseg).timestamps;
-                  lfp_S1_REM_sub.data = lfp_S1_REM(iseg).data;
-                  lfp_S1_REM_sub.samplingRate = lfp_S1_REM(iseg).samplingRate;
-                  [powS1_rtemp] = getPowerSpectrum(basePath, lfp_S1_REM_sub, 'doIRASA', false, 'doPlot', false); 
-                  powS1_REM_mat(iseg,:) = powS1_rtemp.fma.spectrum;
-                  lfp_S1_REM_avg_mat(iseg,:) = lfp_S1_REM(iseg).data(1:timeMin);
-              end
-                  powS1_REM.fma.spectrum = mean(powS1_REM_mat,1);
-                  lfp_S1_REM_avg = mean(lfp_S1_REM_avg_mat,1);
+              [lfp_S1_REM_avg, powS1_REM] = makePowersperc_Avg_MixedIntervalSizes(basePath,REM_sleep1_intervals,lfp_S1_REM);
          % Sleep 2: REM
-              sec2take = min(REM_sleep2_intervals(:,2)-REM_sleep2_intervals(:,1))
-              timeMin = 1250*sec2take;
-              for iseg = 1:size(REM_sleep2_intervals,1)
-                  lfp_S2_REM_sub.timestamps = lfp_S2_REM(iseg).timestamps;
-                  lfp_S2_REM_sub.data = lfp_S2_REM(iseg).data;
-                  lfp_S2_REM_sub.samplingRate = lfp_S2_REM(iseg).samplingRate
-                  [powS2_rtemp] = getPowerSpectrum(basePath, lfp_S2_REM_sub, 'doIRASA', false, 'doPlot', false); 
-                  powS2_REM_mat(iseg,:) = powS2_rtemp.fma.spectrum;
-                  lfp_S2_REM_avg_mat(iseg,:) = lfp_S2_REM(iseg).data(1:timeMin);
-              end
-                  powS2_REM.fma.spectrum = mean(powS2_REM_mat,1);
-                  lfp_S2_REM_avg = mean(lfp_S2_REM_avg_mat,1);
+              [lfp_S2_REM_avg, powS2_REM] = makePowersperc_Avg_MixedIntervalSizes(basePath,REM_sleep2_intervals,lfp_S2_REM);     
   %% 
 %           if ~doSplitLFP
 %               [powS1_wake] = getPowerSpectrum(basePath, lfp_S1_Wake, 'doIRASA', false,'doPlot', false); 

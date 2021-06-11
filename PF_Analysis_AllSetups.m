@@ -1,8 +1,8 @@
 %PF_Analysis_AllSetups
 %For LT, VR, OF 
 %% Set Paths
-    %basePath = 'F:\Data\PlaceTuning_VR_OF_LT\m247\m247_210421_083423';
-    basePath = 'F:\Data\PlaceTuning_VR_OF_LT\m246\m246_210607_081650';
+    basePath = 'F:\Data\PlaceTuning_VR_OF_LT\m247\m247_210421_083423';
+    %basePath = 'F:\Data\PlaceTuning_VR_OF_LT\m246\m246_210607_081650';
     basename = bz_BasenameFromBasepath(basePath);
     animalPath = 'F:\Data\AnimalSpecs_ExperimentalParadigms';
 % Add paths
@@ -13,14 +13,20 @@
     addpath(genpath('E:\Reagan\Packages\buzcode'));
     addpath(genpath('E:\Reagan\Packages\TStoolbox'));
     addpath(genpath('E:\Reagan\Code'));
+    addpath('F:\Data\PlaceTuning_VR_OF_LT') %has directory of all sessions
     SetGraphDefaults;
 %% Run ONLY Once 
-% *DO HAVE TO OPEN* kilosort script in PF_Preprocessing_Pipeline and change path :)
+% *DO HAVE TO OPEN* PF_Preprocessing_Pipeline and change path :)
+%                  1) change path in kilosort
+%                  2) Might want to look at rip file in neuroscope to see
+%                  if ripples are being detected well
 
 % Run over kilosort, get spikes, lfp, analogin, digitalin, ripples
     PF_Preprocessing_Pipeline
 % Make mat analysis files, mat files made by English lab code
     PF_Preprocessing_MakeMatFiles
+% Ripples
+    PF_Preprocessing_Ripples %if get error, make sure your text recording info file has 'Max Ripple Channel' set to a number (chosen by eye)
 % Validate Sleep (can put part of this is in the script above if want to -
 % after troubleshooting is over)
     lfp_chans2check = [10 30 60]; %make sure channels are good ones
@@ -34,7 +40,8 @@
     load([basename '_TimeSegments.analysis.mat']);
     load([basename '_wheelTrials.analysis.mat']);
 %% LFP Analysis - Define and Load Mat files
-    lfp_channel = 21; %Change this per experiment
+    load([basneame '_ripples.analysis.mat']);
+    lfp_channel = ripples.detectorinfo.detectionchannel; %0 based
     cd([animalPath]);
     load('Maze_Characteristic_Analog_Positions.mat');
     cd([basePath]);
@@ -74,7 +81,8 @@
     [IRASA_velocity] = getPowerSpectrum_Velocity(basePath, lfp_channel, Time.VR, 'doLFPClean', false, 'doSplitLFP', false);
 % Sleep Spectrum NREM REM
     load([basename '_SleepState.analysis.mat']);
-    [IRASA_SleepState] = getPowerSpectrum_SleepState(basePath, lfp_channel, Time, SleepState.S1,'doLFPClean',false,'doSplitLFP',false);
+    % only does sleep1 and sleep 2 right now (for VR)
+    [IRASA_SleepState] = getPowerSpectrum_SleepState(basePath, lfp_channel, Time, SleepState,'doLFPClean',false,'doSplitLFP',false);
     save([basename '_IRASA_SleepState.analysis.mat'],'IRASA_SleepState');
 %% LFP Analysis - Power Spec over many recordings
 % this script requires you to have each session you want to look at already
@@ -92,10 +100,182 @@
 % 'stim_pos_old' - go into the script and change the input variable to
 % such.
     getWavespecsAroundEvents_VR
-
-% Ripples
-    % Detect ripples bz_FindRipples
-    % Validate in Neuroscope if ripples are correctly detected
+%% Ripples Analysis
+    load([basename '.ripples.analysis.mat']);
+% Plot some raw ripples
+    subplot(3,3,1)
+        plot(lfp_rip.data(round(ripples.timestamps(1,1)*1250):round(ripples.timestamps(1,2)*1250)));
+    subplot(3,3,2)
+        plot(lfp_rip.data(round(ripples.timestamps(10,1)*1250):round(ripples.timestamps(10,2)*1250)));
+    subplot(3,3,3)
+        plot(lfp_rip.data(round(ripples.timestamps(100,1)*1250):round(ripples.timestamps(100,2)*1250)));
+    subplot(3,3,4)
+        plot(lfp_rip.data(round(ripples.timestamps(200,1)*1250):round(ripples.timestamps(200,2)*1250)));
+    subplot(3,3,5)
+        plot(lfp_rip.data(round(ripples.timestamps(300,1)*1250):round(ripples.timestamps(300,2)*1250)));
+    subplot(3,3,6)
+        plot(lfp_rip.data(round(ripples.timestamps(400,1)*1250):round(ripples.timestamps(400,2)*1250)));
+    subplot(3,3,7)
+        plot(lfp_rip.data(round(ripples.timestamps(500,1)*1250):round(ripples.timestamps(500,2)*1250)));
+    subplot(3,3,8)
+        plot(lfp_rip.data(round(ripples.timestamps(600,1)*1250):round(ripples.timestamps(600,2)*1250)));
+    subplot(3,3,9)
+        plot(lfp_rip.data(round(ripples.timestamps(700,1)*1250):round(ripples.timestamps(700,2)*1250)));
+% Get number of ripples per segment, and the corresponding start and stop
+% times of the specific ripples
+    [rippleTimestamps.sleep1] = getIntervals_InBiggerIntervals(ripples.timestamps,Time.Sleep1);
+    [numRipples.sleep1, rippleLength.sleep1] = getNumAndLength_Ripples(rippleTimestamps.sleep1);
+    
+    [rippleTimestamps.sleep2] = getIntervals_InBiggerIntervals(ripples.timestamps,Time.Sleep2);
+    [numRipples.sleep2, rippleLength.sleep2] = getNumAndLength_Ripples(rippleTimestamps.sleep2);
+    
+    [rippleTimestamps.sleep3] = getIntervals_InBiggerIntervals(ripples.timestamps,Time.Sleep3);
+    [numRipples.sleep3, rippleLength.sleep3] = getNumAndLength_Ripples(rippleTimestamps.sleep3);
+    
+    [rippleTimestamps.sleep4] = getIntervals_InBiggerIntervals(ripples.timestamps,Time.Sleep4);
+    [numRipples.sleep4, rippleLength.sleep4] = getNumAndLength_Ripples(rippleTimestamps.sleep4);
+    
+    [rippleTimestamps.VR] = getIntervals_InBiggerIntervals(ripples.timestamps,Time.VR);
+    [numRipples.VR, rippleLength.VR]         = getNumAndLength_Ripples(rippleTimestamps.VR);
+    
+    [rippleTimestamps.OF] = getIntervals_InBiggerIntervals(ripples.timestamps,Time.OF);
+    [numRipples.OF, rippleLength.OF]         = getNumAndLength_Ripples(rippleTimestamps.OF);
+    
+    [rippleTimestamps.LT] = getIntervals_InBiggerIntervals(ripples.timestamps,Time.LT);
+    [numRipples.LT, rippleLength.LT]         = getNumAndLength_Ripples(rippleTimestamps.LT);
+% Make box plot of ripple length per segment  
+    % Experimental Segments
+        ripLengthExp = [rippleLength.VR;rippleLength.LT; rippleLength.OF];
+        groupLength.VR = repmat({'VR'},length(rippleLength.VR),1);
+        groupLength.LT = repmat({'LT'},length(rippleLength.LT),1);
+        groupLength.OF = repmat({'OF'},length(rippleLength.OF),1);
+        ripLengthExpGroup = [groupLength.VR; groupLength.LT; groupLength.OF];
+        figure;
+        boxplot(ripLengthExp, ripLengthExpGroup);% rippleLength.sleep2])
+        hold on
+        ylabel('Ripple Length (s)')
+        title('Ripple length of experimental segments')
+    % Sleep Segments
+        ripLengthSleep = [rippleLength.sleep1;rippleLength.sleep2; rippleLength.sleep3;rippleLength.sleep4];
+        groupLength.sleep1 = repmat({'Sleep 1'},length(rippleLength.sleep1),1);
+        groupLength.sleep2 = repmat({'Sleep 2'},length(rippleLength.sleep2),1);
+        groupLength.sleep3 = repmat({'Sleep 3'},length(rippleLength.sleep3),1);
+        groupLength.sleep4 = repmat({'Sleep 4'},length(rippleLength.sleep4),1);
+        ripLengthSleepGroup = [groupLength.sleep1; groupLength.sleep2; groupLength.sleep3; groupLength.sleep4];
+        figure;
+        boxplot(ripLengthSleep, ripLengthSleepGroup);% rippleLength.sleep2])
+        hold on
+        ylabel('Ripple Length (s)')
+        title('Ripple length of sleep segments')
+% Make a Plot comparing number of ripples/time in that segment (could add
+% movement vs not movement?)
+        %[vel] = getVelocity(analogin_VR,'circDisk',236, 'doFigure', true);%236cm/unity lap
+        %[run] = getRunEpochs(basePath, vel);
+        %[no_run] = getNoRunEpochs(run);
+        subplot(1,2,1)
+        warm_colors = hot(20); %3,7,10,12
+        cool_colors = cool(20);%3, 7, 11, 18
+        plot(1, numRipples.sleep1,'o','Color',warm_colors(3,:));
+        hold on
+        plot(1, numRipples.sleep2,'o','Color',warm_colors(7,:));
+        plot(1, numRipples.sleep3,'o','Color',warm_colors(10,:));
+        plot(1, numRipples.sleep4,'o','Color',warm_colors(12,:));
+        xlim([0 2])
+        legend({'Sleep 1','Sleep 2','Sleep 3','Sleep 4'});
+        ylabel('Number of Ripples')
+       subplot(1,2,2)
+        plot(1, numRipples.VR,'o','Color',cool_colors(3,:));
+        hold on
+        plot(1, numRipples.LT,'o','Color',warm_colors(7,:));
+        plot(1, numRipples.OF,'o','Color',warm_colors(11,:));
+        xlim([0 2])
+        legend({'VR','LT','OF'});
+        ylabel('Number of Ripples')
+% comparing long ripples vs short ones
+%% Ripples across sessions (section loads all sessions in directory, and calculates the ripple rate during NREM sleep, plots it on a figure)
+% load all the sessions we want to compare
+    RecordingDirectory_PlaceTuning
+    
+    rippleRateFig = figure;
+    timeNREMFig  = figure;
+    warm_colors = hot(20); %3,7,10,12
+    cool_colors = cool(20);%3,7,10,12
+    color_all = [warm_colors(3,:);cool_colors(3,:);warm_colors(7,:);cool_colors(7,:);warm_colors(10,:);cool_colors(10,:);warm_colors(12,:);cool_colors(12,:)];
+    for irec = 1:length(recDir)
+        % load in the ripple file for this directory ( if does not exist -
+        % create it)
+             cd(recDir{irec});
+             basePath = cd;
+             basename = bz_BasenameFromBasepath(basePath);
+             if ~isfile([basename '_TimeSegments.analysis.mat'])
+                    [Time.Sleep1] = RealTime_Convert_RecordingTime(cd, 'SleepTime1');
+                    [Time.Sleep2] = RealTime_Convert_RecordingTime(cd, 'SleepTime2');
+                    [Time.Sleep3] = RealTime_Convert_RecordingTime(cd, 'SleepTime3');
+                    [Time.Sleep4] = RealTime_Convert_RecordingTime(cd, 'SleepTime4');
+                    [Time.VR] = RealTime_Convert_RecordingTime(cd, 'VRTime');
+                    [Time.OF] = RealTime_Convert_RecordingTime(cd, 'OFTime');
+                    [Time.LT] = RealTime_Convert_RecordingTime(cd, 'LTTime');
+                    save([basename '_TimeSegments.analysis.mat'],'Time');
+             end
+             load([basename '_TimeSegments.analysis.mat']);
+             if ~isfile([basename '.ripples.events.mat'])
+            	 PF_Preprocessing_Ripples 
+             end
+             load([basename '.ripples.events.mat']);
+         % load in the sleep state mat (if does not exist - create it)
+             if ~isfile([basename '_SleepState.analysis.mat'])
+                 lfp_chans2check = [10 30 60]; %make sure channels are good ones
+                 [SleepState, SleepEditorInput] = PF_Preprocessing_SleepValidation(cd,lfp_chans2check, Time.Sleep1.start, Time.Sleep4.stop);      
+                 save([basename '_SleepState.analysis.mat'],'SleepState','SleepEditorInput');
+             end 
+             load([basename '_SleepState.analysis.mat']);
+         % load in ripples NREM for Sleep1,2,3,4 individaully
+            % split NREM segments into each sleep segment
+              [NREM_sleep1_intervals] = getIntervals_InBiggerIntervals(SleepState.ints.NREMstate, Time.Sleep1);
+              [NREM_sleep2_intervals] = getIntervals_InBiggerIntervals(SleepState.ints.NREMstate, Time.Sleep2);
+              [NREM_sleep3_intervals] = getIntervals_InBiggerIntervals(SleepState.ints.NREMstate, Time.Sleep3);
+              [NREM_sleep4_intervals] = getIntervals_InBiggerIntervals(SleepState.ints.NREMstate, Time.Sleep4);
+             % find how many ripples happen in each segment
+                 % Sleep 1
+                    [NREM_sleep1_logical, ~, ~] = InIntervals(ripples.timestamps,  NREM_sleep1_intervals);
+                    NREM_S1_ripples = ripples.timestamps(NREM_sleep1_logical,:);
+                    [numRipples_NREM.S1,rippleLength_NREM.S1] = getNumAndLength_Ripples(NREM_S1_ripples);
+                 % Sleep 2
+                    [NREM_sleep2_logical, ~, ~] = InIntervals(ripples.timestamps,  NREM_sleep2_intervals);
+                    NREM_S2_ripples = ripples.timestamps(NREM_sleep2_logical,:);
+                    [numRipples_NREM.S2,rippleLength_NREM.S2] = getNumAndLength_Ripples(NREM_S2_ripples);
+                 % Sleep 3
+                    [NREM_sleep3_logical, ~, ~] = InIntervals(ripples.timestamps,  NREM_sleep3_intervals);
+                    NREM_S3_ripples = ripples.timestamps(NREM_sleep3_logical,:);
+                    [numRipples_NREM.S3,rippleLength_NREM.S3] = getNumAndLength_Ripples(NREM_S3_ripples);
+                 % Sleep 4
+                    [NREM_sleep4_logical, ~, ~] = InIntervals(ripples.timestamps,  NREM_sleep4_intervals);
+                    NREM_S4_ripples = ripples.timestamps(NREM_sleep4_logical,:);
+                    [numRipples_NREM.S4,rippleLength_NREM.S4] = getNumAndLength_Ripples(NREM_S4_ripples);
+              % Find total time in each sleep NREM
+                    NREM_TotalTime.S1 = sum(NREM_sleep1_intervals(:,2)-NREM_sleep1_intervals(:,1))
+                    NREM_TotalTime.S2 = sum(NREM_sleep2_intervals(:,2)-NREM_sleep2_intervals(:,1))
+                    NREM_TotalTime.S3 = sum(NREM_sleep3_intervals(:,2)-NREM_sleep3_intervals(:,1))
+                    NREM_TotalTime.S4 = sum(NREM_sleep4_intervals(:,2)-NREM_sleep4_intervals(:,1))
+            % Plot ripple rate for each sleep segment
+                    plot(rippleRateFig, 1, (numRipples_NREM.S1/NREM_TotalTime.S1), '.','Color',color_all(irec,:));
+                    hold on
+                    plot(rippleRateFig, 2, (numRipples_NREM.S2/NREM_TotalTime.S2), '.','Color',color_all(irec,:));
+                    plot(rippleRateFig, 3, (numRipples_NREM.S3/NREM_TotalTime.S3), '.','Color',color_all(irec,:));
+                    plot(rippleRateFig, 4, (numRipples_NREM.S4/NREM_TotalTime.S4), '.','Color',color_all(irec,:));
+            % Plot length of NREM for each sleep segment on a different
+            % plot
+                    plot(timeNREMFig, 1, NREM_TotalTime.S1, '.', 'Color',color_all(irec,:));
+                    hold on
+                    plot(timeNREMFig, 2, NREM_TotalTime.S2, '.', 'Color',color_all(irec,:));
+                    plot(timeNREMFig, 3, NREM_TotalTime.S3, '.', 'Color',color_all(irec,:));
+                    plot(timeNREMFig, 4, NREM_TotalTime.S4, '.', 'Color',color_all(irec,:));
+    end
+                    title(rippleRateFig, 'Ripple Rate per sleep session');
+                    xlabel('Sleep Sessoin')
+                    ylabel('Ripple Rate (ripples/sec)'
+                  
+    
 %% Spiking Analysis - Define and load mat files
     cd([basePath]);
     load([basename '.spikes.cellinfo.mat']);
@@ -105,7 +285,12 @@
     exper_paradigm = 'VR'; %'LT' 'OF'
     pulseEpochs_exper = eval(['pulseEpch.' num2str(exper_paradigm)]);
     trial_exper = tr_ep; %trial start and stop times for exper
-    
+%% Firing Rate across sessions
+    % chunk in bins and show over time?
+    % chunk in bins and box plot for different segments
+    % chunk whole segment?
+
+
 %% Spiking Analysis - Single Cell Characteristics for one Unit
 % Creates a group of plots about one cell: autocorrelations in and out of
 % pulse for specified experiment, raw waveform,raster, and PETH around pulse
@@ -251,72 +436,62 @@
     getRasterOverPosition(spikes, VR_BL2_Trials);
         
 %% Videos with spiking on top
+    % NEED: correct spike times to be in line video start time
+        % currently: subtracting start time of open field from spikes to
+        % correct for time
+    %Note: the video may blink, if a position is not detected by bonsai
+    %(the model failed to pick up location for that point)
     
+    
+    % Two ways to assign position to different spikes
+            % 1) bin the spikes in 1 ms bins
+            %    calculate how many bins per frame
+            %    count how many spikes fall into each bin
+            %    if more than one spike, make it equal to one
+            % 2) get the position times outputted from bonsai (should
+            %      match up with the position estimate locations)
+            %    find the corresponding bin for each spike (spike < bin
+            %    stop and spike > bin start, this is the position of the
+            %    animal then)
     cell_idx = 1; %define what cell to map
-    %%%%%%%%%%%%%%%%% OPEN FIELD %%%%%%%%%%%%%%%%%%%%%%%%
-    cd([basePath '\Videos_CSVs']);
-    v = VideoReader([basename(1:12) 'VideoOpenField.avi']);
-    vw = VideoWriter('VideoOpenFieldMarked.avi','MOTION JPEG AVI');
-    vw.FrameRate = v.FrameRate;
-    open(vw);
-    positionEstimate_file = csvread([basename(1:12) 'PositionEstimate.csv']);
-    x = positionEstimate_file(:,1);
-    y = positionEstimate_file(:,2);
-    fid = fopen([basename(1:12) 'PositionTimestamps.csv']);
-    C = textscan(fid,'%s','HeaderLines',8,'Delimiter',',','EndOfLine','\r\n','ReturnOnError',false);
-    fclose(fid);
-    positionTimes = C{1}(5:5:end);
-    positionTimes = cell2mat(positionTimes);
-    positionTimes = positionTimes(:,15:27);
-    % for 21 session:  frames = 35831, estimates = 35372
-  
-    % Frames to which marker must be inserted
-    %markFrames = spikes.times{cell_idx};
-    %frameidx = 0;
-    videoPlayer = vision.VideoPlayer;
+    OF_SingleCell_Video
     
-    numFrames = 0;
-    frameidx = 0;
-    %get number of frames
-     while hasFrame(v)
-        frame = readFrame(v);
-        frameidx = frameidx + 1;
-        numFrames = numFrames + 1;
-     end
-    
-    spikes_of = spikes.times{cell_idx}(find(spikes.times{cell_idx}> OF.start & spikes.times{cell_idx} < OF.stop));
-    t = spikes_of(1):.001:spikes_of(end); %binning in 1 ms... 
-    [spikes_logical, edges_spikes] = histcounts(spikes_of,t);
-    nDataPoints = length(t); % Number of time points
-    step = round((nDataPoints/numFrames));
-    bin2video = 1:step:nDataPoints;
-    spikesPerFrame = zeros(length(bin2video)-1,1)
-    for ibin = 1:length(bin2video)-1
-        spikesPerFrame(ibin,1) = sum(spikes_logical(1,(bin2video(ibin):bin2video(ibin+1))));
+    %Plot each cell spikes in open field 
+    for cell_idx = 1:length(spikes.times)
+    % Plot of cell firing in open field
+        positionEstimate_file = csvread([basename(1:12) 'PositionEstimate.csv']);
+        x_pos = positionEstimate_file(:,1);
+        x = x_pos + conversion_add2Exp;
+        y_pos = positionEstimate_file(:,2);
+        y = y_pos + conversion_add2Exp;
+        fid = fopen([basename(1:12) 'PositionTimestamps.csv']);
+        C = textscan(fid,'%s','HeaderLines',8,'Delimiter',',','EndOfLine','\r\n','ReturnOnError',false);
+        fclose(fid);
+        positionTimes = C{1}(5:5:end);
+        positionTimes = cell2mat(positionTimes);
+        positionTimes = positionTimes(:,15:27);
+    % convert positionTimes to seconds
+        [positionTimes_seconds] = convertVideoPositionTime_2Seconds(positionTimes)
+    % find spikes that occur in the open field
+        spikes_of = spikes.times{cell_idx}(find(spikes.times{cell_idx}> Time.OF.start & spikes.times{cell_idx} < Time.OF.stop));
+    % subtract the time of open field start to make the spikes 'align'
+    % witht the video - probably need to do this a better way...
+        spikes_of = spikes_of - Time.OF.start;
+        
+    % find spikes in intervals
+        positionTimes_startstop(:,1) = positionTimes_seconds(1:end-1,:);
+        positionTimes_startstop(:,2) = positionTimes_seconds(2:end,:);
+        [status, intervals, index] = InIntervals(spikes_of, positionTimes_startstop);
+        figure
+        for ispike = 1:length(spikes_of)
+            interval_pos = find(positionTimes_startstop(:,1) <= spikes_of(ispike) & positionTimes_startstop(:,2) >= spikes_of(ispike));
+            plot(x(interval_pos,1),y(interval_pos,1),'.r');
+            hold on
+        end 
+        title(['Spikes: Cell ' int2str(cell_idx)]);
     end
-    spikesPerFrame(spikesPerFrame(:,1) >=1,1) = 1;
     
- 
-    numFrames = 0;
-    frameidx = 0;
-     %videoWriter = 'VideoOpenField_cell_marked.avi'
-   %  open(videoWriter)
-   
-    while hasFrame(v)
-        frame = readFrame(v);
-        frameidx = frameidx + 1;
-        numFrames = numFrames + 1;
-          
-        if spikesPerFrame >= 1
-            markedFrame = insertMarker(frame, [x(i) y(i)], '*','Size', 10, 'Color','r');
-            videoPlayer(markedFrame);
-            writeVideo(vw, markedFrame);
-        else
-            videoPlayer(frame);
-             writeVideo(vw, frame)
-        end
-    end
-    close(vw);
+    %%
  %%%%%%%%%%%%%%%%%%% Open field with plot on one side and video on other%%
  %start and stop times need to line up for video and spikes
  % Setup the subplots
@@ -331,8 +506,10 @@ image(vidFrame, 'Parent', ax1);
 ax1.Visible = 'off';
 % Load the spiking data
 %t = 0:0.01:v.Duration; % Cooked up for this example, use your actual data
-spikes_of = spikes.times{cell_idx}(find(spikes.times{cell_idx}> OF.start & spikes.times{cell_idx} < OF.stop));
+spikes_of = spikes.times{cell_idx}(find(spikes.times{cell_idx}> Time.OF.start & spikes.times{cell_idx} < Time.OF.stop));
+spikes_of = spikes_of - Time.OF.start;
 t = spikes_of(1):.001:spikes_of(end); %binning in 1 ms... 
+
 [spikes_logical, edges_spikes] = histcounts(spikes_of,t);
 nDataPoints = length(t); % Number of time points
 step = round((nDataPoints/nFrames));

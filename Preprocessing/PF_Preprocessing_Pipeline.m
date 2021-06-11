@@ -29,14 +29,6 @@
     sessionInfo = bz_getSessionInfo;
 % bz_GetLFP
     bz_LFPfromDat(basePath);
-    lfpChan = 21; %by eye pick channel
-    lfp = bz_GetLFP(lfpChan);
-% bz_FindRipples
-    ripples = bz_FindRipples(lfp.data, lfp.timestamps, 'saveMat',true);
-    ripples.detectorinfo.detectionchannel = lfpChan;
-    save([basename '.ripples.events.mat'], 'ripples');
-    % make rip file
-    makeRipFile
     
 % getAnaloginVals (make sure xml is 8 channels, 30000Hz)
         % wheel = 5,blinklight = 6
