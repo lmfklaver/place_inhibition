@@ -101,7 +101,7 @@
 % such.
     getWavespecsAroundEvents_VR
 %% Ripples Analysis
-    load([basename '.ripples.analysis.mat']);
+    load([basename '.ripples.analysis.mat']); %or events
 % Plot some raw ripples
     subplot(3,3,1)
         plot(lfp_rip.data(round(ripples.timestamps(1,1)*1250):round(ripples.timestamps(1,2)*1250)));
@@ -167,7 +167,6 @@
         hold on
         ylabel('Ripple Length (s)')
         title('Ripple length of sleep segments')
-   % Sleep segment by which experimental setup they follow
         
 % Make a Plot comparing number of ripples/time in that segment (could add
 % movement vs not movement?)
@@ -193,7 +192,6 @@
         xlim([0 2])
         legend({'VR','LT','OF'});
         ylabel('Number of Ripples')
-% comparing long ripples vs short ones
         %% ripple distributions for singular session
 % Make a plot comparing ripple length distribution between different sleep
 % segments (chunks of all sleep)
@@ -477,17 +475,13 @@
              % for each cell, find the spike times within each sleep
              % interval and within each task interval
              for icell = 1:length(spikes.times)
-                    [sleep1_logical, ~, ~] = InIntervals(spikes.times{icell},  sleep1_intervals);
-                    sleep_FR_mat(icell,1) = sum(sleep1_logical)/SleepTotalTime.S1;
-                    [sleep2_logical, ~, ~] = InIntervals(spikes.times{icell},  sleep2_intervals);
-                    sleep_FR_mat(icell,2) = sum(sleep2_logical)/SleepTotalTime.S2;
-                    [sleep3_logical, ~, ~] = InIntervals(spikes.times{icell},  sleep3_intervals);
-                    sleep_FR_mat(icell,3) = sum(sleep3_logical)/SleepTotalTime.S3;
-                    [sleep4_logical, ~, ~] = InIntervals(spikes.times{icell},  sleep4_intervals);
-                    sleep_FR_mat(icell,4) = sum(sleep4_logical)/SleepTotalTime.S4;
-                    [exp_FR_mat(icell,1)] = getFiringRate(Time.OF,spikes.times{icell});
-                    [exp_FR_mat(icell,2)] = getFiringRate(Time.LT,spikes.times{icell});
-                    [exp_FR_mat(icell,3)] = getFiringRate(Time.OF,spikes.times{icell});
+                    [sleep_FR_mat(icell,1)] = getFiringRate(sleep1_intervals, spikes.times{icell});
+                    [sleep_FR_mat(icell,2)] = getFiringRate(sleep2_intervals, spikes.times{icell});
+                    [sleep_FR_mat(icell,3)] = getFiringRate(sleep3_intervals, spikes.times{icell});
+                    [sleep_FR_mat(icell,4)] = getFiringRate(sleep4_intervals, spikes.times{icell});
+                    [exp_FR_mat(icell,1)] = getFiringRate([Time.VR.start Time.VR.stop],spikes.times{icell});
+                    [exp_FR_mat(icell,2)] = getFiringRate([Time.LT.start Time.LT.stop],spikes.times{icell});
+                    [exp_FR_mat(icell,3)] = getFiringRate([Time.OF.start Time.OF.stop],spikes.times{icell});
              end
        % boxplot sleep
     
