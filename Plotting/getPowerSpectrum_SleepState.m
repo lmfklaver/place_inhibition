@@ -23,13 +23,11 @@ function [IRASA] = getPowerSpectrum_SleepState(basePath, lfp_channel, Time, Slee
 
 %%
 p = inputParser;
-addParameter(p,'doLFPClean',true,@islogical)
-addParameter(p,'doSplitLFP',true,@islogical);
+addParameter(p,'doLFPClean',true,@islogical);
 addParameter(p,'movmean_win',100,@isnumeric);
 addParameter(p,'max_ylim',1000,@isnumeric);
 parse(p,varargin{:});
 doLFPClean       = p.Results.doLFPClean;
-doSplitLFP       = p.Results.doSplitLFP;
 movmean_win     = p.Results.movmean_win;
 max_ylim          = p.Results.max_ylim;
 
@@ -39,6 +37,7 @@ max_ylim          = p.Results.max_ylim;
     warm_colors = hot(20); %3,7,10,12 Sleep1
     cool_colors = cool(20);%3, 7, 11, 18  Sleep 2
     color_all = [warm_colors(3,:);warm_colors(7,:);warm_colors(10,:);cool_colors(3,:);cool_colors(7,:);cool_colors(11,:)]
+
 % get lfp of each section independently (sperate wake, REM, NREM by which
 % sleep they were in)
           [WAKE_sleep1_intervals] = getIntervals_InBiggerIntervals(SleepState.ints.WAKEstate, Time.Sleep1);
@@ -84,49 +83,7 @@ max_ylim          = p.Results.max_ylim;
          % Sleep 1: REM
               [lfp_S1_REM_avg, powS1_REM] = makePowersperc_Avg_MixedIntervalSizes(basePath,REM_sleep1_intervals,lfp_S1_REM);
          % Sleep 2: REM
-              [lfp_S2_REM_avg, powS2_REM] = makePowersperc_Avg_MixedIntervalSizes(basePath,REM_sleep2_intervals,lfp_S2_REM);     
-  %% 
-%           if ~doSplitLFP
-%               [powS1_wake] = getPowerSpectrum(basePath, lfp_S1_Wake, 'doIRASA', false,'doPlot', false); 
-%               [powS2_wake] = getPowerSpectrum(basePath, lfp_S2_Wake, 'doIRASA', false,'doPlot', false); 
-%               [powS1_NREM] = getPowerSpectrum(basePath, lfp_S1_NREM, 'doIRASA', false,'doPlot', false);
-%               [powS2_NREM] = getPowerSpectrum(basePath, lfp_S2_NREM, 'doIRASA', false,'doPlot', false);
-%               [powS1_REM] = getPowerSpectrum(basePath, lfp_S1_REM, 'doIRASA', false,'doPlot', false);
-%               [powS2_REM] = getPowerSpectrum(basePath, lfp_S2_REM, 'doIRASA', false,'doPlot', false);
-%           elseif doSplitLFP
-%                   minutes = 5; 
-%                   timeMin = 1250*60*minutes;
-%               for iseg = 1:length(1:timeMin:length(lfp_S1_Wake.timestamps))
-%                   [powS1_wtemp] = getPowerSpectrum(basePath, lfp_S1_Wake, 'doIRASA', false, 'doPlot', false); 
-%                   powS1_wake_mat(iseg,:) = powS1_wtemp.fma.spectrum;
-%               end
-%                   powS1_wake.fma.spectrum = mean(powS1_wake_mat);
-%               for iseg = 1:length(1:timeMin:length(lfp_S2_Wake.timestamps))
-%                   [powS2_wtemp] = getPowerSpectrum(basePath, lfp_S2_Wake, 'doIRASA', false, 'doPlot', false); 
-%                   powS2_wake_mat(iseg,:) = powS2_wtemp.fma.spectrum;
-%               end
-%                   powS2_wake.fma.spectrum = mean(powS2_wake_mat);
-%               for iseg = 1:length(1:timeMin:length(lfp_S1_NREM.timestamps))
-%                   [powS1_ntemp] = getPowerSpectrum(basePath, lfp_S1_NREM, 'doIRASA', false, 'doPlot', false); 
-%                   powS1_NREM_mat(iseg,:) = powS1_ntemp.fma.spectrum;
-%               end
-%                   powS1_NREM.fma.spectrum = mean(powS1_NREM_mat); 
-%               for iseg = 1:length(1:timeMin:length(lfp_S2_NREM.timestamps))
-%                   [powS2_ntemp] = getPowerSpectrum(basePath, lfp_S2_NREM, 'doIRASA', false, 'doPlot', false); 
-%                   powS2_NREM_mat(iseg,:) = powS2_ntemp.fma.spectrum;
-%               end
-%                   powS2_NREM.fma.spectrum = mean(powS2_NREM_mat);
-%                   for iseg = 1:length(1:timeMin:length(lfp_S1_REM.timestamps))
-%                   [powS1_rtemp] = getPowerSpectrum(basePath, lfp_S1_REM, 'doIRASA', false, 'doPlot', false); 
-%                   powS1_REM_mat(iseg,:) = powS1_rtemp.fma.spectrum;
-%               end
-%                   powS1_REM.fma.spectrum = mean(powS1_REM_mat); 
-%               for iseg = 1:length(1:timeMin:length(lfp_S2_REM.timestamps))
-%                   [powS2_rtemp] = getPowerSpectrum(basePath, lfp_S2_REM, 'doIRASA', false, 'doPlot', false); 
-%                   powS2_REM_mat(iseg,:) = powS2_rtemp.fma.spectrum;
-%               end
-%                   powS2_REM.fma.spectrum = mean(powS2_REM_mat);
-%           end
+              [lfp_S2_REM_avg, powS2_REM] = makePowersperc_Avg_MixedIntervalSizes(basePath,REM_sleep2_intervals,lfp_S2_REM);      
           %%
       % Compare Sleep 1 States
           figure;

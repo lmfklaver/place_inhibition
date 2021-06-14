@@ -13,7 +13,7 @@
     addpath(genpath('E:\Reagan\Packages\buzcode'));
     addpath(genpath('E:\Reagan\Packages\TStoolbox'));
     addpath(genpath('E:\Reagan\Code'));
-    addpath('F:\Data\PlaceTuning_VR_OF_LT') %has directory of all sessions
+    addpath('F:\Data\PlaceTuning_VR_OF_LT'); %has directory of all sessions
     SetGraphDefaults;
 %% Run ONLY Once 
 % *DO HAVE TO OPEN* PF_Preprocessing_Pipeline and change path :)
@@ -167,6 +167,8 @@
         hold on
         ylabel('Ripple Length (s)')
         title('Ripple length of sleep segments')
+   % Sleep segment by which experimental setup they follow
+        
 % Make a Plot comparing number of ripples/time in that segment (could add
 % movement vs not movement?)
         %[vel] = getVelocity(analogin_VR,'circDisk',236, 'doFigure', true);%236cm/unity lap
@@ -186,18 +188,50 @@
        subplot(1,2,2)
         plot(1, numRipples.VR,'o','Color',cool_colors(3,:));
         hold on
-        plot(1, numRipples.LT,'o','Color',warm_colors(7,:));
-        plot(1, numRipples.OF,'o','Color',warm_colors(11,:));
+        plot(1, numRipples.LT,'o','Color',cool_colors(7,:));
+        plot(1, numRipples.OF,'o','Color',cool_colors(11,:));
         xlim([0 2])
         legend({'VR','LT','OF'});
         ylabel('Number of Ripples')
 % comparing long ripples vs short ones
+        %% ripple distributions for singular session
+% Make a plot comparing ripple length distribution between different sleep
+% segments (chunks of all sleep)
+        Time_sleep_sessions(1,1) = Time.Sleep1.start;
+        Time_sleep_sessions(1,2) = Time.Sleep1.stop;
+        Time_sleep_sessions(2,1) = Time.Sleep2.start;
+        Time_sleep_sessions(2,2) = Time.Sleep2.stop;
+        Time_sleep_sessions(3,1) = Time.Sleep3.start;
+        Time_sleep_sessions(3,2) = Time.Sleep3.stop;
+        Time_sleep_sessions(4,1) = Time.Sleep4.start;
+        Time_sleep_sessions(4,2) = Time.Sleep4.stop;
+        subplot(2,2,1);
+        getRippleDurationDistribution_SpecificSleepState(Time_sleep_sessions, Time, ripples)
+        title({'Ripple length per sleep session',[basename]});
+% Make a plot comparing ripple length distribution between different sleep
+% segments only NREM ripples (only NREM
+        subplot(2,2,2);
+        getRippleDurationDistribution_SpecificSleepState(SleepState.ints.NREMstate, Time, ripples)
+        title({'NREM Ripple length per sleep session',[basename]}); 
+ % Make a plot comparing ripple length distribution between different sleep
+% segments only REM ripples (only REM)
+        subplot(2,2,3);
+         getRippleDurationDistribution_SpecificSleepState(SleepState.ints.REMstate, Time, ripples)
+        title({'REM Ripple length per sleep session',[basename]}); 
+ % Make a plot comparing ripple length distribution between different sleep
+% segments only Wake ripples (Only awake)
+        subplot(2,2,4);
+        getRippleDurationDistribution_SpecificSleepState(SleepState.ints.WAKEstate, Time, ripples)
+        title({'WAKE Ripple length per sleep session',[basename]}); 
+
 %% Ripples across sessions (section loads all sessions in directory, and calculates the ripple rate during NREM sleep, plots it on a figure)
 % load all the sessions we want to compare
     RecordingDirectory_PlaceTuning
     
-    rippleRateFig = figure;
-    timeNREMFig  = figure;
+    figure(1);
+    rippleRateFig = axes;
+    figure(2);
+    timeNREMFig = axes;
     warm_colors = hot(20); %3,7,10,12
     cool_colors = cool(20);%3,7,10,12
     color_all = [warm_colors(3,:);cool_colors(3,:);warm_colors(7,:);cool_colors(7,:);warm_colors(10,:);cool_colors(10,:);warm_colors(12,:);cool_colors(12,:)];
@@ -253,28 +287,108 @@
                     NREM_S4_ripples = ripples.timestamps(NREM_sleep4_logical,:);
                     [numRipples_NREM.S4,rippleLength_NREM.S4] = getNumAndLength_Ripples(NREM_S4_ripples);
               % Find total time in each sleep NREM
-                    NREM_TotalTime.S1 = sum(NREM_sleep1_intervals(:,2)-NREM_sleep1_intervals(:,1))
-                    NREM_TotalTime.S2 = sum(NREM_sleep2_intervals(:,2)-NREM_sleep2_intervals(:,1))
-                    NREM_TotalTime.S3 = sum(NREM_sleep3_intervals(:,2)-NREM_sleep3_intervals(:,1))
-                    NREM_TotalTime.S4 = sum(NREM_sleep4_intervals(:,2)-NREM_sleep4_intervals(:,1))
+                    NREM_TotalTime.S1 = sum(NREM_sleep1_intervals(:,2)-NREM_sleep1_intervals(:,1));
+                    NREM_TotalTime.S2 = sum(NREM_sleep2_intervals(:,2)-NREM_sleep2_intervals(:,1));
+                    NREM_TotalTime.S3 = sum(NREM_sleep3_intervals(:,2)-NREM_sleep3_intervals(:,1));
+                    NREM_TotalTime.S4 = sum(NREM_sleep4_intervals(:,2)-NREM_sleep4_intervals(:,1));
             % Plot ripple rate for each sleep segment
-                    plot(rippleRateFig, 1, (numRipples_NREM.S1/NREM_TotalTime.S1), '.','Color',color_all(irec,:));
-                    hold on
-                    plot(rippleRateFig, 2, (numRipples_NREM.S2/NREM_TotalTime.S2), '.','Color',color_all(irec,:));
-                    plot(rippleRateFig, 3, (numRipples_NREM.S3/NREM_TotalTime.S3), '.','Color',color_all(irec,:));
-                    plot(rippleRateFig, 4, (numRipples_NREM.S4/NREM_TotalTime.S4), '.','Color',color_all(irec,:));
+                    plot(rippleRateFig,1, (numRipples_NREM.S1/NREM_TotalTime.S1), 'o','Color',color_all(irec,:));
+                    hold(rippleRateFig,'on');
+                    plot(rippleRateFig,2, (numRipples_NREM.S2/NREM_TotalTime.S2), 'o','Color',color_all(irec,:));
+                    plot(rippleRateFig,3, (numRipples_NREM.S3/NREM_TotalTime.S3), 'o','Color',color_all(irec,:));
+                    plot(rippleRateFig,4, (numRipples_NREM.S4/NREM_TotalTime.S4), 'o','Color',color_all(irec,:));
+                    % save in mat
+                    rippleRateMat(irec,1) = numRipples_NREM.S1/NREM_TotalTime.S1;
+                    rippleRateMat(irec,2) = numRipples_NREM.S2/NREM_TotalTime.S2;
+                    rippleRateMat(irec,3) = numRipples_NREM.S3/NREM_TotalTime.S3;
+                    rippleRateMat(irec,4) = numRipples_NREM.S4/NREM_TotalTime.S4;
             % Plot length of NREM for each sleep segment on a different
             % plot
-                    plot(timeNREMFig, 1, NREM_TotalTime.S1, '.', 'Color',color_all(irec,:));
-                    hold on
-                    plot(timeNREMFig, 2, NREM_TotalTime.S2, '.', 'Color',color_all(irec,:));
-                    plot(timeNREMFig, 3, NREM_TotalTime.S3, '.', 'Color',color_all(irec,:));
-                    plot(timeNREMFig, 4, NREM_TotalTime.S4, '.', 'Color',color_all(irec,:));
+              
+                    plot(timeNREMFig,1, NREM_TotalTime.S1, 'o', 'Color',color_all(irec,:));
+                    hold(timeNREMFig, 'on');
+
+                    plot(timeNREMFig,2, NREM_TotalTime.S2, 'o', 'Color',color_all(irec,:));
+                    plot(timeNREMFig,3, NREM_TotalTime.S3, 'o', 'Color',color_all(irec,:));
+                    plot(timeNREMFig,4, NREM_TotalTime.S4, 'o', 'Color',color_all(irec,:));
+                    totalTimeMat(irec,1) = NREM_TotalTime.S1;
+                    totalTimeMat(irec,2) = NREM_TotalTime.S2;
+                    totalTimeMat(irec,3) = NREM_TotalTime.S3;
+                    totalTimeMat(irec,4) = NREM_TotalTime.S4;
+             % save mat of tasks corresponding to sleep sessions (1 VR, 2
+             % LT, 3 OF)
+                %find first task (with sleep 2)
+                if (Time.VR.start < Time.OF.start & Time.VR.start < Time.LT.start)
+                    %VR
+                    rippleRateExpTask(irec,1) = numRipples_NREM.S2/NREM_TotalTime.S2;
+                elseif (Time.OF.start<Time.VR.start & Time.OF.start < Time.LT.start)
+                    %OF
+                     rippleRateExpTask(irec,3) = numRipples_NREM.S2/NREM_TotalTime.S2;
+                elseif (Time.LT.start < Time.VR.start & Time.LT.start< Time.OF.start)
+                    %LT
+                     rippleRateExpTask(irec,2) = numRipples_NREM.S2/NREM_TotalTime.S2;
+                end
+                %find middle session (with sleep 3)
+                if (Time.VR.start < Time.OF.start & Time.VR.start > Time.LT.start || Time.VR.start > Time.OF.start & Time.VR.start < Time.LT.start)
+                    %VR
+                    rippleRateExpTask(irec,1) = numRipples_NREM.S3/NREM_TotalTime.S3;
+                elseif (Time.LT.start < Time.OF.start & Time.LT.start > Time.VR.start || Time.LT.start > Time.OF.start & Time.LT.start < Time.VR.start)
+                    %LT
+                     rippleRateExpTask(irec,2) = numRipples_NREM.S3/NREM_TotalTime.S3;
+                elseif (Time.OF.start < Time.LT.start & Time.OF.start > Time.VR.start || Time.OF.start > Time.LT.start & Time.OF.start < Time.VR.start)
+                    %OF
+                     rippleRateExpTask(irec,3) = numRipples_NREM.S3/NREM_TotalTime.S3;
+                end
+            %find last session (with sleep 4)
+                if (Time.VR.start > Time.LT.start & Time.VR.start > Time.OF.start)
+                    %VR
+                    rippleRateExpTask(irec,1) =  numRipples_NREM.S4/NREM_TotalTime.S4;
+                elseif (Time.LT.start> Time.VR.start & Time.LT.start >Time.OF.start)
+                    %LT
+                     rippleRateExpTask(irec,2) = numRipples_NREM.S4/NREM_TotalTime.S4;
+                elseif (Time.OF.start > Time.VR.start & Time.OF.start >Time.LT.start)
+                    %OF
+                     rippleRateExpTask(irec,3) = numRipples_NREM.S4/NREM_TotalTime.S4;
+                end
+                  
+                    
     end
                     title(rippleRateFig, 'Ripple Rate per sleep session');
-                    xlabel('Sleep Sessoin')
-                    ylabel('Ripple Rate (ripples/sec)'
-                  
+                    xlabel(rippleRateFig,'Sleep Session');
+                    ylabel(rippleRateFig,'Ripple Rate (ripples/sec)');
+                    xlim(rippleRateFig,[0 5]);
+                    ylim(rippleRateFig,[0 1]);
+                    
+                    title(timeNREMFig,'Total NREM Time per sleep session');
+                    xlabel(timeNREMFig,'Sleep Session');
+                    ylabel(timeNREMFig,'Time (s)');
+                    xlim(timeNREMFig,[0 5]);
+             % Make subplot of Ripple Rate and Total Time spent in sleep
+                    figure;
+                    subplot(1,2,1);
+                    boxplot(rippleRateMat);
+                    title('NREM Ripple Rate');
+                    xlabel('Sleep Session');
+                    ylabel('NREM Ripple Rate (ripples/s)');
+                    subplot(1,2,2);
+                    boxplot(totalTimeMat);
+                    title('Total NREM Time');
+                    xlabel('Sleep Session');
+                    ylabel('Time (s)');
+             % Make subplot of ripple rate over the sessions (boxplot 1 sleep in order of day...
+                                                            % boxplot 2 sleep in reference to task) 
+                    figure;
+                    subplot(1,2,1);
+                    boxplot(rippleRateMat(:,2:end))
+                    title('NREM Ripple Rate (sleep)');
+                    xlabel('Time of Day Sleep')
+                    ylabel('Time (s)');
+                    subplot(1,2,2);
+                    boxplot(rippleRateExpTask);
+                    title('NREM Ripple Rate (exp task)');
+                    xlabel('Sleep with exp task');
+                    ylabel('Time (s)');
+                    xticklabels({'VR Sleep','LT Sleep','OF Sleep'});
     
 %% Spiking Analysis - Define and load mat files
     cd([basePath]);
@@ -286,9 +400,118 @@
     pulseEpochs_exper = eval(['pulseEpch.' num2str(exper_paradigm)]);
     trial_exper = tr_ep; %trial start and stop times for exper
 %% Firing Rate across sessions
-    % chunk in bins and show over time?
-    % chunk in bins and box plot for different segments
+    %      firing per cell per exp segment (each box a different day)
+    %            3 boxes per day, (each task is a different color)
     % chunk whole segment?
+% compare time in day and by session
+    RecordingDirectory_PlaceTuning
+    %sleep 1 rem and nrem
+    figure(1);
+    firingRateFig = axes;
+    figure(2);
+    firingRateExp = axes;
+    warm_colors = hot(20); %3,7,10,12
+    color_all = [warm_colors(3,:);warm_colors(7,:);warm_colors(10,:);warm_colors(12,:)];
+    cool_colors = cool(20);
+    exp_colors = [cool_colors(3,:); cool_colors(7,:); cool_colors(11,:)];
+    rec_num = 0; %counter for how many recordings in directory have spikes
+     X1=[1,3,5,7,9,11,13,15];
+     X2=[1.3 3.3 5.3 7.3 9.3 11.3 13.3 15.3];
+     X3=[1.6 3.6 5.6 7.6 9.6 11.6 13.6 15.6];
+     X4=[1.9 3.9 5.9 7.9 9.9 11.9 13.9 15.9];
+     
+    for irec = 1:length(recDir)
+        % load in the ripple file for this directory ( if does not exist -
+        % create it)
+             cd(recDir{irec});
+             basePath = cd;
+             basename = bz_BasenameFromBasepath(basePath);
+             if ~isfile([basename '_TimeSegments.analysis.mat'])
+                    [Time.Sleep1] = RealTime_Convert_RecordingTime(cd, 'SleepTime1');
+                    [Time.Sleep2] = RealTime_Convert_RecordingTime(cd, 'SleepTime2');
+                    [Time.Sleep3] = RealTime_Convert_RecordingTime(cd, 'SleepTime3');
+                    [Time.Sleep4] = RealTime_Convert_RecordingTime(cd, 'SleepTime4');
+                    [Time.VR] = RealTime_Convert_RecordingTime(cd, 'VRTime');
+                    [Time.OF] = RealTime_Convert_RecordingTime(cd, 'OFTime');
+                    [Time.LT] = RealTime_Convert_RecordingTime(cd, 'LTTime');
+                    save([basename '_TimeSegments.analysis.mat'],'Time');
+             end
+             load([basename '_TimeSegments.analysis.mat']);
+       % load in spiking info
+             if ~isfile([basename '.spikes.cellinfo.mat']);
+                     continue; %need to get spikes before doing this
+             else
+                 rec_num = rec_num +1;
+             end
+             load([basename '.spikes.cellinfo.mat']);
+        % load in the sleep state mat (if does not exist - create it)
+             if ~isfile([basename '_SleepState.analysis.mat'])
+                 lfp_chans2check = [10 30 60]; %make sure channels are good ones
+                 [SleepState, SleepEditorInput] = PF_Preprocessing_SleepValidation(cd,lfp_chans2check, Time.Sleep1.start, Time.Sleep4.stop);      
+                 save([basename '_SleepState.analysis.mat'],'SleepState','SleepEditorInput');
+             end 
+             load([basename '_SleepState.analysis.mat']);
+       % find nrem and rem intervals (sleep times)
+            [NREM_sleep1_intervals] = getIntervals_InBiggerIntervals(SleepState.ints.NREMstate, Time.Sleep1);
+            [NREM_sleep2_intervals] = getIntervals_InBiggerIntervals(SleepState.ints.NREMstate, Time.Sleep2);
+            [NREM_sleep3_intervals] = getIntervals_InBiggerIntervals(SleepState.ints.NREMstate, Time.Sleep3);
+            [NREM_sleep4_intervals] = getIntervals_InBiggerIntervals(SleepState.ints.NREMstate, Time.Sleep4);
+            [REM_sleep1_intervals] = getIntervals_InBiggerIntervals(SleepState.ints.REMstate, Time.Sleep1);
+            [REM_sleep2_intervals] = getIntervals_InBiggerIntervals(SleepState.ints.REMstate, Time.Sleep2);
+            [REM_sleep3_intervals] = getIntervals_InBiggerIntervals(SleepState.ints.REMstate, Time.Sleep3);
+            [REM_sleep4_intervals] = getIntervals_InBiggerIntervals(SleepState.ints.REMstate, Time.Sleep4);
+            
+       % put NREM and REM intervals together for one sleep session
+             sleep1_intervals = [NREM_sleep1_intervals;REM_sleep1_intervals];
+             sleep2_intervals = [NREM_sleep2_intervals;REM_sleep2_intervals];
+             sleep3_intervals = [NREM_sleep3_intervals;REM_sleep3_intervals];
+             sleep4_intervals = [NREM_sleep4_intervals;REM_sleep4_intervals];
+       % total time of each sleep interval
+             SleepTotalTime.S1 = sum(sleep1_intervals(:,2)-sleep1_intervals(:,1));
+             SleepTotalTime.S2 = sum(sleep1_intervals(:,2)-sleep1_intervals(:,1));
+             SleepTotalTime.S3 = sum(sleep1_intervals(:,2)-sleep1_intervals(:,1));
+             SleepTotalTime.S4 = sum(sleep1_intervals(:,2)-sleep1_intervals(:,1));
+       % find how many spikes there are in each segment;
+             sleep_FR_mat = zeros(length(spikes.times),4);
+             exp_FR_mat = zeros(length(spikes.times),3);
+             % for each cell, find the spike times within each sleep
+             % interval and within each task interval
+             for icell = 1:length(spikes.times)
+                    [sleep1_logical, ~, ~] = InIntervals(spikes.times{icell},  sleep1_intervals);
+                    sleep_FR_mat(icell,1) = sum(sleep1_logical)/SleepTotalTime.S1;
+                    [sleep2_logical, ~, ~] = InIntervals(spikes.times{icell},  sleep2_intervals);
+                    sleep_FR_mat(icell,2) = sum(sleep2_logical)/SleepTotalTime.S2;
+                    [sleep3_logical, ~, ~] = InIntervals(spikes.times{icell},  sleep3_intervals);
+                    sleep_FR_mat(icell,3) = sum(sleep3_logical)/SleepTotalTime.S3;
+                    [sleep4_logical, ~, ~] = InIntervals(spikes.times{icell},  sleep4_intervals);
+                    sleep_FR_mat(icell,4) = sum(sleep4_logical)/SleepTotalTime.S4;
+                    [exp_FR_mat(icell,1)] = getFiringRate(Time.OF,spikes.times{icell});
+                    [exp_FR_mat(icell,2)] = getFiringRate(Time.LT,spikes.times{icell});
+                    [exp_FR_mat(icell,3)] = getFiringRate(Time.OF,spikes.times{icell});
+             end
+       % boxplot sleep
+    
+            boxplot(firingRateFig, sleep_FR_mat(:,1),'positions',X1(irec),'labels',X1(irec),'colors',color_all(1,:),'widths',0.25);
+            hold(firingRateFig, 'on');
+            boxplot(firingRateFig,sleep_FR_mat(:,2),'positions',X2(irec),'labels',X2(irec),'colors',color_all(2,:),'widths',0.25);
+            boxplot(firingRateFig,sleep_FR_mat(:,3),'positions',X3(irec),'labels',X3(irec),'colors',color_all(3,:),'widths',0.25);
+            boxplot(firingRateFig,sleep_FR_mat(:,4),'positions',X4 (irec),'labels',X4(irec),'colors',color_all(4,:),'widths',0.25);
+            title(firingRateFig,'Firing Rate For Sleep Sessions')
+            xticks(firingRateFig,X1(1:length(recDir)));
+            ylabel(firingRateFig, 'Firing Rate (spikes/s)');
+            legend(firingRateFig, findall(gca,'Tag','Box'), {'Sleep 1','Sleep 2','Sleep 3','Sleep 4'});
+            ylim([0 20]);
+            
+            boxplot(firingRateExp, exp_FR_mat(:,1),'positions',X1(irec),'labels',X1(irec),'colors',exp_colors(1,:),'widths',0.25);
+            hold(firingRateExp, 'on');
+            boxplot(firingRateExp, exp_FR_mat(:,2),'positions',X2(irec),'labels',X2(irec),'colors',exp_colors(2,:),'widths',0.25);
+            boxplot(firingRateExp, exp_FR_mat(:,3),'positions',X3(irec),'labels',X3(irec),'colors',exp_colors(3,:),'widths',0.25);
+            title(firingRateExp, 'Firing Rate For Experimental Sessions')
+            xticks(firingRateExp, X1(1:length(recDir)));
+            ylabel(firingRateExp, 'Firing Rate (spikes/s)');
+            hLegend = legend(firingRateExp,findall(gca,'Tag','Box'), {'VR','LT','OF'});
+            ylim([0 20]);
+    end
 
 
 %% Spiking Analysis - Single Cell Characteristics for one Unit

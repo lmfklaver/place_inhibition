@@ -1,7 +1,7 @@
 %PF_Analysis_VRnoVR
 %% Run Every Time
 % Define Recording session path
-    basePath = 'F:\Data\PlaceTuning_VR_OF_LT\m247\m247_210421_083423';
+    basePath = 'F:\Data\VR_noVR\m247\m247_210409_102408';
     basename = bz_BasenameFromBasepath(basePath);
     animalPath = 'F:\Data\AnimalSpecs_ExperimentalParadigms';
 % Add paths
@@ -33,7 +33,7 @@
     load([basename '_TimeSegments.analysis.mat']);
     load([basename '_wheelTrials.analysis.mat']);
 %% LFP Analysis - Define and Load Mat files
-    lfp_channel = 21; %Change this per experiment
+    lfp_channel = 58; %Change this per experiment
     cd([animalPath]);
     load('Maze_Characteristic_Analog_Positions.mat');
     cd([basePath]);
