@@ -513,9 +513,9 @@
         end
 %% Virtual Reality - Load and define
     icell_idx = 1;
-    load('m247_210421_083423.spikes.cellinfo.mat');
-    load('m247_210421_083423_analogin_VR.analysis.mat');
-    
+    load([basename '.spikes.cellinfo.mat']);
+    load([basename '_analogin_VR.analysis.mat']);
+    load([basename '_VRTime_BL_Stim.analysis.mat']);
         %% Virtual Reality - Place Fields
 %sanity check - do not quite get how
 %     [SpkVoltage, SpkTime, VelocityatSpk] = rastersToVoltage(analogin_VR, spikes)
@@ -524,7 +524,7 @@
 % Get the corresponding voltage position of each spike timestamp
       [spkEpVoltIdx] = getWheelPositionPerSpike(basePath, tr_ep);
 % Singular place field over many trials (x = position, y = trials, color =
-% spikes per spatial bin) **FIGURE OUT CM OF TRACK VR*
+% spikes per spatial bin) 
       [fig, fr_position] = getPlaceField_VR(basePath, cell_idx, spkEpVoltage, tr_ep, len_ep, ts_ep, analogin_VR);
 % Multiple place cells averaged over multiple trials (x = position, y =
 % cell, color = averaged over trials spikes per spatial bin)

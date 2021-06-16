@@ -7,9 +7,9 @@ function [firingRateSegment] = getFiringRate(TimeInterval,cell_spikes)
 
 % Outputs: firing rate segment - spikes per second for one cell
 
-    [status, edges] = InIntervals(cell_spikes,TimeInterval);
+    [status, ~] = InIntervals(cell_spikes,TimeInterval);
      spikesInSegment = sum(status);
-     segmentTotalTime = TimeInterval.stop - TimeInterval.start;
+     segmentTotalTime = sum(TimeInterval(:,2) - TimeInterval(:,1));
      firingRateSegment = spikesInSegment/segmentTotalTime;
      
 end

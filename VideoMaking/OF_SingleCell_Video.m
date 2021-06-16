@@ -88,29 +88,17 @@
               mean_diff_y = mean([TL_Y TR_Y BR_Y BL_Y]);
     % avg means
               conversion_add2Exp = mean([mean_diff_x mean_diff_y]);
-%% aligning (need to align time of video to spikes) IF ADD THIS IN - delete
-% the piece of code where I delete the start time of open field from all spikes
-
-
-
-
 %% Video making
-cell_idx = 1; %define what cell to map
+cell_idx = 11; %define what cell to map
 % Read position of animal
-    positionEstimate_file = csvread([basename(1:12) 'PositionEstimate.csv']);
-    x_pos = positionEstimate_file(:,1);
-    x = x_pos + conversion_add2Exp;
-    y_pos = positionEstimate_file(:,2);
-    y = y_pos + conversion_add2Exp;
-    fid = fopen([basename(1:12) 'PositionTimestamps.csv']);
-    C = textscan(fid,'%s','HeaderLines',8,'Delimiter',',','EndOfLine','\r\n','ReturnOnError',false);
-    fclose(fid);
-    positionTimes = C{1}(5:5:end);
-    positionTimes = cell2mat(positionTimes);
-    positionTimes = positionTimes(:,15:27);
+    x_pos = VtrackingOF.xpos;
+    y_pos = VtrackingOF.xpos;
+    positionTimes = frameTimes(:,1);
 % Make a video writer object and open it    
-    cd([basePath '\Videos_CSVs']);
-    v = VideoReader([basename(1:12) 'VideoOpenField.avi']);
+    cd(videoPathOF);
+    OF_Video = dir(fullfile(videoPathOF, '*.mp4'));
+    OFVideoDLC = convertCharsToStrings(OF_Video.name);
+    v = VideoReader(OFVideoDLC);
     vw = VideoWriter('VideoOpenFieldMarked.avi','MOTION JPEG AVI');
     vw.FrameRate = v.FrameRate;
     open(vw);
@@ -125,9 +113,6 @@ cell_idx = 1; %define what cell to map
      end
 % find spikes that occur in the open field
     spikes_of = spikes.times{cell_idx}(find(spikes.times{cell_idx}> Time.OF.start & spikes.times{cell_idx} < Time.OF.stop));
-% subtract the time of open field start to make the spikes 'align'
-% witht the video - probably need to do this a better way...
-    spikes_of = spikes_of - Time.OF.start;
 % Make bins of 1 ms to sort spikes
     t = spikes_of(1):.001:spikes_of(end); %binning in 1 ms... 
 % Sort spikes in  1 ms bins

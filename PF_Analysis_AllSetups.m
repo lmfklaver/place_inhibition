@@ -35,22 +35,22 @@
         % sleep
               TheStateEditor(basename, SleepEditorInput)
 %% Load Mat Files Commonly Used
-    cd([basePath]);
+    cd(basePath);
 % Load in start and stop times of each sleep and experimental segment
     load([basename '_TimeSegments.analysis.mat']);
     load([basename '_wheelTrials.analysis.mat']);
 %% LFP Analysis - Define and Load Mat files
     load([basneame '_ripples.analysis.mat']);
     lfp_channel = ripples.detectorinfo.detectionchannel; %0 based
-    cd([animalPath]);
+    cd(animalPath);
     load('Maze_Characteristic_Analog_Positions.mat');
-    cd([basePath]);
+    cd(basePath);
     load([basename '_analogin_VR.analysis.mat']);
 %%  LFP Analysis - Power Spectra
 % Power Spectra without fractals: Compares each setup to previous sleep, also compares all
 % sleep parts to all experimental parts in one figure, compares all sleep
 % in one figure, compares all experimental parts in one figure
-    [IRASA] = getPowerSpectrum_PlaceInhibition(basePath, lfp_channel, Time, 'doLFPClean', false, 'doSplitLFP', false)
+    [IRASA] = getPowerSpectrum_PlaceInhibition(basePath, lfp_channel, Time, 'doLFPClean', false, 'doSplitLFP', false);
     %[runEpochs] = getRunEpochs(basePath, vel_ep);
     save([basename '_IRASA.analysis.mat'], 'IRASA');
 % Subset of section IRASA - same amount of time 30 min (or specified
@@ -72,7 +72,7 @@
     Time_sub.OF.start = Time.OF.start;
     Time_sub.OF.stop = Time_sub.OF.start + (sub_time_min*60);
     
-    [IRASA_subset] = getPowerSpectrum_PlaceInhibition(basePath, lfp_channel, Time_sub, 'doLFPClean', false, 'doSplitLFP', false)
+    [IRASA_subset] = getPowerSpectrum_PlaceInhibition(basePath, lfp_channel, Time_sub, 'doLFPClean', false, 'doSplitLFP', false);
     %[runEpochs] = getRunEpochs(basePath, vel_ep);
     save([basename '_IRASA_sub.analysis.mat'], 'IRASA_subset');
     
@@ -205,22 +205,22 @@
         Time_sleep_sessions(4,2) = Time.Sleep4.stop;
         subplot(2,2,1);
         getRippleDurationDistribution_SpecificSleepState(Time_sleep_sessions, Time, ripples)
-        title({'Ripple length per sleep session',[basename]});
+        title({'Ripple length per sleep session', basename});
 % Make a plot comparing ripple length distribution between different sleep
 % segments only NREM ripples (only NREM
         subplot(2,2,2);
         getRippleDurationDistribution_SpecificSleepState(SleepState.ints.NREMstate, Time, ripples)
-        title({'NREM Ripple length per sleep session',[basename]}); 
+        title({'NREM Ripple length per sleep session', basename}); 
  % Make a plot comparing ripple length distribution between different sleep
 % segments only REM ripples (only REM)
         subplot(2,2,3);
          getRippleDurationDistribution_SpecificSleepState(SleepState.ints.REMstate, Time, ripples)
-        title({'REM Ripple length per sleep session',[basename]}); 
+        title({'REM Ripple length per sleep session',basename}); 
  % Make a plot comparing ripple length distribution between different sleep
 % segments only Wake ripples (Only awake)
         subplot(2,2,4);
         getRippleDurationDistribution_SpecificSleepState(SleepState.ints.WAKEstate, Time, ripples)
-        title({'WAKE Ripple length per sleep session',[basename]}); 
+        title({'WAKE Ripple length per sleep session',basename}); 
 
 %% Ripples across sessions (section loads all sessions in directory, and calculates the ripple rate during NREM sleep, plots it on a figure)
 % load all the sessions we want to compare
@@ -233,6 +233,10 @@
     warm_colors = hot(20); %3,7,10,12
     cool_colors = cool(20);%3,7,10,12
     color_all = [warm_colors(3,:);cool_colors(3,:);warm_colors(7,:);cool_colors(7,:);warm_colors(10,:);cool_colors(10,:);warm_colors(12,:);cool_colors(12,:)];
+   
+    rippleRateMat = zeros(length(recDir),4);
+    totalTimeMat = zeros(length(recDir),4);
+    rippleRateExpTask = zeors(length(recDir),3);
     for irec = 1:length(recDir)
         % load in the ripple file for this directory ( if does not exist -
         % create it)
@@ -316,35 +320,35 @@
              % save mat of tasks corresponding to sleep sessions (1 VR, 2
              % LT, 3 OF)
                 %find first task (with sleep 2)
-                if (Time.VR.start < Time.OF.start & Time.VR.start < Time.LT.start)
+                if (Time.VR.start < Time.OF.start && Time.VR.start < Time.LT.start)
                     %VR
                     rippleRateExpTask(irec,1) = numRipples_NREM.S2/NREM_TotalTime.S2;
-                elseif (Time.OF.start<Time.VR.start & Time.OF.start < Time.LT.start)
+                elseif (Time.OF.start<Time.VR.start && Time.OF.start < Time.LT.start)
                     %OF
                      rippleRateExpTask(irec,3) = numRipples_NREM.S2/NREM_TotalTime.S2;
-                elseif (Time.LT.start < Time.VR.start & Time.LT.start< Time.OF.start)
+                elseif (Time.LT.start < Time.VR.start && Time.LT.start< Time.OF.start)
                     %LT
                      rippleRateExpTask(irec,2) = numRipples_NREM.S2/NREM_TotalTime.S2;
                 end
                 %find middle session (with sleep 3)
-                if (Time.VR.start < Time.OF.start & Time.VR.start > Time.LT.start || Time.VR.start > Time.OF.start & Time.VR.start < Time.LT.start)
+                if (Time.VR.start < Time.OF.start && Time.VR.start > Time.LT.start || Time.VR.start > Time.OF.start && Time.VR.start < Time.LT.start)
                     %VR
                     rippleRateExpTask(irec,1) = numRipples_NREM.S3/NREM_TotalTime.S3;
-                elseif (Time.LT.start < Time.OF.start & Time.LT.start > Time.VR.start || Time.LT.start > Time.OF.start & Time.LT.start < Time.VR.start)
+                elseif (Time.LT.start < Time.OF.start && Time.LT.start > Time.VR.start || Time.LT.start > Time.OF.start && Time.LT.start < Time.VR.start)
                     %LT
                      rippleRateExpTask(irec,2) = numRipples_NREM.S3/NREM_TotalTime.S3;
-                elseif (Time.OF.start < Time.LT.start & Time.OF.start > Time.VR.start || Time.OF.start > Time.LT.start & Time.OF.start < Time.VR.start)
+                elseif (Time.OF.start < Time.LT.start && Time.OF.start > Time.VR.start || Time.OF.start > Time.LT.start && Time.OF.start < Time.VR.start)
                     %OF
                      rippleRateExpTask(irec,3) = numRipples_NREM.S3/NREM_TotalTime.S3;
                 end
             %find last session (with sleep 4)
-                if (Time.VR.start > Time.LT.start & Time.VR.start > Time.OF.start)
+                if (Time.VR.start > Time.LT.start && Time.VR.start > Time.OF.start)
                     %VR
                     rippleRateExpTask(irec,1) =  numRipples_NREM.S4/NREM_TotalTime.S4;
-                elseif (Time.LT.start> Time.VR.start & Time.LT.start >Time.OF.start)
+                elseif (Time.LT.start> Time.VR.start && Time.LT.start >Time.OF.start)
                     %LT
                      rippleRateExpTask(irec,2) = numRipples_NREM.S4/NREM_TotalTime.S4;
-                elseif (Time.OF.start > Time.VR.start & Time.OF.start >Time.LT.start)
+                elseif (Time.OF.start > Time.VR.start && Time.OF.start >Time.LT.start)
                     %OF
                      rippleRateExpTask(irec,3) = numRipples_NREM.S4/NREM_TotalTime.S4;
                 end
@@ -353,7 +357,7 @@
     end
                     title(rippleRateFig, 'Ripple Rate per sleep session');
                     xlabel(rippleRateFig,'Sleep Session');
-                    ylabel(rippleRateFig,'Ripple Rate (ripples/sec)');
+                    ylabel(rippleRateFig,'Ripple Rate (ripples/s)');
                     xlim(rippleRateFig,[0 5]);
                     ylim(rippleRateFig,[0 1]);
                     
@@ -372,7 +376,7 @@
                     boxplot(totalTimeMat);
                     title('Total NREM Time');
                     xlabel('Sleep Session');
-                    ylabel('Time (s)');
+                    ylabel('Ripples/s');
              % Make subplot of ripple rate over the sessions (boxplot 1 sleep in order of day...
                                                             % boxplot 2 sleep in reference to task) 
                     figure;
@@ -380,16 +384,16 @@
                     boxplot(rippleRateMat(:,2:end))
                     title('NREM Ripple Rate (sleep)');
                     xlabel('Time of Day Sleep')
-                    ylabel('Time (s)');
+                    ylabel('Ripple Rate (ripples/s)');
                     subplot(1,2,2);
                     boxplot(rippleRateExpTask);
                     title('NREM Ripple Rate (exp task)');
                     xlabel('Sleep with exp task');
-                    ylabel('Time (s)');
+                    ylabel('Ripple Rate (ripples/s)');
                     xticklabels({'VR Sleep','LT Sleep','OF Sleep'});
     
 %% Spiking Analysis - Define and load mat files
-    cd([basePath]);
+    cd(basePath);
     load([basename '.spikes.cellinfo.mat']);
     load([basename '.cell_metrics.cellinfo.mat']);
     load([basename '_pulseEpochs_splitPerSetup.analysis.mat']);
@@ -436,7 +440,7 @@
              end
              load([basename '_TimeSegments.analysis.mat']);
        % load in spiking info
-             if ~isfile([basename '.spikes.cellinfo.mat']);
+             if ~isfile([basename '.spikes.cellinfo.mat'])
                      continue; %need to get spikes before doing this
              else
                  rec_num = rec_num +1;
@@ -568,22 +572,22 @@
     end
 % Make a figure for each Interneuron: plot of PETH and Raster around stim
     for iUnit = 1:length(IN_Cell)
-        fig = figure,
+        fig = figure;
         % PSTH of one cell around opto stim time (can specify which pulses)
-        subplot(2,1,1)
+        subplot(2,1,1);
         getPSTHplots_PlaceInhibition(basePath, pulseEpochs_exper, exper_paradigm,IN_Cell(iUnit)) %'runAllInterneurons', True);
         % Plot Raster of one cell around opto stim time (can specify which pulses)
-        subplot(2,1,2)
+        subplot(2,1,2);
         getRasterPlots_PlaceInhibition(basePath, pulseEpochs_exper, exper_paradigm, IN_Cell(iUnit));
         % Plot autocorrelation of specified cell inside and outside opto stim
         % epochs
-        cd([basePath '\Figures\OptoStim'])
+        cd([basePath '\Figures\OptoStim']);
         savefig(cd,['Raster/PETH IN Cell: ' num2str(IN_Cell(iUnit))]);
         delete(fig);
     end
 % Make a figure for each Pyramidal cell: plot of PETH and Raster around stim
     for iUnit = 1:length(PYR_Cell)
-        fig = figure,
+        fig = figure;
         % PSTH of one cell around opto stim time (can specify which pulses)
         subplot(2,1,1)
         getPSTHplots_PlaceInhibition(basePath, pulseEpochs_exper, exper_paradigm,PYR_Cell(iUnit)) %'runAllInterneurons', True);
@@ -636,6 +640,7 @@
    
 % Get the corresponding voltage position of each spike timestamp
       [spkEpVoltIdx, spkEpVoltage] = getWheelPositionPerSpike(basePath, tr_ep);
+      save([basename '_spkEpVoltage.analysis.mat'], 'spkEpVoltage');
 % Singular place field over many trials (x = position, y = trials, color =
 % spikes per spatial bin)
       [fig, fr_position] = getPlaceField_VR(basePath, icell, spkEpVoltage, tr_ep, len_ep, ts_ep, analogin_VR);
@@ -646,20 +651,64 @@
 % cell, color = averaged over trials spikes per spatial bin)
     getPopulationPlaceField_VR(basePath, tr_ep, len_ep, ts_ep, spikes, analogin_VR)
          
- % Colorful Raster of all cells over position (y trials, x position) dots different color for
+ % Colorful Raster of all cells over position (y trials (jittered by cell), x position) dots different color for
  % different cells
-    getRasterOverPosition(spikes, VR_BL1_Trials);
-    getRasterOverPosition(spikes, VR_VR_Trials);
-    getRasterOverPosition(spikes, VR_BL2_Trials);
+    subplot(1,3,1);
+    getRasterOverPosition(spkEpVoltage, VR_BL1_Trials);
+    title('VR: Pre baseline trials')
+    subplot(1,3,2);
+    getRasterOverPosition(spkEpVoltage, VR_Stim_Trials);
+    title('VR: Stim trials');
+    subplot(1,3,3);
+    getRasterOverPosition(spkEpVoltage, VR_BL2_Trials);
+    title('VR: Post baseline trials');
+ 
+%% Open Field and Linear Track - define and load
+% Define dimensions of setups (in centimeters)
+        LTDimensions.xlength = 160;
+        LTDimensions.ylength = 8.5;
+        OFDimensions.xlength = 60.96;
+        OFDimensions.ylength = 60.96;
+% Synchronize neural data with video
+    % Open Field - check what the output is with kaiser and (right column?)
+        % requires DLC position out
+        % Align OF video to intan (go to dir with video, find csv file,
+        % plug into function)
+            videoPathOF = ([basePath '\Videos_CSVs\' basename '_VideoOpenField\']);
+            OF_CSV = dir(fullfile(videoPathOF, '*.csv'));
+            OFPositionDLC_CSV = convertCharsToStrings(OF_CSV.name);
+            VtrackingOF = AlignVidDLC(basePath,videoPathOF,OFPositionDLC_CSV,'syncChan',6);
+    % Linear Track
+        % Align LT video to intan 
+            videoPathLT = ([basePath '\Videos_CSVs\' basename '_VideoLinearTrack\']);
+            LT_CSV = dir(fullfile(videoPathLT, '*.csv'));
+            LTPositionDLC_CSV = convertCharsToStrings(LT_CSV.name);
+            VtrackingLT = AlignVidDLC(basePath,videoPathLT,LTPositionDLC_CSV,'syncChan',6);
+% load spikes
+    cd(basepath);
+    load([basename '.spikes.cellinfo.mat']);
+%% Plot position of spikes of each cell (open field and linear track)
+    for icell = 1:length(spikes.times)
+        figure;
+        %Plot one cell spikes in open field 
+        subplot(1,2,1);
+            getSpikePositionPlot(icell, spikes,VtrackingOF,Time.OF, OFDimensions);
+            title(['Open Field Spikes, Cell: ' icell]);
+        %Plot one cell spikes in linear track
+        subplot(1,2,2);
+            getSpikePositionPlot(icell, spikes,VtrackingLT,Time.LT, LTDimensions);
+            title(['Linear Track Spikes, Cell: ' icell]);
+    end
+%% Linear Track Place Fields    
         
-%% Videos with spiking on top
-    % NEED: correct spike times to be in line video start time
-        % currently: subtracting start time of open field from spikes to
-        % correct for time
+  % Workflow_DLC_to_place_tracking %kaisers script for place cells in LT
+    getPlaceField_FreelyMoving(basePath, cell_idx, VtrackingLT, LT.Time)
+%% Open Field place field
+    getPlaceField_FreelyMoving(basePath, cell_idx, VtrackingOF, OF.Time)
+%% Open Field Videos with spiking on top
     %Note: the video may blink, if a position is not detected by bonsai
     %(the model failed to pick up location for that point)
-    
-    
+
     % Two ways to assign position to different spikes
             % 1) bin the spikes in 1 ms bins
             %    calculate how many bins per frame
@@ -670,45 +719,10 @@
             %    find the corresponding bin for each spike (spike < bin
             %    stop and spike > bin start, this is the position of the
             %    animal then)
-    cell_idx = 1; %define what cell to map
+  
     OF_SingleCell_Video
-    
-    %Plot each cell spikes in open field 
-    for cell_idx = 1:length(spikes.times)
-    % Plot of cell firing in open field
-        positionEstimate_file = csvread([basename(1:12) 'PositionEstimate.csv']);
-        x_pos = positionEstimate_file(:,1);
-        x = x_pos + conversion_add2Exp;
-        y_pos = positionEstimate_file(:,2);
-        y = y_pos + conversion_add2Exp;
-        fid = fopen([basename(1:12) 'PositionTimestamps.csv']);
-        C = textscan(fid,'%s','HeaderLines',8,'Delimiter',',','EndOfLine','\r\n','ReturnOnError',false);
-        fclose(fid);
-        positionTimes = C{1}(5:5:end);
-        positionTimes = cell2mat(positionTimes);
-        positionTimes = positionTimes(:,15:27);
-    % convert positionTimes to seconds
-        [positionTimes_seconds] = convertVideoPositionTime_2Seconds(positionTimes)
-    % find spikes that occur in the open field
-        spikes_of = spikes.times{cell_idx}(find(spikes.times{cell_idx}> Time.OF.start & spikes.times{cell_idx} < Time.OF.stop));
-    % subtract the time of open field start to make the spikes 'align'
-    % witht the video - probably need to do this a better way...
-        spikes_of = spikes_of - Time.OF.start;
-        
-    % find spikes in intervals
-        positionTimes_startstop(:,1) = positionTimes_seconds(1:end-1,:);
-        positionTimes_startstop(:,2) = positionTimes_seconds(2:end,:);
-        [status, intervals, index] = InIntervals(spikes_of, positionTimes_startstop);
-        figure
-        for ispike = 1:length(spikes_of)
-            interval_pos = find(positionTimes_startstop(:,1) <= spikes_of(ispike) & positionTimes_startstop(:,2) >= spikes_of(ispike));
-            plot(x(interval_pos,1),y(interval_pos,1),'.r');
-            hold on
-        end 
-        title(['Spikes: Cell ' int2str(cell_idx)]);
-    end
-    
-    %%
+   
+    %% working progress - code blurb (want to make a video alined to raster)
  %%%%%%%%%%%%%%%%%%% Open field with plot on one side and video on other%%
  %start and stop times need to line up for video and spikes
  % Setup the subplots
@@ -723,15 +737,14 @@ image(vidFrame, 'Parent', ax1);
 ax1.Visible = 'off';
 % Load the spiking data
 %t = 0:0.01:v.Duration; % Cooked up for this example, use your actual data
-spikes_of = spikes.times{cell_idx}(find(spikes.times{cell_idx}> Time.OF.start & spikes.times{cell_idx} < Time.OF.stop));
-spikes_of = spikes_of - Time.OF.start;
+spikes_of = spikes.times{cell_idx}(spikes.times{cell_idx}> Time.OF.start & spikes.times{cell_idx} < Time.OF.stop);
 t = spikes_of(1):.001:spikes_of(end); %binning in 1 ms... 
 
 [spikes_logical, edges_spikes] = histcounts(spikes_of,t);
 nDataPoints = length(t); % Number of time points
 step = round((nDataPoints/nFrames));
 bin2video = 1:step:nDataPoints;
-spikesPerFrame = zeros(length(bin2video)-1,1)
+spikesPerFrame = zeros(length(bin2video)-1,1);
 for ibin = 1:length(bin2video)-1
    spikesPerFrame(ibin,1) = sum(spikes_logical(1,(bin2video(ibin):bin2video(ibin+1))));
 end
@@ -762,28 +775,5 @@ end
  
 
  %%%%%%%%%%%%%%%%%%% Virtual Reality %%%%%%%%%%%%%%%%%%%%%%%%%
-
- 
-%%
-%1D Linear Track
-    % First run DLC (also on Blink Light)
-    % kaiser branh of utilities
-% Align video to intan
-    Vtracking = AlignVidDLC(basepath,varargin);
-    Workflow_DLC_to_place_tracking %kaisers script for place cells in LT
-% Make place fields again as per 1D VR STIM and NO STIM
-
-
-% 2D STIM and NO STIM
-    % still needs to be made
-    [predictedPositionOF] = gtOpenFieldPosition(basePath, 'PositionEstimate.csv');
-    TotalOFTime = OF.stop - OF.start;
-    OFframespersec = length(predictedPositionOF.xpos)/TotalOFTime;
-    openFieldPulseEpochs = pulseEpochs(:,:)> OF.start & pulseEpochs(:,:) < OF.stop;
-
-%Define pyramidal cells
-    % vector of spike timestamps, position, and position timestamps
-    % everytime a cell fires, grab location,add 1 to the bin for that
-    % location. then use imagesc(matrix of spikes per bin)
-
+%% 
 disp("kachow: you have solved the brain");
