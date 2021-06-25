@@ -20,7 +20,7 @@ function [avg_pow] = makePowerspec_AvgChunk_Vector(basePath, timeMin, lfp)
       for iseg = 1:size(edges_lfp,2)
           lfp_temp.timestamps = lfp.timestamps(edges_lfp(1, iseg):edges_lfp(2,iseg));
           lfp_temp.data = lfp.data(edges_lfp(1,iseg):edges_lfp(2,iseg));
-          lfp_temp.samplingRate = lfp_S1.samplingRate;
+          lfp_temp.samplingRate = lfp.samplingRate;
           [pow_temp] = getPowerSpectrum(basePath, lfp_temp, 'doIRASA', false, 'doPlot', false); 
           pow_mat(iseg,:) = pow_temp.fma.spectrum;
       end

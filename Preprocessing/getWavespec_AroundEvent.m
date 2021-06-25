@@ -1,19 +1,25 @@
-function [wavespec_gratings] = getWavespec_AroundEvent(basePath, analogin_segment, lfp_channel, Segment_Time, trials_time, switch_point, varargin)
-% Purpose: Makes power spectrum comparing different VR gratings 
-
-% Inputs:  - Start and Stop struct for VR
-%          - Lfp_channel idx you want to use
-%          - basePath: path with data in it
-%          - tr_ep: start and stop times of laps in VR
-%          - doLFPClean: default is true, notch filter 60 hz over lfp
-%          - doSplitLFP: default is true, splits lfp and calculates power spectra for each
-%          segment and then averages
-%          - movmean_win: default is 1000, smoothing window for movmean 
-
-% Outputs: - IRASA struct: each power/freq time series for each grating
-%          - Plot comparing green grating vs blue grating in unity maze
-
-% Reagan: 2021.05.11
+function [wavespec_segment] = getWavespec_AroundEvent(basePath, analogin_segment, lfp_channel, Segment_Time, trials_time, event_point, varargin)
+% PURPOSE 
+%          Makes power spectrum comparing different VR gratings 
+% INPUTS
+%          Segment_Time       Struct : .start and .stop time
+%          lfp_channel        Numeric: idx channel you want to use
+%          basePath           String : path with data in it
+%          analogin_segment   Struct : position and timestamps of analogin
+%          trials_time        Matrix : start and stop times of laps in VR
+%          doLFPClean         Boolean: default is true, notch filter 60 hz over lfp
+%          doSplitLFP         Boolean: default is true, splits lfp and calculates power spectra for each
+%                                      segment and then averages
+%          movmean_win        Numeric: default is 1000, smoothing window for movmean 
+%          event_point        Numeric: analogin value where event occurs
+% OUTPUTS
+%          wavespec_segment   Struct : IRASA, each power/freq time series for
+%                                      each occurance of event
+%          wavepsec plot around specific event
+% DEPENDENCIES
+%          Buzcode            https://github.com/buzsakilab/buzcode
+% HISTORY
+%          Reagan Bullins 05.11.2021
 %% Inputs
 p = inputParser;
 addParameter(p,'doLFPClean',true,@islogical)
@@ -25,7 +31,7 @@ doSplitLFP       = p.Results.doSplitLFP;
 movmean_win      = p.Results.movmean_win;
 %% Load analogin for VR
 basename = bz_BasenameFromBasepath(basePath);
-cd([basePath]);
+cd(basePath);
 %% get lfp data around the grating change for all trials
         nfreqs = 100;
         lfp = bz_GetLFP(lfp_channel); %just need this for sampling rate
@@ -42,7 +48,7 @@ cd([basePath]);
          %find the point in the analogin position data for the specific
          %trial where the wheel voltage is equal to the switch grating
          %value (round the analogin_trial_data to the second decimal)
-         analogin_idx_switch = find(round(analogin_trial_data,3) == round(switch_point,3));
+         analogin_idx_switch = find(round(analogin_trial_data,3) == round(event_point,3));
          %take the first match as the switch grating point (animal may stay
          %still for a while in location)
          if analogin_idx_switch > 0
@@ -70,19 +76,17 @@ cd([basePath]);
     end
 % Plot it
 wavespec_matrix = mean(wavespec_matrix, 3);
-figure;
 imagesc(wavespec_matrix);
 hold on;
 xticks([1 round(lfp.samplingRate/2+1) lfp.samplingRate+1]);
 xticklabels({'-500','0','500'});
 yticks([1 20 40 60 80 100]);
-yticklabels({[num2str(round(wavespec.freqs(1),1))],[num2str(round(wavespec.freqs(20),1))],[num2str(round(wavespec.freqs(40),1))],...
-           [num2str(round(wavespec.freqs(60),1))],[num2str(round(wavespec.freqs(80),1))],[num2str(round(wavespec.freqs(100),1))]});
+yticklabels({num2str(round(wavespec.freqs(1),1)),num2str(round(wavespec.freqs(20),1)),num2str(round(wavespec.freqs(40),1)),...
+           num2str(round(wavespec.freqs(60),1)),num2str(round(wavespec.freqs(80),1)),num2str(round(wavespec.freqs(100),1))});
 ylabel('Frequency (Hz)');
 set(gca,'Ydir','normal');
 cb = colorbar;
 ylabel(cb, 'Power (mV)');
 %caxis([0 190]);
-wavespec_gratings = wavespec_matrix;
-cd([basePath '\Figures\wavespec\']);
+wavespec_segment = wavespec_matrix;
 end

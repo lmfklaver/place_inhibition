@@ -1,27 +1,38 @@
 %% script to make open field video (one cell spiking activity appears on video)
+% First must run alignVidDLC 
+% PURPOSE
+%          Make a video of the animal on linear track or open field, add
+%          red dots whenever the specifed cell fires
+% INPUTS
+%          basePath         String: data location
+% PROCESS
+%          1) Define video name fed into VideoReader
+%          2) Get the pixel coordinates of the corners of the rigs
+%          3) Make the video
     cd([basePath '\Videos_CSVs']);
-%% Find pixel coordinates of corners of open field in matlab and from bonsai output
+%% MANUAL - Find pixel coordinates of corners of open field in matlab and from bonsai output
 % To get pixel coordinates in Matlab:
-    % Open the video 
-        videoObject = VideoReader([basename(1:12) 'VideoOpenField.avi'])
+    % Open the video (DEFINE VIDEO NAME HERE)
+        videoObject = VideoReader([basename(1:12) 'VideoOpenField.avi']);
     % Extract the first frame from the movie structure.
         thisFrame = read(videoObject, 1);
         imwrite(thisFrame, 'TestFrame.jpeg');
-        image = 'TestFrame.jpeg'
+        image = 'TestFrame.jpeg';
     % Load pixels
         I = imread('TestFrame.jpeg');  %read the image in I
         imshow(I);  
-        [x_pixel,y_pixel,RGB_pixel] = impixel(I)   
+        [x_pixel,y_pixel,RGB_pixel] = impixel(I);   
         % select points and hit return key
 % To get pixel coordinates of bonsai:
     % plot the position estimates outputted by bonsai and find the
     % coordinates of the corners (estimate where the actual corner is)
-        positionEstimate_file = csvread([basename(1:12) 'PositionEstimate.csv']);
-        x_pos = positionEstimate_file(:,1);
-        y_pos = positionEstimate_file(:,2);
+        x_pos = VtrackingOF.xpos;
+        y_pos = VtrackingOF.xpos;
         plot(x_pos, y_pos);
         % hover over corners and record below
-%% 
+%% MANUAL - coordinates of rig corners
+% OPEN FIELD Coordinates below (pixels are different in bonsai in matlab -
+% at least for older recordings - may be same for newer recordings)
 % Make Conversion
 % session 21
     % MATLAB  
@@ -89,7 +100,7 @@
     % avg means
               conversion_add2Exp = mean([mean_diff_x mean_diff_y]);
 %% Video making
-cell_idx = 11; %define what cell to map
+    cell_idx = 11; %define what cell to map
 % Read position of animal
     x_pos = VtrackingOF.xpos;
     y_pos = VtrackingOF.xpos;

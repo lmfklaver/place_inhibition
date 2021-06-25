@@ -1,23 +1,26 @@
-function [spkEpVoltIdx, spkEpVoltage] = getWheelPositionPerSpike(basePath, tr_ep)
-
-% Purpose: Gets wheel voltage at every spike time
-
-% Input:  basePath: path with data
-%         tr_ep: start and stop of each trial
+function [spkEpVoltage] = getWheelPositionPerSpike(basePath, tr_ep)
+% PURPOSE
+%          Gets wheel voltage (analogin value) at every spike time.
+% INPUTS
+%          basePath       String: path with data
+%          tr_ep          Matrix: (n trials x 2) start and stop time of each trial
 %         
-% Output: spkEpVoltIdx (an array of voltages correpsonding to each spike
-% split into wheel trials)
-
-% Reagan 2021.05.04
+% OUTPUT 
+%          spkEpVoltage   Array: Identical dimensions to spikes.times
+%                                array, corresponding position in voltages
+% DEPENDENCIES
+%          Buzcode        https://github.com/buzsakilab/buzcode
+% HISTORY
+%          Reagan Bullins 04.05.2021
 
 %%
-        basename = bz_BasenameFromBasepath(basePath);
-        load([basename '_analogin.mat']);
-        load([basename '.spikes.cellinfo.mat']);
-        ts  = analogin.ts;
-        pos = analogin.pos;
-    %Generate spk_ep (find the position of each spike in each trial lap)
-    
+% Load the name of the recording session
+    basename = bz_BasenameFromBasepath(basePath);
+    load([basename '_analogin.mat']);
+    load([basename '.spikes.cellinfo.mat']);
+    ts  = analogin.ts;  
+    pos = analogin.pos;
+% Generate spk_ep (find the position of each spike in each trial lap)
     % For every cell, for every trial, find the spikes in that trial, and
     % then find the voltage at every spike
         for iUnit = 1:length(spikes.UID)

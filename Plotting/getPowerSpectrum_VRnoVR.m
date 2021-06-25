@@ -1,31 +1,40 @@
 function [IRASA] = getPowerSpectrum_VRnoVR(basePath, lfp_channel,Time, varargin)
-
-% Purpose: Makes power spectrum plots comparing sleep sessions in one plot
-% and VR vs OF vs LT in another (also makes these plots with fractals
-% removed)
-
-% Inputs:  - Start and Stop struct for 2 sleep sessions, and VR and No VR
-%          - Lfp_channel idx you want to use
-%          - basePath: path with data in it
-%          - doLFPClean: default is true, notch filter 60 hz over lfp
-%          - doSplitLFP: default is true, splits lfp and calculates power spectra for each
-%          segment and then averages
-%          - movmean_win: default is 1000, smoothing window 
-
-% Outputs: - IRASA struct: each power/freq time series for each segment
-%          - Plot comparing sleep segments (with and without fractals)
-%          - Plot comparing exper segments (with and without fractals)
-%          - 3 Plots comparing each experimental segment with the previous
+% PURPOSE
+%          Makes power spectrum plots comparing sleep sessions in one plot
+%          and VR vs OF vs LT in another (also makes these plots with fractals
+%          removed)
+% INPUTS
+%          Time             Struct : .start and .stop times for VR and No VR
+%              .VR
+%              .noVR
+%          lfp_channel      Numeric: channel idx you want to use
+%          basePath         String : path with data in it
+%          doLFPClean       Boolean: default is true, notch filter 60 hz over lfp
+%          doSplitLFP       Boolean: default is true, splits lfp and calculates power spectra for each
+%                                    segment and then averages. also makes
+%                                    movemean_win = 1
+%          movmean_win      Numeric: default is 1, no smoothing window 
+% OUTPUTS 
+%          IRASA            Struct: each power/freq time series for each segment
+%              .specS1 
+%              .specS2
+%              .specVR 
+%              .specnoVR 
+%          Plot comparing sleep segments (with and without fractals)
+%          Plot comparing exper segments (with and without fractals)
+%          3 Plots comparing each experimental segment with the previous
 %          sleep segment
-%          - Comprehensive plot with all segments
-
-% Reagan: 2021.05.04
+%          Comprehensive plot with all segments
+% DEPENDENCIES
+%          Buzcode       https://github.com/buzsakilab/buzcode
+% HISTORY
+%          Reagan Bullins 05.04.2021
 
 %%
 p = inputParser;
 addParameter(p,'doLFPClean',true,@islogical)
 addParameter(p,'doSplitLFP',true,@islogical);
-addParameter(p,'movmean_win',1000,@isnumeric);
+addParameter(p,'movmean_win',1,@isnumeric);
 addParameter(p,'max_ylim',5,@isnumeric);
 parse(p,varargin{:});
 doLFPClean       = p.Results.doLFPClean;
@@ -97,11 +106,67 @@ color_all = [warm_colors(3,:);warm_colors(7,:);cool_colors(3,:);cool_colors(7,:)
           ylabel('Power (mV)');
           xlim([0 100]);
           ylim([0 max_ylim]);
+%% Chunk lfp and Take out the fractals
     % take out fractals
+    if ~doSplitLFP
          specS1 = amri_sig_fractal(lfp_S1.data, lfp_S1.samplingRate,'detrend',1,'frange', [1 150]);
          specS2 = amri_sig_fractal(lfp_S2.data, lfp_S2.samplingRate,'detrend',1,'frange', [1 150]);
          specVR = amri_sig_fractal(lfp_VR.data, lfp_VR.samplingRate,'detrend',1,'frange', [1 150]);
          specnoVR = amri_sig_fractal(lfp_noVR.data, lfp_noVR.samplingRate,'detrend',1,'frange', [1 150]);
+    elseif doSplitLFP
+        %make movmean 1 
+        movmean_win = 1;
+        
+        specS1_freq =[];
+        specS1_osci = [];
+        specS2_freq =[];
+        specS2_osci = [];
+        specVR_freq =[];
+        specVR_osci = [];
+        specnoVR_freq =[];
+        specnoVR_osci = [];
+
+        
+        endId = 0;
+        sizeChunk = 2500;
+        nChunks = floor(length(double(lfp_S1.data))/sizeChunk);
+        for iChunk = 1:nChunks
+            startId = endId+1;
+            endId = endId+sizeChunk;
+            disp([startId, endId])
+            
+            selLFP_S1 = double(lfp_S1.data(startId:endId));
+            selLFP_S2 = double(lfp_S2.data(startId:endId));
+            selLFP_VR = double(lfp_VR.data(startId:endId));
+            selLFP_noVR = double(lfp_noVR.data(startId:endId));
+
+            
+            specS1_temp = amri_sig_fractal(selLFP_S1,1250,'detrend',1,'frange',[1 150]);
+            specS2_temp = amri_sig_fractal(selLFP_S2,1250,'detrend',1,'frange',[1 150]);  
+            specVR_temp = amri_sig_fractal(selLFP_VR,1250,'detrend',1,'frange',[1 150]);    
+            specnoVR_temp = amri_sig_fractal(selLFP_noVR,1250,'detrend',1,'frange',[1 150]);  
+        
+            specS1_freq = [specS1_freq;specS1_temp.freq'];
+            specS1_osci = [specS1_osci;specS1_temp.osci'];
+            specS2_freq = [specS2_freq;specS2_temp.freq'];
+            specS2_osci = [specS2_osci;specS2_temp.osci'];
+            specVR_freq = [specS3_freq;specS3_temp.freq'];
+            specVR_osci = [specS3_osci;specS3_temp.osci'];
+            specnoVR_freq = [specS4_freq;specnoVR_temp.freq'];
+            specnoVR_osci = [specS4_osci;specnoVR_temp.osci'];
+
+        end
+            specS1.freq = mean(specS1_freq);
+            specS1.osci = mean(specS1_osci);
+            specS2.freq = mean(specS2_freq);
+            specS2.osci = mean(specS2_osci);
+            specVR.freq = mean(specS3_freq);
+            specVR.osci = mean(specS3_osci);
+            specnoVR.freq = mean(specS4_freq);
+            specnoVR.osci = mean(specS4_osci);
+    end
+
+%% Plotting
       % Compare sleep sessions (without fractals)
          figure;
          plot(specS1.freq,movmean(specS1.osci,movmean_win), 'Color', color_all(1,:));
@@ -162,44 +227,14 @@ color_all = [warm_colors(3,:);warm_colors(7,:);cool_colors(3,:);cool_colors(7,:)
              plot(specnoVR.freq, movmean(specnoVR.osci,movmean_win), 'Color',color_all(4,:));
              xlim([0 15])
              ylim([0 max_ylim]);
-        %% maybe also make a function for this
-        %plot each experimental setup with the sleep directly before only
-        max_pow(1) = max(movmean(specVR.osci,movmean_win));
-        max_pow(2) = max(movmean(specS1.osci,movmean_win));
-        max_pow(3) = max(movmean(specS2.osci,movmean_win));
-        max_pow(4) = max(movmean(specnoVR.osci,movmean_win));
-        max_ylim = max(max_pow)+2;
-        
-        %find which experiment happened first and compare it to sleep
-        %session one
-        figure;
-        all_fig = axes;
-        plot(all_fig, specS1.freq,movmean(specS1.osci,movmean_win),'Color',color_all(1,:));
-        hold on;
-        if (Time.VR.start < Time.noVR.start)
-             plot(all_fig, specVR.freq,movmean(specVR.osci,movmean_win),'Color',color_all(3,:));
-             hold on
-             plot(all_fig, specnoVR.freq,movmean(specnoVR.osci,movmean_win),'Color',color_all(4,:));
-             exper_one = 'VR';
-             exper_two = 'noVR';
-        elseif (Time.noVR.start < Time.VR.start)
-             plot(all_fig, specnoVR.freq,movmean(specnoVR.osci,movmean_win),'Color',color_all(4,:));
-             hold on
-             plot(all_fig, specVR.freq,movmean(specVR.osci,movmean_win),'Color',color_all(3,:));
-             exper_one = 'noVR';
-             exper_two = 'VR';
-        end
-          plot(all_fig, specS2.freq,movmean(specS2.osci,movmean_win),'Color',color_all(2,:));
-          legend(all_fig,{'Pre Sleep',[exper_one],[exper_two],'Post Sleep'});
-          xlabel(all_fig,'Frequency (Hz)');
-          ylabel(all_fig,'Power (mV)');
-          title(all_fig,'IRASA');
-          xlim(all_fig,[0 50]);
-          ylim(all_fig,[0 max_ylim]);
-        
-      % IRASA
-         IRASA.specS1 = specS1;
-         IRASA.specS2 = specS2;
-         IRASA.specVR = specVR;
-         IRASA.specnoVR = specnoVR;
+%% Make struct to save    
+  % IRASA
+     IRASA.specS1 = specS1;
+     IRASA.specS2 = specS2;
+     IRASA.specVR = specVR;
+     IRASA.specnoVR = specnoVR;
+
+%% Make figure with all segments plotted in order of occurence 
+     getIRASAPlot_VRnoVR(IRASA,Time,'movmean_win', movmean_win);
+
 end     

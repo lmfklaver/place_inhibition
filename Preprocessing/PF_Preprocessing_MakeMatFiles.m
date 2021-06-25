@@ -1,5 +1,46 @@
-% Preprocessing - run once to make commonly used mat files
-
+% PURPOSE
+%          Create mat files for full day experiments (LT, OF, VR), so in 
+%          the future will not have to continuously make variable commonly 
+%          used. Only need to run script once.
+% MAT FILES
+%          TimeSegments.analysis.mat  
+%                    Time              Struct
+%                         .Sleep1      .start and .stop 
+%                         .Sleep2      "
+%                         .Sleep3      "
+%                         .Sleep4      "
+%                         .VR          "
+%                         .LT          "
+%                         .OF          "
+%
+%          analogin_VR.analysis.mat
+%                    analogin_VR       Struct
+%                         .pos         Position
+%                         .ts          Timestamps
+%                         .sr          Sampling Rate
+%
+%          wheelTrials.analysis.mat
+%                    len_ep            Array
+%                    ts_ep             Array
+%                    vel_ep            Array
+%                    tr_ep             Matrix (n,2)
+%                    len_ep_fast       Array
+%                    ts_ep_fast        Array
+%                    vel_ep_fast       Array
+%
+%          pulseEpochs_splitPerSetup.analysis.mat
+%                    pulseEpch          Struct
+%                          .VR          Virtual Reality                         
+%                          .LT          Lineart Track
+%                          .OF          Open Field
+%
+%          VRTime_BL_Stim.analysis.mat
+%                    VR_Stim_Time       Struct .start and .stop
+%                    VR_BL1_Time        Struct .start and .stop
+%                    VR_BL2_Time        Struct .start and .stop
+%                    VR_Stim_Trials     Matrix (n,2)
+%                    VR_BL1_Trials      Matirx (n,2)
+%                    VR_BL2_Trials      Matrix (n,2)
 %% Split up recording in different parts (Start and stop times of each segment)
 % Convert time - referencing recoringInfo.txt
     [Time.Sleep1] = RealTime_Convert_RecordingTime(basePath, 'SleepTime1');
@@ -61,3 +102,4 @@
      clear VR_Stim_First VR_Stim_Last VR_Stim_Trials_idx VR_BL1_Trials_idx VR_BL2_Trials_idx;
      save([basename '_VRTime_BL_Stim.analysis.mat'],'VR_Stim_Time','VR_BL1_Time','VR_BL2_Time','VR_Stim_Trials','VR_BL1_Trials','VR_BL2_Trials');
 %% LT and OF trials
+    

@@ -1,14 +1,22 @@
 function [lfp_avg, pow_avg] = makePowersperc_Avg_MixedIntervalSizes(basePath,segment_intervals,lfp)
-% Purpose: split lfp into specified time chunks (by timeMin) and average
-% over all chunks
-
-% Output:  A single vector of power, equal to the average of power over
-% chunks of lfp
-
-% Input: basePath (data location)
-%        timeMin  (how long each chunk to average over is)
-%        lfp      (lfp of data to chunk)
-% Reagan Bullins 6/8/21
+% PURPOSE
+%          Split lfp into specified time chunks (by segment_intervals) and average
+%          over all chunks. Find the smallest interval, and use that amount
+%          to chunk the rest of the lfp. (All needs to be the same size to
+%          average)
+% INPUTS
+%          basePath            String: path where data is located
+%          segment_intervals   Matrix: (n x 2) start and stop times 
+%          lfp                 Struct: Lfp of data to be chunked and
+%                                      averaged
+% OUTPUTS
+%          lfp_avg             Vector: lfp average
+%          pow_avg             Vector: power average
+% DEPENDENCIES
+%          Buzcode             https://github.com/buzsakilab/buzcode
+%          English Utilities   https://github.com/englishneurolab/utilities
+% HISTORY
+%          Reagan Bullins 06.08.2021
 %%
 % find out the length of all the intervals trials are, THEN find the
 % mininum length. The minimum interval size will be the size taken from all

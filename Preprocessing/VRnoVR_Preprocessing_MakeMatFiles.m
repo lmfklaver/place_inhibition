@@ -1,5 +1,52 @@
-%VR No VR Pipeline
-
+% PURPOSE
+%          Create mat files for VR/noVR experiments, so in the future will 
+%          not have to continuously make variable commonly used. Only need 
+%          to run script once.
+% MAT FILES
+%          TimeSegments.analysis.mat  
+%                    Time              Struct
+%                         .Sleep1      .start and .stop 
+%                         .Sleep2      "
+%                         .VR          "
+%                         .noVR        "
+%
+%          analogin_VRnoVR.analysis.mat
+%                    analogin_VR       Struct
+%                         .pos         Position
+%                         .ts          Timestamps
+%                         .sr          Sampling Rate
+%                    analogin_noVR     Struct
+%                         .pos
+%                         .ts
+%                         .sr
+%
+%          wheelTrials.analysis.mat
+%                    len_ep            Array
+%                    ts_ep             Array
+%                    vel_ep            Array
+%                    tr_ep             Matrix (n,2)
+%                    len_ep_fast       Array
+%                    ts_ep_fast        Array
+%                    vel_ep_fast       Array
+%
+%          pulseEpochs_splitPerSetup.analysis.mat
+%                    pulseEpch          Struct
+%                          .VR          Virtual Reality                         
+%                          .noVR        Virtual Reality (screens off)
+%
+%          VRTime_BL_Stim.analysis.mat
+%                    VR_Stim_Time       Struct .start and .stop
+%                    VR_BL1_Time        Struct .start and .stop
+%                    VR_BL2_Time        Struct .start and .stop
+%                    VR_Stim_Trials     Matrix (n,2)
+%                    VR_BL1_Trials      Matirx (n,2)
+%                    VR_BL2_Trials      Matrix (n,2)
+%                    noVR_Stim_Time     Struct .start and .stop
+%                    noVR_BL1_Time      Struct .start and .stop
+%                    noVR_BL2_Time      Struct .start and .stop
+%                    noVR_Stim_Trials   Matrix (n,2)
+%                    noVR_BL1_Trials    Matirx (n,2)
+%                    noVR_BL2_Trials    Matrix (n,2)
 %% Split up recording in different parts 
 %Convert time - referencing recoringInfo.txt
     [Time.Sleep1] = RealTime_Convert_RecordingTime(basePath, 'SleepTime1');
@@ -7,21 +54,21 @@
     [Time.VR] = RealTime_Convert_RecordingTime(basePath, 'VRTime');
     [Time.noVR] = RealTime_Convert_RecordingTime(basePath, 'VRNoTime');
     save([basename '_TimeSegments.analysis.mat'],'Time');
-%%
+%% Get analogin just for VR and no VR portions
 % Trials from wheel chan - use getWheelTrials (only want wheel trials during VR
 % time) AND make an analogin_VR variable that is correct in time
 % referencing the recording - VR position and time
     cd(basePath);
     load([basename '_analogin.mat']);
     analogin_VR.pos = analogin.pos(Time.VR.start*30000:Time.VR.stop*30000);
-    analogin_VR.blink = analogin.blink(Time.VR.start*30000:Time.VR.stop*30000);
+    %analogin_VR.blink = analogin.blink(Time.VR.start*30000:Time.VR.stop*30000);
     analogin_VR.ts = analogin.ts(Time.VR.start*30000:Time.VR.stop*30000);
     analogin_VR.sr = analogin.sr;
     [len_ep, ts_ep, vel_ep, tr_ep, len_ep_fast, ts_ep_fast, vel_ep_fast] = getWheelTrials(analogin_VR);
    % [pulseIdx, noPulseIdx, pulseEpochs] = getPulseTrialIdx(analogin_VR, tr_ep);
     % for noVR
     analogin_noVR.pos = analogin.pos(Time.noVR.start*30000:Time.noVR.stop*30000);
-    analogin_noVR.blink = analogin.blink(Time.noVR.start*30000:Time.noVR.stop*30000);
+    %analogin_noVR.blink = analogin.blink(Time.noVR.start*30000:Time.noVR.stop*30000);
     analogin_noVR.ts = analogin.ts(Time.noVR.start*30000:Time.noVR.stop*30000);
     analogin_noVR.sr = analogin.sr;
     [len_ep_no, ts_ep_no, vel_ep_no, tr_ep_no, len_ep_fast_no, ts_ep_fast_no, vel_ep_fast_no] = getWheelTrials(analogin_noVR);
@@ -29,6 +76,7 @@
     save([basename '_wheelTrials.analysis.mat'],'len_ep','ts_ep','vel_ep','tr_ep','len_ep_fast','ts_ep_fast','vel_ep_fast',...
                                'len_ep_no','ts_ep_no','vel_ep_no','tr_ep_no','len_ep_fast_no','ts_ep_fast_no','vel_ep_fast_no');
    % [pulseIdx, noPulseIdx, pulseEpochs] = getPulseTrialIdx(analogin_noVR, tr_ep_no);
+%% Get opto stim of VR and no VR 
 % Split up baseline, stim, and post baseline times
     load([basename '_pulseEpochs.analysis.mat']);
     stimEpochs_VR = pulseEpochs(:,:)> Time.VR.start & pulseEpochs(:,:) < Time.VR.stop;
@@ -38,7 +86,7 @@
         pulseEpch.noVR(:,1) = pulseEpochs(stimEpochs_noVR(:,1));
         pulseEpch.noVR(:,2) = pulseEpochs(stimEpochs_noVR(:,2));
     save([basename '_pulseEpochs_splitPerSetup.analysis.mat'],'pulseEpch');
- %%   
+ %%  Split up baseline and stim portions by time and trials
  % Split up virtual reality experimental section into prebaseline, stim,
  % and post baseline time 
      %find where first pulse happens in VR
