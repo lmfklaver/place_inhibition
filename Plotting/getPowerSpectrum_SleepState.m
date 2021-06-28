@@ -97,50 +97,22 @@ max_ylim          = p.Results.max_ylim;
 %% Chunk lfp and Take out the fractals
     % take out fractals
     if ~doSplitLFP
-         spec_wake = amri_sig_fractal(lfp_Wake_avg,lfp_sampRate,'detrend',1,'frange', [1 150]);
-         spec_NREM = amri_sig_fractal(lfp_NREM_avg,lfp_sampRate,'detrend',1,'frange', [1 150]);
-         spec_REM = amri_sig_fractal(lfp_REM_avg,lfp_sampRate,'detrend',1,'frange', [1 150]);
+         spec_wake = amri_sig_fractal(lfp_Wake,lfp_sampRate,'detrend',1,'frange', [1 150]);
+         spec_NREM = amri_sig_fractal(lfp_NREM,lfp_sampRate,'detrend',1,'frange', [1 150]);
+         spec_REM = amri_sig_fractal(lfp_REM,lfp_sampRate,'detrend',1,'frange', [1 150]);
 
     elseif doSplitLFP
         %make movmean 1 
         movmean_win = 1;
-        
-        specWake_freq =[];
-        specWake_osci = [];
-        specNREM_freq =[];
-        specNREM_osci = [];
-        specREM_freq =[];
-        specREM_osci = [];
-        
-        endId = 0;
-        sizeChunk = 2500;
-        nChunks = floor(length(double(lfp_Wake.data))/sizeChunk);
-        for iChunk = 1:nChunks
-            startId = endId+1;
-            endId = endId+sizeChunk;
-            disp([startId, endId])
-            
-            selLFP_Wake = double(lfp_Wake.data(startId:endId));
-            selLFP_NREM = double(lfp_NREM.data(startId:endId));
-            selLFP_REM = double(lfp_REM.data(startId:endId));
-             
-            specWake_temp = amri_sig_fractal(selLFP_Wake,1250,'detrend',1,'frange',[1 150]);
-            specNREM_temp = amri_sig_fractal(selLFP_NREM,1250,'detrend',1,'frange',[1 150]);  
-            specREM_temp = amri_sig_fractal(selLFP_REM,1250,'detrend',1,'frange',[1 150]);  
-            
-            specWake_freq = [specWake_freq;specWake_temp.freq'];
-            specWake_osci = [specWake_osci;specWake_temp.osci'];
-            specNREM_freq = [specNREM_freq;specNREM_temp.freq'];
-            specNREM_osci = [specNREM_osci;specNREM_temp.osci'];
-            specREM_freq = [specREM_freq;specREM_temp.freq'];
-            specREM_osci = [specREM_osci;specREM_temp.osci'];
-        end
-            spec_wake.freq = specWake_freq;
-            spec_wake.osci = specWake_osci;
-            spec_NREM.freq = specNREM_freq;
-            spec_NREM.osci = specNREM_osci;
-            spec_REM.freq = specREM_freq;
-            spec_REM.osci = specREM_osci;
+        [specWake_freq, specWake_osci] = chunkLFP_takeOutFractals(lfp_Wake);
+        [specNREM_freq, specNREM_osci] = chunkLFP_takeOutFractals(lfp_NREM);
+        [specREM_freq, specREM_osci] = chunkLFP_takeOutFractals(lfp_REM);
+        spec_wake.freq = specWake_freq;
+        spec_wake.osci = specWake_osci;
+        spec_NREM.freq = specNREM_freq;
+        spec_NREM.osci = specNREM_osci;
+        spec_REM.freq = specREM_freq;
+        spec_REM.osci = specREM_osci;
     end   
          
 %% Plotting

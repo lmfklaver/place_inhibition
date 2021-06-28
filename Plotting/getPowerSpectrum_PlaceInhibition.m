@@ -155,76 +155,31 @@ max_ylim          = p.Results.max_ylim;
     elseif doSplitLFP
         %make movmean 1 
         movmean_win = 1;
-        
-        specS1_freq =[];
-        specS1_osci = [];
-        specS2_freq =[];
-        specS2_osci = [];
-        specS3_freq =[];
-        specS3_osci = [];
-        specS4_freq =[];
-        specS4_osci = [];
-        specVR_freq =[];
-        specVR_osci = [];
-        specLT_freq =[];
-        specLT_osci = [];
-        specOF_freq =[];
-        specOF_osci = [];
-        
-        endId = 0;
-        sizeChunk = 2500;
-        nChunks = floor(length(double(lfp_S1.data))/sizeChunk);
-        for iChunk = 1:10%nChunks
-            startId = endId+1;
-            endId = endId+sizeChunk;
-            disp([startId, endId])
-            
-            selLFP_S1 = double(lfp_S1.data(startId:endId));
-            selLFP_S2 = double(lfp_S2.data(startId:endId));
-            selLFP_S3 = double(lfp_S3.data(startId:endId));
-            selLFP_S4 = double(lfp_S4.data(startId:endId));
-            selLFP_VR = double(lfp_VR.data(startId:endId));
-            selLFP_LT = double(lfp_LT.data(startId:endId));
-            selLFP_OF = double(lfp_OF.data(startId:endId));
-            
-            specS1_temp = amri_sig_fractal(selLFP_S1,1250,'detrend',1,'frange',[1 150]);
-            specS2_temp = amri_sig_fractal(selLFP_S2,1250,'detrend',1,'frange',[1 150]);  
-            specS3_temp = amri_sig_fractal(selLFP_S3,1250,'detrend',1,'frange',[1 150]);    
-            specS4_temp = amri_sig_fractal(selLFP_S4,1250,'detrend',1,'frange',[1 150]);  
-            specVR_temp = amri_sig_fractal(selLFP_VR,1250,'detrend',1,'frange',[1 150]);
-            specLT_temp = amri_sig_fractal(selLFP_LT,1250,'detrend',1,'frange',[1 150]); 
-            specOF_temp = amri_sig_fractal(selLFP_OF,1250,'detrend',1,'frange',[1 150]);
-            
-            specS1_freq = [specS1_freq;specS1_temp.freq'];
-            specS1_osci = [specS1_osci;specS1_temp.osci'];
-            specS2_freq = [specS2_freq;specS2_temp.freq'];
-            specS2_osci = [specS2_osci;specS2_temp.osci'];
-            specS3_freq = [specS3_freq;specS3_temp.freq'];
-            specS3_osci = [specS3_osci;specS3_temp.osci'];
-            specS4_freq = [specS4_freq;specS4_temp.freq'];
-            specS4_osci = [specS4_osci;specS4_temp.osci'];
-            specVR_freq = [specVR_freq;specVR_temp.freq'];
-            specVR_osci = [specVR_osci;specVR_temp.osci'];
-            specLT_freq = [specLT_freq;specLT_temp.freq'];
-            specLT_osci = [specLT_osci;specLT_temp.osci'];
-            specOF_freq = [specOF_freq;specOF_temp.freq'];
-            specOF_osci = [specOF_osci;specOF_temp.osci'];
+         [specS1_freq, specS1_osci] = chunkLFP_takeOutFractals(lfp_S1);
+         [specS2_freq, specS2_osci] = chunkLFP_takeOutFractals(lfp_S2);
+         [specS3_freq, specS3_osci] = chunkLFP_takeOutFractals(lfp_S3);
+         [specS4_freq, specS4_osci] = chunkLFP_takeOutFractals(lfp_S4);
+         [specVR_freq, specVR_osci] = chunkLFP_takeOutFractals(lfp_VR);
+         [specOF_freq, specOF_osci] = chunkLFP_takeOutFractals(lfp_OF);
+         [specLT_freq, specLT_osci] = chunkLFP_takeOutFractals(lfp_LT);
+        specS1.freq = mean(specS1_freq);
+        specS1.osci = mean(specS1_osci);
+        specS2.freq = mean(specS2_freq);
+        specS2.osci = mean(specS2_osci);
+        specS3.freq = mean(specS3_freq);
+        specS3.osci = mean(specS3_osci);
+        specS4.freq = mean(specS4_freq);
+        specS4.osci = mean(specS4_osci);
+        specVR.freq = mean(specVR_freq);
+        specVR.osci = mean(specVR_osci);
+        specLT.freq = mean(specLT_freq);
+        specLT.osci = mean(specLT_osci);
+        specOF.freq = mean(specOF_freq);
+        specOF.osci = mean(specOF_osci);
+ 
         end
-            specS1.freq = mean(specS1_freq);
-            specS1.osci = mean(specS1_osci);
-            specS2.freq = mean(specS2_freq);
-            specS2.osci = mean(specS2_osci);
-            specS3.freq = mean(specS3_freq);
-            specS3.osci = mean(specS3_osci);
-            specS4.freq = mean(specS4_freq);
-            specS4.osci = mean(specS4_osci);
-            specVR.freq = mean(specVR_freq);
-            specVR.osci = mean(specVR_osci);
-            specLT.freq = mean(specLT_freq);
-            specLT.osci = mean(specLT_osci);
-            specOF.freq = mean(specOF_freq);
-            specOF.osci = mean(specOF_osci);
-    end
+           
+    
 
     
 %% Plotting            

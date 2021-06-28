@@ -119,6 +119,15 @@
         load([basename '_SleepState.analysis.mat']);
         [IRASA_SleepState] = getPowerSpectrum_SleepState(basePath, lfp_channel, Time, SleepState,'doLFPClean',false,'doSplitLFP',false,'movmean_win',1000);
         save([basename '_IRASA_SleepState.analysis.mat'],'IRASA_SleepState');
+%% LFP (chunking version_
+
+    if ~isfile([basename '_IRASA.analysis.mat'])
+        [IRASA] = getPowerSpectrum_PlaceInhibition(basePath, lfp_channel, Time, 'doLFPClean', false, 'doSplitLFP',true,'movmean_win',1);
+        save([basename '_IRASA.analysis.mat'], 'IRASA');
+    else
+        load([basename '_IRASA.analysis.mat']);
+        getIRASAPlot_PlaceInhibition(IRASA, Time);
+    end
 %% LFP Analysis - Power Spec over many recordings
 % this script requires you to have each session you want to look at already
 % ran over the getPowerSpectrum_PlaceInhibition Script
@@ -226,11 +235,12 @@
             ylabel('Number of Ripples')
         subplot(1,2,2)
             plot(1, numRipples.VR,'o','Color',cool_colors(3,:));
-            hold on
-            plot(1, numRipples.LT,'o','Color',cool_colors(7,:));
-            plot(1, numRipples.OF,'o','Color',cool_colors(11,:));
+            hold on;
+            plot(1, numRipples.OF,'o','Color',cool_colors(7,:));
+            plot(1, numRipples.LT,'o','Color',cool_colors(11,:));
+        
             xlim([0 2])
-            legend({'VR','LT','OF'});
+            legend({'VR','OF','LT'});
             ylabel('Number of Ripples')
 %% Ripple distributions for singular session
 % Make a plot comparing ripple length distribution between different sleep
@@ -266,14 +276,40 @@ figure;
 % segment
        [rippleDistribution.exp] = getRippleDurationDistribution_SpecificExperiment(Time, ripples);
        title({'Ripple length per experimental segment',basename});
+% Make a figure about ripple length distribution for the sleep following each experimental
+% segment (output is in order of VR, OF, LT)
+      [rippleDistribution.expSleep] = getRippleDurationDistribution_ExpPostSleep(SleepState.ints.NREMstate, Time, ripples);  
+       title({'Ripple length per sleep session post experimental segment',basename});
+
 save([basename '_rippleDistributions.analysis.mat'], 'rippleDistribution');
 %% Ripple distribution across sessions
-
+        Time_sleep_sessions(1,1) = Time.Sleep1.start;
+        Time_sleep_sessions(1,2) = Time.Sleep1.stop;
+        Time_sleep_sessions(2,1) = Time.Sleep2.start;
+        Time_sleep_sessions(2,2) = Time.Sleep2.stop;
+        Time_sleep_sessions(3,1) = Time.Sleep3.start;
+        Time_sleep_sessions(3,2) = Time.Sleep3.stop;
+        Time_sleep_sessions(4,1) = Time.Sleep4.start;
+        Time_sleep_sessions(4,2) = Time.Sleep4.stop;
 % Load directory with sessions to run over
-    RecordingDirectory_PlaceInhibition;
-% Average with std over all sessions (average ripple length distribution)
-    segmentTitle = 'exp'; % Option: 'NREM','REM','wake','all', 'exp'
-    [rippleExp] = getAvgRippleDistribution(recDir,segmentTitle);
+    RecordingDirectory_PlaceTuning;
+% During Experiment: Average with std over all sessions (average ripple length distribution)
+    segmentTitle = 'exp'; % Option: 'NREM','REM','wake','all', 'exp', 'expSleep'
+    [rippleExp] = getAvgRippleDistribution(recDir,segmentTitle, Time_sleep_sessions);
+    xticks([0 10 20 30 40 50]);
+    bin_length = [0:.006:.3];
+    xticklabels({'0',num2str(bin_length(10)),num2str(bin_length(20)),num2str(bin_length(30)),...
+                     num2str(bin_length(40)),num2str(bin_length(50))});
+                 titl
+    legend('VR','','OF','','LT',''); %always this order
+% Sleep Corresponding to post NREM: Average with std over all sessions (average ripple length distribution)
+    segmentTitle = 'NREM'; % Option: 'NREM','REM','wake','all', 'exp','expSleep'
+    [rippleExp_Sleep] = getAvgRippleDistribution(recDir,segmentTitle, Time_sleep_sessions);
+    xticks([0 10 20 30 40 50]);
+    bin_length = [0:.006:.3];
+    xticklabels({'0',num2str(bin_length(10)),num2str(bin_length(20)),num2str(bin_length(30)),...
+                     num2str(bin_length(40)),num2str(bin_length(50))});
+    legend('Sleep 1','','Sleep 2' ,'','Sleep 3','', 'Sleep 4','');
 %% Ripples across sessions (section loads all sessions in directory, and calculates the ripple rate during NREM sleep, plots it on a figure)
 % Gives dot plots of ripple rate per experimental session, dot plots of
 %       length of time in sleep state per experimental session, box plots

@@ -95,9 +95,10 @@
 % in one figure, compares all experimental parts in one figure
 
     % If this has never been ran before, run the whole analysis and plot,
-    % if it has been ran before
+    % if it has been ran before (change user inputs - split and chunk, or
+    % to not split and chunk)
     if ~isfile([basename '_IRASA.analysis.mat'])
-        [IRASA] = getPowerSpectrum_PlaceInhibition(basePath, lfp_channel, Time, 'doLFPClean', false, 'doSPlitLFP',false,'movmean_win',1000);
+        [IRASA] = getPowerSpectrum_PlaceInhibition(basePath, lfp_channel, Time, 'doLFPClean', false, 'doSPlitLFP',true,'movmean_win',1);
         save([basename '_IRASA.analysis.mat'], 'IRASA');
     else
         load([basename '_IRASA.analysis.mat']);
@@ -107,18 +108,19 @@
 % below)
     if ~isfile([basename '_IRASA_sub.analysis.mat'])
         [Time_sub] = getSubsetTime(Time);
-        [IRASA_subset] = getPowerSpectrum_PlaceInhibition(basePath, lfp_channel, Time_sub, 'doLFPClean', false, 'doSPlitLFP',false,'movmean_win',1000);
+        [IRASA_subset] = getPowerSpectrum_PlaceInhibition(basePath, lfp_channel, Time_sub, 'doLFPClean', false, 'doSPlitLFP',true,'movmean_win',1);
         save([basename '_IRASA_sub.analysis.mat'], 'IRASA_subset');
     else
         load([basename '_IRASA_sub.analysis.mat']);
         getIRASAPlot_PlaceInhibition(IRASA_subset, Time);
     end
 % Velocity Power Spectra: Compares power spectra for VR - for data that has velocity over and under a certain threshold
-       [IRASA_velocity] = getPowerSpectrum_Velocity(basePath, lfp_channel, Time.VR, 'doLFPClean', false,'doSplitLFP',false,'movmean_win',1000);
+       [IRASA_velocity] = getPowerSpectrum_Velocity(basePath, lfp_channel, Time.VR, 'doLFPClean', false,'doSplitLFP',true,'movmean_win',1);
 % Sleep Spectrum NREM REM
         load([basename '_SleepState.analysis.mat']);
-        [IRASA_SleepState] = getPowerSpectrum_SleepState(basePath, lfp_channel, Time, SleepState,'doLFPClean',false,'doSplitLFP',false,'movmean_win',1000);
+        [IRASA_SleepState] = getPowerSpectrum_SleepState(basePath, lfp_channel, Time, SleepState,'doLFPClean',false,'doSplitLFP',true,'movmean_win',1);
         save([basename '_IRASA_SleepState.analysis.mat'],'IRASA_SleepState');
+
 %% LFP Analysis - Power Spec over many recordings
 % this script requires you to have each session you want to look at already
 % ran over the getPowerSpectrum_PlaceInhibition Script
@@ -267,19 +269,48 @@ figure;
 % segment
        [rippleDistribution.exp] = getRippleDurationDistribution_SpecificExperiment(Time, ripples);
        title({'Ripple length per experimental segment',basename});
+% Make a figure about ripple length distribution for the sleep following each experimental
+% segment (output is in order of VR, OF, LT)
+      [rippleDistribution.expSleep] = getRippleDurationDistribution_ExpPostSleep(SleepState.ints.NREMstate, Time, ripples);  
+       title({'Ripple length per sleep session post experimental segment',basename});
+
 save([basename '_rippleDistributions.analysis.mat'], 'rippleDistribution');
 %% Ripple distribution across sessions
-
+        Time_sleep_sessions(1,1) = Time.Sleep1.start;
+        Time_sleep_sessions(1,2) = Time.Sleep1.stop;
+        Time_sleep_sessions(2,1) = Time.Sleep2.start;
+        Time_sleep_sessions(2,2) = Time.Sleep2.stop;
+        Time_sleep_sessions(3,1) = Time.Sleep3.start;
+        Time_sleep_sessions(3,2) = Time.Sleep3.stop;
+        Time_sleep_sessions(4,1) = Time.Sleep4.start;
+        Time_sleep_sessions(4,2) = Time.Sleep4.stop;
 % Load directory with sessions to run over
     RecordingDirectory_PlaceTuning;
-% Average with std over all sessions (average ripple length distribution)
-    segmentTitle = 'exp'; % Option: 'NREM','REM','wake','all', 'exp'
-    [rippleExp] = getAvgRippleDistribution(recDir,segmentTitle);
+% During Experiment: Average with std over all sessions (average ripple length distribution)
+    segmentTitle = 'exp'; % Option: 'NREM','REM','wake','all', 'exp', 'expSleep'
+    [rippleExp] = getAvgRippleDistribution(recDir,segmentTitle, Time_sleep_sessions);
     xticks([0 10 20 30 40 50]);
     bin_length = [0:.006:.3];
     xticklabels({'0',num2str(bin_length(10)),num2str(bin_length(20)),num2str(bin_length(30)),...
                      num2str(bin_length(40)),num2str(bin_length(50))});
+                 titl
     legend('VR','','OF','','LT',''); %always this order
+% Sleep Corresponding to post experiment NREM: Average with std over all sessions (average ripple length distribution)
+    segmentTitle = 'expSleep'; % Option: 'NREM','REM','wake','all', 'exp','expSleep'
+    [rippleExp_Sleep] = getAvgRippleDistribution(recDir,segmentTitle, Time_sleep_sessions);
+    xticks([0 10 20 30 40 50]);
+    bin_length = [0:.006:.3];
+    xticklabels({'0',num2str(bin_length(10)),num2str(bin_length(20)),num2str(bin_length(30)),...
+                     num2str(bin_length(40)),num2str(bin_length(50))});
+    legend('VR Sleep','','OF Sleep' ,'','LT Sleep','');
+% Sleep NREM: Average with std over all sessions (average ripple length distribution)
+    segmentTitle = 'NREM'; % Option: 'NREM','REM','wake','all', 'exp','expSleep'
+    [rippleNREM_Sleep] = getAvgRippleDistribution(recDir,segmentTitle, Time_sleep_sessions);
+    xticks([0 10 20 30 40 50]);
+    bin_length = [0:.006:.3];
+    xticklabels({'0',num2str(bin_length(10)),num2str(bin_length(20)),num2str(bin_length(30)),...
+                     num2str(bin_length(40)),num2str(bin_length(50))});
+    legend('Sleep1','','Sleep2' ,'','Sleep3','','Sleep4','');
 %% Ripples across sessions (section loads all sessions in directory, and calculates the ripple rate during NREM sleep, plots it on a figure)
 % Gives dot plots of ripple rate per experimental session, dot plots of
 %       length of time in sleep state per experimental session, box plots

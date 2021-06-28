@@ -99,35 +99,13 @@ velocityThr      = p.Results.velocityThr;
     elseif doSplitLfp
         %make movmean 1 
         movmean_win = 1;
-        
-        specRun_freq =[];
-        specRun_osci = [];
-        specnoRun_freq =[];
-        specnoRun_osci = [];
-        
-        endId = 0;
-        sizeChunk = 2500;
-        nChunks = floor(length(double(lfp_run.data))/sizeChunk);
-        for iChunk = 1:nChunks
-            startId = endId+1;
-            endId = endId+sizeChunk;
-            disp([startId, endId])
-            
-            selLFP_Run = double(lfp_Run.data(startId:endId));
-            selLFP_noRun = double(lfp_noRun.data(startId:endId));
-            
-            specRun_temp = amri_sig_fractal(selLFP_Run,1250,'detrend',1,'frange',[1 150]);
-            specNoRun_temp = amri_sig_fractal(selLFP_noRun,1250,'detrend',1,'frange',[1 150]);  
-            
-            specRun_freq = [specRun_freq;specRun_temp.freq'];
-            specRun_osci = [specRun_osci;specRun_temp.osci'];
-            specnoRun_freq = [specnoRun_freq;specNoRun_temp.freq'];
-            specnoRun_osci = [specnoRun_osci;specNoRun_temp.osci'];
-        end
-            specRun.freq = specRun_freq;
-            specRun.osci = specRun_osci;
-            specNoRun.freq = specnoRun_freq;
-            specNoRun.osci = specnoRun_osci;
+        [specRun_freq, specRun_osci] = chunkLFP_takeOutFractals(lfp_run);
+        [specnoRun_freq, specnoRun_osci] = chunkLFP_takeOutFractals(lfp_noRun);
+
+        specRun.freq = specRun_freq;
+        specRun.osci = specRun_osci;
+        specNoRun.freq = specnoRun_freq;
+        specNoRun.osci = specnoRun_osci;
     end
 %% Plot (without fractals)
    color_all = linspecer(2);

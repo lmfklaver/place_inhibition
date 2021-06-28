@@ -49,16 +49,25 @@ for irec = 1:length(recDir)
    basename = bz_BasenameFromBasepath(basePath);
    % If there is not a IRASA subsection mat, make one (need to be same
    % length so we can find the standard error over them)
+%    load([basename '_TimeSegments.analysis.mat']);
+%    if ~isfile([basename '_IRASA_sub.analysis.mat'])
+%         [Time_sub] = getSubsetTime(Time);
+%         load([basename '.ripples.events.mat']);
+%         lfp_channel = ripples.detectorinfo.detectionchannel; %0 based
+%         [IRASA_subset] = getPowerSpectrum_PlaceInhibition(basePath, lfp_channel, Time_sub, 'doLFPClean', false);
+%         save([basename '_IRASA_sub.analysis.mat'], 'IRASA_subset');
+%    end
+%    load([basename '_IRASA_sub.analysis.mat']);
+%    IRASA_subset_mat{irec} = IRASA_subset;
    load([basename '_TimeSegments.analysis.mat']);
-   if ~isfile([basename '_IRASA_sub.analysis.mat'])
-        [Time_sub] = getSubsetTime(Time);
+   if ~isfile([basename '_IRASA.analysis.mat'])
         load([basename '.ripples.events.mat']);
         lfp_channel = ripples.detectorinfo.detectionchannel; %0 based
-        [IRASA_subset] = getPowerSpectrum_PlaceInhibition(basePath, lfp_channel, Time_sub, 'doLFPClean', false);
-        save([basename '_IRASA_sub.analysis.mat'], 'IRASA_subset');
+        [IRASA] = getPowerSpectrum_PlaceInhibition(basePath, lfp_channel, Time, 'doLFPClean', false, 'doSPlitLFP',true,'movmean_win',1);
+        save([basename '_IRASA.analysis.mat'], 'IRASA');
    end
-   load([basename '_IRASA_sub.analysis.mat']);
-   IRASA_subset_mat{irec} = IRASA_subset;
+   load([basename '_IRASA.analysis.mat']);
+   IRASA_subset_mat{irec} = IRASA;
 end
 IRASA_freq = IRASA_subset_mat{1}.specVR.freq; % assuming all frequencies are the same
 %% Make a figure of mean VR, LT, and OF powerspecs across different sessions and graph with standard error

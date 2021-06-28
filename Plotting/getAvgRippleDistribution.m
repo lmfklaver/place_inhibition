@@ -1,4 +1,4 @@
-function [ripple_distribution_cumul, rippleFig] = getAvgRippleDistribution(recDir, segmentTitle, varargin)
+function [ripple_distribution_cumul] = getAvgRippleDistribution(recDir, segmentTitle, Time_sleep_sessions, varargin)
 % PURPOSE
 %          Create a ripple Distribution for each VR, OF, LT averaged over all
 %          recording sessions and plotted with the standard error shading.
@@ -6,8 +6,10 @@ function [ripple_distribution_cumul, rippleFig] = getAvgRippleDistribution(recDi
 %          recDir          Array: Each cell has a pathway of a recording
 %                                   session
 %          segmentTitle    String: Either 'NREM','all','REM','wake',or
-%                                  'exp': Define what state you want to
+%                                  'exp', 'expSleep': Define what state you want to
 %                                  average over
+%          Time_sleep_sessions Matrix: Start and stop times of all sleep
+%                                      times
 %          doSignificance  Boolean: Find significance (takes a long
 %                                     time), default is false
 % OUTPUT
@@ -36,7 +38,7 @@ function [ripple_distribution_cumul, rippleFig] = getAvgRippleDistribution(recDi
 if strcmp(segmentTitle, 'all') || strcmp(segmentTitle,'NREM') || strcmp(segmentTitle,'REM') || strcmp(segmentTitle,'wake') 
     warm_colors = hot(20); %3,7,10,12
     color_all = [warm_colors(3,:);warm_colors(7,:);warm_colors(10,:);warm_colors(12,:)];
-elseif strcmp(segmentTitle,'exp')
+elseif strcmp(segmentTitle,'exp') || strcmp(segmentTitle, 'expSleep')
     cool_colors = cool(20);%3, 7, 11, 18 
     color_all = [cool_colors(3,:);cool_colors(7,:);cool_colors(11,:)];
 end%2 = VR, 3 = OF, 4 = LT
@@ -50,29 +52,25 @@ for irec = 1:length(recDir)
    % If there is not a IRASA subsection mat, make one (need to be same
    % length so we can find the standard error over them)
  
-   if ~isfile([basename '_rippleDistributions.analysis.mat'])
-           load([basename '_TimeSegments.analysis.mat']);
-           load([basename '.ripples.events.mat']);
-           if strcmp(segmentTitle, 'exp')
-              [rippleDistribution.exp] = getRippleDurationDistribution_SpecificExperiment(Time, ripples);
-           else
-               load([basename '.SleepStates.states.mat']);
-               Time_sleep_sessions(1,1) = Time.Sleep1.start;
-               Time_sleep_sessions(1,2) = Time.Sleep1.stop;
-               Time_sleep_sessions(2,1) = Time.Sleep2.start;
-               Time_sleep_sessions(2,2) = Time.Sleep2.stop;
-               [rippleDistribution.all] = getRippleDurationDistribution_SpecificSleepState(Time_sleep_sessions, Time, ripples);
-               [rippleDistribution.NREM] = getRippleDurationDistribution_SpecificSleepState(SleepState.ints.NREMstate, Time, ripples);
-               [rippleDistribution.REM] = getRippleDurationDistribution_SpecificSleepState(SleepState.ints.REMstate, Time, ripples);
-               [rippleDistribution.wake] = getRippleDurationDistribution_SpecificSleepState(SleepState.ints.WAKEstate, Time, ripples);
-           end
-   else
-           load([basename '_rippleDistributions.analysis.mat']);
-   end
+       load([basename '_TimeSegments.analysis.mat']);
+       load([basename '.ripples.events.mat']);
+       if strcmp(segmentTitle, 'exp')
+          [rippleDistribution.exp] = getRippleDurationDistribution_SpecificExperiment(Time, ripples);
+       elseif strcmp(segmentTitle,'expSleep')
+          load([basename '.SleepState.states.mat']);
+          [rippleDistribution.expSleep] = getRippleDurationDistribution_ExpPostSleep(SleepState.ints.NREMstate, Time, ripples);  
+       else
+           load([basename '.SleepState.states.mat']);
+           [rippleDistribution.all] = getRippleDurationDistribution_SpecificSleepState(Time_sleep_sessions, Time, ripples);
+           [rippleDistribution.NREM] = getRippleDurationDistribution_SpecificSleepState(SleepState.ints.NREMstate, Time, ripples);
+           [rippleDistribution.REM] = getRippleDurationDistribution_SpecificSleepState(SleepState.ints.REMstate, Time, ripples);
+           [rippleDistribution.wake] = getRippleDurationDistribution_SpecificSleepState(SleepState.ints.WAKEstate, Time, ripples);
+       end
+
    
    for isegment = 1:size(rippleDistribution.(segmentTitle),1)
-       rip_mat_original = rippleDistribution.(segmentTitle);
-       ripple_distribution_cumul.(['segment' num2str(isegment)])(irec,:) = rip_mat_original(isegment,:);
+       rip_mat_original = rippleDistribution.(segmentTitle)(isegment,:);
+       ripple_distribution_cumul.(['segment' num2str(isegment)])(irec,:) = rip_mat_original;
    end
 end
 %% Make a figure of mean VR, LT, and OF ripple distributions across different sessions and graph with standard error
