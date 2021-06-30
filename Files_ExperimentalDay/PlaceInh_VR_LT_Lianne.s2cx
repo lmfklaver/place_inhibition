@@ -1,0 +1,1441 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CEDResources>
+	<DocTime>
+		<Templates>
+			<TempOnline>
+				<Ch4 id="4" NumTmpl="5" NumPts="15" NumTrace="4" TrigOff="6" Int="5.2e-5" PropIn="0.8" RemDC="0" IgnoreO="1" TrackNum="64" MaxAmpCh="10" AmpErr="0.079986572265625" Decay="50" TimeC="9" Flags="9" YTop="2952" CWPre="10" CWPts="32">
+					<e TrLow="-907" TrHi="16000" LimLow="-32768" LimHi="32767"/>
+					<e TrLow="-1006" TrHi="16000" LimLow="-32768" LimHi="32767"/>
+					<e TrLow="-940" TrHi="16000" LimLow="-32768" LimHi="32767"/>
+					<e TrLow="-1281" TrHi="16000" LimLow="-32768" LimHi="32767"/>
+					<t id="0" Pts="15" Trs="4" MaxErr="2209" NumSp="268" Code="1">
+						<t>
+							<s Val="46" Err="49" Min="12"/>
+							<s Val="57" Err="38" Min="10"/>
+							<s Val="46" Err="40" Min="10"/>
+							<s Val="67" Err="70" Min="18"/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+						</t>
+						<t>
+							<s Val="65" Err="102" Min="25"/>
+							<s Val="92" Err="126" Min="32"/>
+							<s Val="98" Err="114" Min="29"/>
+							<s Val="36" Err="92" Min="23"/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+						</t>
+						<t>
+							<s Val="82" Err="58" Min="14"/>
+							<s Val="56" Err="36" Min="9"/>
+							<s Val="44" Err="56" Min="14"/>
+							<s Val="-52" Err="59" Min="15"/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+						</t>
+						<t>
+							<s Val="109" Err="99" Min="25"/>
+							<s Val="134" Err="110" Min="28"/>
+							<s Val="73" Err="82" Min="21"/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+						</t>
+					</t>
+					<t id="1" Pts="15" Trs="4" MaxErr="2041" NumSp="333" Code="2">
+						<t>
+							<s Val="61" Err="45" Min="11"/>
+							<s Val="55" Err="42" Min="11"/>
+							<s Val="46" Err="40" Min="10"/>
+							<s Val="51" Err="26" Min="6"/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+						</t>
+						<t>
+							<s Val="63" Err="40" Min="10"/>
+							<s Val="63" Err="41" Min="10"/>
+							<s Val="44" Err="63" Min="17"/>
+							<s Val="47" Err="94" Min="25"/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+						</t>
+						<t>
+							<s Val="48" Err="140" Min="40"/>
+							<s Val="47" Err="168" Min="45"/>
+							<s Val="32" Err="150" Min="41"/>
+							<s Val="31" Err="139" Min="38"/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+						</t>
+						<t>
+							<s Val="65" Err="82" Min="21"/>
+							<s Val="44" Err="61" Min="15"/>
+							<s Val="39" Err="62" Min="15"/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+						</t>
+					</t>
+					<t id="2" Pts="15" Trs="4" MaxErr="2895" NumSp="379" Code="3">
+						<t>
+							<s Val="67" Err="82" Min="20"/>
+							<s Val="70" Err="77" Min="19"/>
+							<s Val="72" Err="74" Min="18"/>
+							<s Val="56" Err="66" Min="16"/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+						</t>
+						<t>
+							<s Val="59" Err="90" Min="23"/>
+							<s Val="61" Err="98" Min="24"/>
+							<s Val="64" Err="114" Min="30"/>
+							<s Val="35" Err="145" Min="37"/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+						</t>
+						<t>
+							<s Val="49" Err="166" Min="51"/>
+							<s Val="60" Err="188" Min="55"/>
+							<s Val="51" Err="180" Min="52"/>
+							<s Val="32" Err="185" Min="48"/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+						</t>
+						<t>
+							<s Val="59" Err="128" Min="34"/>
+							<s Val="69" Err="113" Min="28"/>
+							<s Val="45" Err="108" Min="27"/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+						</t>
+					</t>
+					<t id="3" Pts="15" Trs="4" MaxErr="4136" NumSp="91" Code="4">
+						<t>
+							<s Val="82" Err="132" Min="44"/>
+							<s Val="102" Err="152" Min="44"/>
+							<s Val="149" Err="146" Min="45"/>
+							<s Val="140" Err="159" Min="45"/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+						</t>
+						<t>
+							<s Val="109" Err="154" Min="45"/>
+							<s Val="129" Err="172" Min="45"/>
+							<s Val="149" Err="172" Min="46"/>
+							<s Val="112" Err="180" Min="47"/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+						</t>
+						<t>
+							<s Val="111" Err="157" Min="48"/>
+							<s Val="129" Err="191" Min="48"/>
+							<s Val="146" Err="184" Min="46"/>
+							<s Val="91" Err="183" Min="46"/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+						</t>
+						<t>
+							<s Val="95" Err="151" Min="41"/>
+							<s Val="146" Err="150" Min="40"/>
+							<s Val="142" Err="159" Min="41"/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+						</t>
+					</t>
+					<t id="4" Pts="15" Trs="4" MaxErr="3866" NumSp="100" Code="5">
+						<t>
+							<s Val="9" Err="157" Min="102"/>
+							<s Val="-4" Err="153" Min="99"/>
+							<s Val="-30" Err="162" Min="98"/>
+							<s Val="-55" Err="156" Min="99"/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+						</t>
+						<t>
+							<s Val="12" Err="139" Min="99"/>
+							<s Val="-13" Err="134" Min="101"/>
+							<s Val="-49" Err="143" Min="100"/>
+							<s Val="-110" Err="176" Min="100"/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+						</t>
+						<t>
+							<s Val="-4" Err="147" Min="102"/>
+							<s Val="-44" Err="159" Min="102"/>
+							<s Val="-75" Err="151" Min="106"/>
+							<s Val="-151" Err="190" Min="106"/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+						</t>
+						<t>
+							<s Val="-4" Err="156" Min="115"/>
+							<s Val="-22" Err="147" Min="116"/>
+							<s Val="-80" Err="153" Min="112"/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+						</t>
+					</t>
+				</Ch4>
+			</TempOnline>
+			<TempOffline>
+				<Ch4 id="4" NumTmpl="5" NumPts="15" NumTrace="4" TrigOff="6" Int="5.2e-5" PropIn="0.8" RemDC="0" IgnoreO="1" TrackNum="64" MaxAmpCh="10" AmpErr="0.079986572265625" Decay="50" TimeC="9" Flags="9" YTop="2952" CWPre="10" CWPts="32">
+					<e TrLow="-907" TrHi="16000" LimLow="-32768" LimHi="32767"/>
+					<e TrLow="-1006" TrHi="16000" LimLow="-32768" LimHi="32767"/>
+					<e TrLow="-940" TrHi="16000" LimLow="-32768" LimHi="32767"/>
+					<e TrLow="-1281" TrHi="16000" LimLow="-32768" LimHi="32767"/>
+					<t id="0" Pts="15" Trs="4" MaxErr="2209" NumSp="268" Code="1">
+						<t>
+							<s Val="46" Err="49" Min="12"/>
+							<s Val="57" Err="38" Min="10"/>
+							<s Val="46" Err="40" Min="10"/>
+							<s Val="67" Err="70" Min="18"/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+						</t>
+						<t>
+							<s Val="65" Err="102" Min="25"/>
+							<s Val="92" Err="126" Min="32"/>
+							<s Val="98" Err="114" Min="29"/>
+							<s Val="36" Err="92" Min="23"/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+						</t>
+						<t>
+							<s Val="82" Err="58" Min="14"/>
+							<s Val="56" Err="36" Min="9"/>
+							<s Val="44" Err="56" Min="14"/>
+							<s Val="-52" Err="59" Min="15"/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+						</t>
+						<t>
+							<s Val="109" Err="99" Min="25"/>
+							<s Val="134" Err="110" Min="28"/>
+							<s Val="73" Err="82" Min="21"/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+						</t>
+					</t>
+					<t id="1" Pts="15" Trs="4" MaxErr="2041" NumSp="333" Code="2">
+						<t>
+							<s Val="61" Err="45" Min="11"/>
+							<s Val="55" Err="42" Min="11"/>
+							<s Val="46" Err="40" Min="10"/>
+							<s Val="51" Err="26" Min="6"/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+						</t>
+						<t>
+							<s Val="63" Err="40" Min="10"/>
+							<s Val="63" Err="41" Min="10"/>
+							<s Val="44" Err="63" Min="17"/>
+							<s Val="47" Err="94" Min="25"/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+						</t>
+						<t>
+							<s Val="48" Err="140" Min="40"/>
+							<s Val="47" Err="168" Min="45"/>
+							<s Val="32" Err="150" Min="41"/>
+							<s Val="31" Err="139" Min="38"/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+						</t>
+						<t>
+							<s Val="65" Err="82" Min="21"/>
+							<s Val="44" Err="61" Min="15"/>
+							<s Val="39" Err="62" Min="15"/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+						</t>
+					</t>
+					<t id="2" Pts="15" Trs="4" MaxErr="2895" NumSp="379" Code="3">
+						<t>
+							<s Val="67" Err="82" Min="20"/>
+							<s Val="70" Err="77" Min="19"/>
+							<s Val="72" Err="74" Min="18"/>
+							<s Val="56" Err="66" Min="16"/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+						</t>
+						<t>
+							<s Val="59" Err="90" Min="23"/>
+							<s Val="61" Err="98" Min="24"/>
+							<s Val="64" Err="114" Min="30"/>
+							<s Val="35" Err="145" Min="37"/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+						</t>
+						<t>
+							<s Val="49" Err="166" Min="51"/>
+							<s Val="60" Err="188" Min="55"/>
+							<s Val="51" Err="180" Min="52"/>
+							<s Val="32" Err="185" Min="48"/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+						</t>
+						<t>
+							<s Val="59" Err="128" Min="34"/>
+							<s Val="69" Err="113" Min="28"/>
+							<s Val="45" Err="108" Min="27"/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+						</t>
+					</t>
+					<t id="3" Pts="15" Trs="4" MaxErr="4136" NumSp="91" Code="4">
+						<t>
+							<s Val="82" Err="132" Min="44"/>
+							<s Val="102" Err="152" Min="44"/>
+							<s Val="149" Err="146" Min="45"/>
+							<s Val="140" Err="159" Min="45"/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+						</t>
+						<t>
+							<s Val="109" Err="154" Min="45"/>
+							<s Val="129" Err="172" Min="45"/>
+							<s Val="149" Err="172" Min="46"/>
+							<s Val="112" Err="180" Min="47"/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+						</t>
+						<t>
+							<s Val="111" Err="157" Min="48"/>
+							<s Val="129" Err="191" Min="48"/>
+							<s Val="146" Err="184" Min="46"/>
+							<s Val="91" Err="183" Min="46"/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+						</t>
+						<t>
+							<s Val="95" Err="151" Min="41"/>
+							<s Val="146" Err="150" Min="40"/>
+							<s Val="142" Err="159" Min="41"/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+						</t>
+					</t>
+					<t id="4" Pts="15" Trs="4" MaxErr="3866" NumSp="100" Code="5">
+						<t>
+							<s Val="9" Err="157" Min="102"/>
+							<s Val="-4" Err="153" Min="99"/>
+							<s Val="-30" Err="162" Min="98"/>
+							<s Val="-55" Err="156" Min="99"/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+						</t>
+						<t>
+							<s Val="12" Err="139" Min="99"/>
+							<s Val="-13" Err="134" Min="101"/>
+							<s Val="-49" Err="143" Min="100"/>
+							<s Val="-110" Err="176" Min="100"/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+						</t>
+						<t>
+							<s Val="-4" Err="147" Min="102"/>
+							<s Val="-44" Err="159" Min="102"/>
+							<s Val="-75" Err="151" Min="106"/>
+							<s Val="-151" Err="190" Min="106"/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+						</t>
+						<t>
+							<s Val="-4" Err="156" Min="115"/>
+							<s Val="-22" Err="147" Min="116"/>
+							<s Val="-80" Err="153" Min="112"/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+							<s/>
+						</t>
+					</t>
+				</Ch4>
+			</TempOffline>
+		</Templates>
+		<DupChan Chan="0" Source="1" Title="Spike-01"/>
+		<DupChan Chan="1" Source="4" Title="-01"/>
+		<DupChan Chan="2" Source="4" Num="1" Title="-02"/>
+		<DupChan Chan="3" Source="4" Num="2" Title="-03"/>
+		<DupChan Chan="4" Source="4" Num="3" Title="-04"/>
+		<DupChan Chan="5" Source="4" Num="4" Title="-05"/>
+		<MarkFilt Chan="801,5a">
+			<l id="0" i0="2" i1="0" i2="0" i3="0" i4="0" i5="0" i6="0" i7="0"/>
+			<l id="1"/>
+			<l id="2"/>
+			<l id="3"/>
+		</MarkFilt>
+		<MarkFilt Chan="802,5b">
+			<l id="0" i0="4" i1="0" i2="0" i3="0" i4="0" i5="0" i6="0" i7="0"/>
+			<l id="1"/>
+			<l id="2"/>
+			<l id="3"/>
+		</MarkFilt>
+		<MarkFilt Chan="803,5c">
+			<l id="0" i0="8" i1="0" i2="0" i3="0" i4="0" i5="0" i6="0" i7="0"/>
+			<l id="1"/>
+			<l id="2"/>
+			<l id="3"/>
+		</MarkFilt>
+		<MarkFilt Chan="804,5d">
+			<l id="0" i0="16" i1="0" i2="0" i3="0" i4="0" i5="0" i6="0" i7="0"/>
+			<l id="1"/>
+			<l id="2"/>
+			<l id="3"/>
+		</MarkFilt>
+		<MarkFilt Chan="805,5e">
+			<l id="0" i0="32" i1="0" i2="0" i3="0" i4="0" i5="0" i6="0" i7="0"/>
+			<l id="1"/>
+			<l id="2"/>
+			<l id="3"/>
+		</MarkFilt>
+		<View>
+			<WPlace flags="0" showc="1" minx="-1" miny="-1" maxx="-8" maxy="-31" t="7" b="682" l="8" r="1370"/>
+			<Font hgt="-11" hthou="-115" wgt="400" paf="16" fnam="Times New Roman"/>
+			<Chan Chan="31" DMode="9" DBoth="1" DHLine="1" Ax="0" AdcAxMax="1" ChType="5" BackOv="0">
+				<FitParam DrawFR="1" ShowF="0" Ref="Cursor(1)" MaxIt="100">
+					<c id="0" Val="1" HLim="1000000"/>
+					<c id="1" Val="1" HLim="1000000"/>
+					<c id="2" Val="1" HLim="1000000"/>
+				</FitParam>
+			</Chan>
+			<Chan Chan="30" DMode="9" DBoth="1" DHLine="1" Ax="0" AdcAxMax="1" FreqAxMax="2" ChType="5" BackOv="0">
+				<FitParam DrawFR="1" ShowF="0" Ref="Cursor(1)" MaxIt="100">
+					<c id="0" Val="1" HLim="1000000"/>
+					<c id="1" Val="1" HLim="1000000"/>
+					<c id="2" Val="1" HLim="1000000"/>
+				</FitParam>
+			</Chan>
+			<Chan Chan="8" DMode="11" AxMin="-5" AxMax="5" AdcAxMin="-5" AdcAxMax="5" FreqAxMax="9615.384615384615" AxType="1" ChType="1" BackOv="0">
+				<FitParam DrawFR="1" ShowF="0" Ref="Cursor(1)" MaxIt="100">
+					<c id="0" Val="1" HLim="1000000"/>
+					<c id="1" Val="1" HLim="1000000"/>
+					<c id="2" Val="1" HLim="1000000"/>
+				</FitParam>
+			</Chan>
+			<Chan Chan="7" DMode="11" AxMax="5" AdcAxMax="5" FreqAxMax="10416.666666666666" AxType="1" ChType="1" BackOv="0">
+				<FitParam DrawFR="1" ShowF="0" Ref="Cursor(1)" MaxIt="100">
+					<c id="0" Val="1" HLim="1000000"/>
+					<c id="1" Val="1" HLim="1000000"/>
+					<c id="2" Val="1" HLim="1000000"/>
+				</FitParam>
+			</Chan>
+			<Chan Chan="6" DMode="11" AxMin="-0.8460006713867188" AxMax="5.278221130371094" AdcAxMin="-0.8460006713867188" AdcAxMax="5.278221130371094" FreqAxMax="10416.666666666666" AxType="1" ChType="1" BackOv="0">
+				<FitParam DrawFR="1" ShowF="0" Ref="Cursor(1)" MaxIt="100">
+					<c id="0" Val="1" HLim="1000000"/>
+					<c id="1" Val="1" HLim="1000000"/>
+					<c id="2" Val="1" HLim="1000000"/>
+				</FitParam>
+			</Chan>
+			<Chan Chan="5" DMode="11" AxMax="5" AdcAxMax="5" FreqAxMax="10000" AxType="1" ChType="1" BackOv="0">
+				<FitParam DrawFR="1" ShowF="0" Ref="Cursor(1)" MaxIt="100">
+					<c id="0" Val="1" HLim="1000000"/>
+					<c id="1" Val="1" HLim="1000000"/>
+					<c id="2" Val="1" HLim="1000000"/>
+				</FitParam>
+			</Chan>
+			<Chan Chan="805,5e" DMode="11" DMkMode="1" AxMin="-0.5" AxMax="0.5" AdcAxMin="-0.5" AdcAxMax="0.5" FreqAxMax="2000" AxType="1" ChType="6" BackOv="0">
+				<FitParam DrawFR="1" ShowF="0" Ref="Cursor(1)" MaxIt="100">
+					<c id="0" Val="1" HLim="1000000"/>
+					<c id="1" Val="1" HLim="1000000"/>
+					<c id="2" Val="1" HLim="1000000"/>
+				</FitParam>
+			</Chan>
+			<Chan Chan="804,5d" DMode="11" DMkMode="1" AxMin="-0.5" AxMax="0.5" AdcAxMin="-0.5" AdcAxMax="0.5" FreqAxMax="2000" AxType="1" ChType="6" BackOv="0">
+				<FitParam DrawFR="1" ShowF="0" Ref="Cursor(1)" MaxIt="100">
+					<c id="0" Val="1" HLim="1000000"/>
+					<c id="1" Val="1" HLim="1000000"/>
+					<c id="2" Val="1" HLim="1000000"/>
+				</FitParam>
+			</Chan>
+			<Chan Chan="803,5c" DMode="11" DMkMode="1" AxMin="-0.5" AxMax="0.5" AdcAxMin="-0.5" AdcAxMax="0.5" FreqAxMax="2000" AxType="1" ChType="6" BackOv="0">
+				<FitParam DrawFR="1" ShowF="0" Ref="Cursor(1)" MaxIt="100">
+					<c id="0" Val="1" HLim="1000000"/>
+					<c id="1" Val="1" HLim="1000000"/>
+					<c id="2" Val="1" HLim="1000000"/>
+				</FitParam>
+			</Chan>
+			<Chan Chan="802,5b" DMode="11" DMkMode="1" AxMin="-0.5" AxMax="0.5" AdcAxMin="-0.5" AdcAxMax="0.5" FreqAxMax="2000" AxType="1" ChType="6" BackOv="0">
+				<FitParam DrawFR="1" ShowF="0" Ref="Cursor(1)" MaxIt="100">
+					<c id="0" Val="1" HLim="1000000"/>
+					<c id="1" Val="1" HLim="1000000"/>
+					<c id="2" Val="1" HLim="1000000"/>
+				</FitParam>
+			</Chan>
+			<Chan Chan="801,5a" DMode="11" DMkMode="1" AxMin="-0.5" AxMax="0.5" AdcAxMin="-0.5" AdcAxMax="0.5" FreqAxMax="2000" AxType="1" ChType="6" BackOv="0">
+				<FitParam DrawFR="1" ShowF="0" Ref="Cursor(1)" MaxIt="100">
+					<c id="0" Val="1" HLim="1000000"/>
+					<c id="1" Val="1" HLim="1000000"/>
+					<c id="2" Val="1" HLim="1000000"/>
+				</FitParam>
+			</Chan>
+			<Chan Chan="4" DMode="11" DMkMode="1" AxMin="-0.5" AxMax="0.5" AdcAxMin="-0.5" AdcAxMax="0.5" FreqAxMax="2000" AxType="1" ChType="6" BackOv="0">
+				<FitParam DrawFR="1" ShowF="0" Ref="Cursor(1)" MaxIt="100">
+					<c id="0" Val="1" HLim="1000000"/>
+					<c id="1" Val="1" HLim="1000000"/>
+					<c id="2" Val="1" HLim="1000000"/>
+				</FitParam>
+			</Chan>
+			<Chan Chan="3" DMode="11" Vis="0" AxMin="-0.00213623046875" AxMax="0.001220703125" AdcAxMin="-0.00213623046875" AdcAxMax="0.001220703125" FreqAxMax="10000" AxType="1" ChType="1" BackOv="0">
+				<FitParam DrawFR="1" ShowF="0" Ref="Cursor(1)" MaxIt="100">
+					<c id="0" Val="1" HLim="1000000"/>
+					<c id="1" Val="1" HLim="1000000"/>
+					<c id="2" Val="1" HLim="1000000"/>
+				</FitParam>
+			</Chan>
+			<Chan Chan="2" DMode="11" AxMin="-0.009735107421875" AxMax="0.016448974609375" AdcAxMin="-0.009735107421875" AdcAxMax="0.016448974609375" FreqAxMax="10000" AxType="1" ChType="1" BackOv="0">
+				<FitParam DrawFR="1" ShowF="0" Ref="Cursor(1)" MaxIt="100">
+					<c id="0" Val="1" HLim="1000000"/>
+					<c id="1" Val="1" HLim="1000000"/>
+					<c id="2" Val="1" HLim="1000000"/>
+				</FitParam>
+			</Chan>
+			<Chan Chan="800,2a" DMode="11" AxMax="0.02591705322265625" AdcAxMax="0.02591705322265625" FreqAxMax="10000" AxType="1" ChType="1" BackOv="0">
+				<FitParam DrawFR="1" ShowF="0" Ref="Cursor(1)" MaxIt="100">
+					<c id="0" Val="1" HLim="1000000"/>
+					<c id="1" Val="1" HLim="1000000"/>
+					<c id="2" Val="1" HLim="1000000"/>
+				</FitParam>
+			</Chan>
+			<Chan Chan="1" DMode="11" AxMax="0.02591705322265625" AdcAxMax="0.02591705322265625" FreqAxMax="10000" AxType="1" ChType="1" BackOv="0">
+				<FitParam DrawFR="1" ShowF="0" Ref="Cursor(1)" MaxIt="100">
+					<c id="0" Val="1" HLim="1000000"/>
+					<c id="1" Val="1" HLim="1000000"/>
+					<c id="2" Val="1" HLim="1000000"/>
+				</FitParam>
+			</Chan>
+			<Chan Chan="0" DMode="11" AxMin="-0.01688385009765625" AxMax="0.00879669189453125" AdcAxMin="-0.01688385009765625" AdcAxMax="0.00879669189453125" FreqAxMax="10000" AxType="1" ChType="1" BackOv="0">
+				<FitParam DrawFR="1" ShowF="0" Ref="Cursor(1)" MaxIt="100">
+					<c id="0" Val="1" HLim="1000000"/>
+					<c id="1" Val="1" HLim="1000000"/>
+					<c id="2" Val="1" HLim="1000000"/>
+				</FitParam>
+			</Chan>
+			<XInfo Left="20.97887756563288" Right="31.047777565633083" XAxSmall="5" CRBack="0" VCLabMode="2" HCLabMode="1" VCCount="2" HCCount="1">
+				<VCur id="0" Pos="781.4728299999999" LabMode="2" LabPos="0.2" Num="0"/>
+				<VCur id="1" Pos="4661.441818077889" LabMode="2" LabPos="0.2" Num="1"/>
+				<HCur id="0" Pos="-2.497955322265625" LabMode="1" LabPos="0.2" Num="1"/>
+			</XInfo>
+			<ChOrder Chans="17">
+				<c id="0" Chan="31"/>
+				<c id="1" Chan="30"/>
+				<c id="2" Chan="8"/>
+				<c id="3" Chan="7"/>
+				<c id="4" Chan="6"/>
+				<c id="5" Chan="5"/>
+				<c id="6" Chan="805,5e"/>
+				<c id="7" Chan="804,5d"/>
+				<c id="8" Chan="803,5c"/>
+				<c id="9" Chan="802,5b"/>
+				<c id="10" Chan="801,5a"/>
+				<c id="11" Chan="4"/>
+				<c id="12" Chan="3"/>
+				<c id="13" Chan="2"/>
+				<c id="14" Chan="800,2a"/>
+				<c id="15" Chan="1"/>
+				<c id="16"/>
+			</ChOrder>
+			<CursVals XZero="0" YZero="0"/>
+			<CursRegs XZero="0" YZero="0"/>
+			<OvDraw3d YProp="0.5" XScale="0.5" YScale="0.5"/>
+		</View>
+		<ProcR Name="SetEvtCrl" Type="0">
+			<SetEvtCrl CSCod="4" CSMsk="254" Width="1.5" Trig="31" Offs="0.5" BinSz="0.002" Rate="1" Raster="1" AddFilt="0" AddChan="-4" AddBefore="0" MaxAdd="1" MinAdd="0"/>
+			<m Start="0.0" End="1153.14" Opt="1"/>
+			<u/>
+			<DocRes>
+				<DupChan Chan="0"/>
+				<View>
+					<WPlace flags="0" showc="1" minx="-1" miny="-1" maxx="-1" maxy="-1" t="78" b="426" l="78" r="1365"/>
+					<Font hgt="-11" hthou="-115" wgt="400" paf="16" fnam="Times New Roman"/>
+					<Chan Chan="0" DMode="1" DError="1" AxMin="-0.5" AxMax="0.5" AdcAxMin="-0.5" AdcAxMax="0.5" AxType="1" ChType="127" BackOv="0">
+						<FitParam DrawFR="1" ShowF="0" Ref="Cursor(1)" MaxIt="100">
+							<c id="0" Val="1" HLim="1000000"/>
+							<c id="1" Val="1" HLim="1000000"/>
+							<c id="2" Val="1" HLim="1000000"/>
+						</FitParam>
+					</Chan>
+					<Chan Chan="800,6000" DMode="10" DWidth="-1" DDSize="3" DError="1" AxMax="2.1" RastAxMax="2.1" AxType="3" ChType="127" BackOv="0">
+						<FitParam DrawFR="1" ShowF="0" Ref="Cursor(1)" MaxIt="100">
+							<c id="0" Val="1" HLim="1000000"/>
+							<c id="1" Val="1" HLim="1000000"/>
+							<c id="2" Val="1" HLim="1000000"/>
+						</FitParam>
+					</Chan>
+					<XInfo Left="-0.5" XAxSmall="5" CRBack="0" VCLabMode="2" HCLabMode="1"/>
+					<ChOrder Chans="2">
+						<c id="0"/>
+						<c id="1" Chan="800,6000"/>
+					</ChOrder>
+					<CursVals/>
+					<CursRegs/>
+				</View>
+			</DocRes>
+		</ProcR>
+	</DocTime>
+	<Sample S2Ver="903" ARange="5">
+		<!--Sampling configuration saved to D:\Spike2 Config Files\PlaceInh_VR_LT_Lianne.s2cx on Tuesday, May 25, 2021 10:54:43 AM-->
+		<SampCtl t="663" b="0" l="128" r="2"/>
+		<SeqCtl t="693" b="0" l="110" r="2"/>
+		<SampSta t="723" b="0" l="110" r="2"/>
+		<Chans IdealWMRate="20000">
+			<Chan id="0" Type="1" Title="SpikeCh1" Traces="1" Rate="20000" ActRate="19230.76953125" Divide="13" AType="2" SerBaud="9600" SerHand="1"/>
+			<Chan id="1" Type="1" Title="SpikeCh2" Port="1" Traces="1" Rate="20000" ActRate="19230.76953125" Divide="13" AType="2" SerBaud="9600" SerHand="1"/>
+			<Chan id="2" Type="1" Title="SpikeCh3" Port="2" Traces="1" Rate="20000" ActRate="19230.76953125" Divide="13" AType="2" SerBaud="9600" SerHand="1"/>
+			<Chan id="3" Type="1" Title="SpikeCh4" Port="3" Traces="1" Rate="20000" ActRate="19230.76953125" Divide="13" AType="2" SerBaud="9600" SerHand="1"/>
+			<Chan id="4" Type="6" Title="Spikes" Traces="4" Rate="1000" ActRate="19230.76923076923" Divide="5" SerBaud="9600" SerHand="1"/>
+			<Chan id="5" Type="1" Title="Wheel" Port="4" Traces="1" Rate="20000" ActRate="19230.76953125" Divide="13" AType="1" SerBaud="9600" SerHand="1"/>
+			<Chan id="6" Type="1" Title="Lin Track" Port="5" Traces="1" Rate="20000" ActRate="19230.76953125" Divide="13" AType="1" SerBaud="9600" SerHand="1"/>
+			<Chan id="7" Type="1" Title="LinTrStim" Port="6" Traces="1" Rate="20000" ActRate="19230.76953125" Divide="13" AType="1" SerBaud="9600" SerHand="1"/>
+			<Chan id="8" Type="1" Title="OF_Pos" Port="7" Traces="1" Rate="20000" ActRate="19230.76953125" Divide="13" SerBaud="9600" SerHand="1"/>
+			<Chan id="30" Type="5" Title="Keyboard" Traces="1" ActRate="100" Comment="No comment" Units=" Volt" Divide="0" SerBaud="9600" SerHand="1"/>
+			<Chan id="31" Type="5" Title="DigMark" Traces="1" Rate="50" ActRate="100" Units=" Volt" Divide="0" SerBaud="9600" SerHand="1"/>
+		</Chans>
+		<Resol uspt="2" recalc="0" Assume1401="9" OptMeth="1" OptUSFrom="2" OptUSTo="50" GrpRates="1" QuickDum="5"/>
+		<Mode For="60" EveryUn="1">
+			<Trigs id="0" Chan="-4" Code="-1" Post="1" Chans="-1"/>
+			<Trigs id="1" Chan="-4" Code="-1" Post="1" Chans="-1"/>
+			<Trigs id="2" Chan="-4" Code="-1" Post="1" Chans="-1"/>
+			<Trigs id="3" Chan="-4" Code="-1" Post="1" Chans="-1"/>
+		</Mode>
+		<Seq OutType="2" SeqFlags="5" DacMask="255" DacUnits="V">
+			<Pulses States="27">
+				<State id="0">
+					<PulseList id="0">
+						<Pulse id="0" Type="0" Before="0"/>
+					</PulseList>
+					<PulseList id="1">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="2">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="3">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="4">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="5">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="6">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="7">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="8">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="9">
+						<Pulse id="0" Type="0" Name="H" Before="0"/>
+					</PulseList>
+				</State>
+				<State id="1">
+					<PulseList id="0">
+						<Pulse id="0" Type="0" Before="0"/>
+						<Pulse id="1" Type="1" Before="0.24" Length="0.3" Amp="5"/>
+					</PulseList>
+					<PulseList id="1">
+						<Pulse id="0" Type="0" Before="0"/>
+					</PulseList>
+					<PulseList id="2">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="3">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="4">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="5">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="6">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="7">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="8">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="9">
+						<Pulse id="0" Type="0" Name="S" Before="0" Reps="200"/>
+						<Pulse id="1" Type="11" Before="0.23" Length="0.001"/>
+						<Pulse id="2" Type="8" Before="0.43000000000000005" Length="0.001" Mode="1" Par1="3" Par2="5"/>
+					</PulseList>
+				</State>
+				<State id="2">
+					<PulseList id="0">
+						<Pulse id="0" Type="0" Before="0"/>
+						<Pulse id="1" Type="1" Before="0.191" Length="0.3" Amp="5"/>
+					</PulseList>
+					<PulseList id="1">
+						<Pulse id="0" Type="0" Before="0" Amp="2"/>
+					</PulseList>
+					<PulseList id="2">
+						<Pulse id="0" Type="0" Before="0" Amp="2"/>
+					</PulseList>
+					<PulseList id="3">
+						<Pulse id="0" Type="0" Before="0" Amp="2"/>
+					</PulseList>
+					<PulseList id="4">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="5">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="6">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="7">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="8">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="9">
+						<Pulse id="0" Type="0" Name="V" Before="0" Reps="30"/>
+						<Pulse id="1" Type="11" Name="S" Before="0.18" Length="0.001" Record="1"/>
+						<Pulse id="2" Type="8" Before="0.010000000000000009" Length="0.001" Mode="8" Mask="6" Par1="1.5" Par2="1.6"/>
+						<Pulse id="3" Type="8" Before="0.44" Length="0.001" Mode="5" Mask="6" Par1="2.3"/>
+					</PulseList>
+				</State>
+				<State id="3">
+					<PulseList id="0">
+						<Pulse id="0" Type="0" Before="0"/>
+						<Pulse id="1" Type="1" Before="0.191" Length="0.3" Amp="5"/>
+					</PulseList>
+					<PulseList id="1">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="2">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="3">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="4">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="5">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="6">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="7">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="8">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="9">
+						<Pulse id="0" Type="0" Name="L" Before="0" Reps="10" Next="12"/>
+						<Pulse id="1" Type="11" Before="0.18" Length="0.001" Mark="1" Record="1"/>
+						<Pulse id="2" Type="8" Before="0.010000000000000009" Length="0.001" Mode="5" Mask="8" Par1="2.5"/>
+						<Pulse id="3" Type="8" Name="D" Before="0.32" Length="0.001" Mode="5" Mask="7" Par1="2.5"/>
+					</PulseList>
+				</State>
+				<State id="4">
+					<PulseList id="0">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="1">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="2">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="3">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="4">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="5">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="6">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="7">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="8">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="9">
+						<Pulse id="0" Type="0" Name="B" Before="0" Reps="31" Next="3"/>
+						<Pulse id="1" Type="8" Name="B" Before="0.19" Length="0.001" Mode="8" Mask="6" Par1="2.5" Par2="2.6"/>
+					</PulseList>
+				</State>
+				<State id="5">
+					<PulseList id="0">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="1">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="2">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="3">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="4">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="5">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="6">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="7">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="8">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="9">
+						<Pulse id="0" Type="0" Name="T" Before="0" Reps="11" Next="7"/>
+						<Pulse id="1" Type="11" Before="0.18" Length="0.001" Record="1"/>
+						<Pulse id="2" Type="8" Before="0.010000000000000009" Length="0.001" Mode="8" Mask="6" Par1="1.1" Par2="1.2"/>
+						<Pulse id="3" Type="8" Before="0.44" Length="0.001" Mode="5" Mask="6" Par1="1.7"/>
+					</PulseList>
+				</State>
+				<State id="6">
+					<PulseList id="0">
+						<Pulse id="0" Type="0" Before="0"/>
+						<Pulse id="1" Type="1" Before="0.191" Length="0.3" Amp="5"/>
+					</PulseList>
+					<PulseList id="1">
+						<Pulse id="0" Type="0" Before="0"/>
+					</PulseList>
+					<PulseList id="2">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="3">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="4">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="5">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="6">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="7">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="8">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="9">
+						<Pulse id="0" Type="0" Name="X" Before="0" Reps="10" Next="8"/>
+						<Pulse id="1" Type="11" Before="0.18" Length="0.001" Mark="1" Record="1"/>
+						<Pulse id="2" Type="8" Before="0.010000000000000009" Length="0.001" Mode="8" Mask="6" Par1="1.1" Par2="1.2"/>
+						<Pulse id="3" Type="8" Before="0.44" Length="0.001" Mode="5" Mask="6" Par1="2.3"/>
+					</PulseList>
+				</State>
+				<State id="7">
+					<PulseList id="0">
+						<Pulse id="0" Type="0" Before="0"/>
+					</PulseList>
+					<PulseList id="1">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="2">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="3">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="4">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="5">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="6">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="7">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="8">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="9">
+						<Pulse id="0" Type="0" Name="E" Before="0" Reps="10"/>
+						<Pulse id="1" Type="11" Before="0.18" Length="0.001" Mark="2" Record="1"/>
+						<Pulse id="2" Type="8" Before="0.010000000000000009" Length="0.001" Mode="8" Mask="6" Par1="1.1" Par2="1.2"/>
+						<Pulse id="3" Type="8" Before="0.46" Length="0.001" Mode="5" Mask="6" Par1="1.7"/>
+					</PulseList>
+				</State>
+				<State id="8">
+					<PulseList id="0">
+						<Pulse id="0" Type="0" Before="0"/>
+						<Pulse id="1" Type="1" Before="0.3" Length="0.001"/>
+					</PulseList>
+					<PulseList id="1">
+						<Pulse id="0" Type="0" Before="0"/>
+					</PulseList>
+					<PulseList id="2">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="3">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="4">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="5">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="6">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="7">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="8">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="9">
+						<Pulse id="0" Type="0" Name="O" Before="0" Reps="10" Next="10"/>
+						<Pulse id="1" Type="11" Before="0.18" Length="0.001" Record="1"/>
+						<Pulse id="2" Type="8" Before="0.010000000000000009" Length="0.001" Mode="5" Mask="9" Par1="3"/>
+						<Pulse id="3" Type="8" Before="0.46" Length="0.001" Mode="6" Mask="9" Par1="1"/>
+						<Pulse id="4" Type="8" Before="0.010000000000000009" Length="0.001" Par1="10"/>
+					</PulseList>
+				</State>
+				<State id="9">
+					<PulseList id="0">
+						<Pulse id="0" Type="0" Before="0"/>
+						<Pulse id="1" Type="1" Before="0.191" Length="0.3" Amp="5"/>
+					</PulseList>
+					<PulseList id="1">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="2">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="3">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="4">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="5">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="6">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="7">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="8">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="9">
+						<Pulse id="0" Type="0" Name="Y" Before="0" Reps="10" Next="11"/>
+						<Pulse id="1" Type="11" Before="0.18" Length="0.001" Mark="1" Record="1"/>
+						<Pulse id="2" Type="8" Before="0.010000000000000009" Length="0.001" Mode="5" Mask="9" Par1="3"/>
+						<Pulse id="3" Type="8" Before="0.46" Length="0.001" Mode="6" Mask="9" Par1="1"/>
+						<Pulse id="4" Type="8" Before="0.010000000000000009" Length="0.001" Par1="10"/>
+					</PulseList>
+				</State>
+				<State id="10">
+					<PulseList id="0">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="1">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="2">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="3">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="4">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="5">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="6">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="7">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="8">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="9">
+						<Pulse id="0" Type="0" Name="F" Before="0" Reps="10"/>
+						<Pulse id="1" Type="11" Before="0.18" Length="0.001" Mark="2" Record="1"/>
+						<Pulse id="2" Type="8" Before="0.010000000000000009" Length="0.001" Mode="5" Mask="9" Par1="3"/>
+						<Pulse id="3" Type="8" Before="0.46" Length="0.001" Mode="6" Mask="9" Par1="1"/>
+						<Pulse id="4" Type="8" Before="0.010000000000000009" Length="0.001" Par1="10"/>
+					</PulseList>
+				</State>
+				<State id="11">
+					<PulseList id="0">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="1">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="2">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="3">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="4">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="5">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="6">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="7">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="8">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="9">
+						<Pulse id="0" Type="0" Name="C" Before="0" Reps="10"/>
+						<Pulse id="1" Type="11" Before="0.18" Length="0.001" Record="1"/>
+						<Pulse id="2" Type="8" Before="0.010000000000000009" Length="0.001" Mode="5" Mask="8" Par1="2.5"/>
+						<Pulse id="3" Type="8" Before="0.32" Length="0.001" Mode="5" Mask="7" Par1="2.5"/>
+					</PulseList>
+				</State>
+				<State id="12">
+					<PulseList id="0">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="1">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="2">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="3">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="4">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="5">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="6">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="7">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="8">
+						<Pulse id="0" Type="0" Before="0.1"/>
+					</PulseList>
+					<PulseList id="9">
+						<Pulse id="0" Type="0" Name="D" Before="0" Reps="10" Next="4"/>
+						<Pulse id="1" Type="11" Before="0.18" Length="0.001" Record="1"/>
+						<Pulse id="2" Type="8" Before="0.010000000000000009" Length="0.001" Mode="5" Mask="8" Par1="2.5"/>
+						<Pulse id="3" Type="8" Before="0.32" Length="0.001" Mode="5" Mask="7" Par1="2.5"/>
+					</PulseList>
+				</State>
+			</Pulses>
+		</Seq>
+		<Waves/>
+		<Auto AutoName="%D_000" AutoPath="E:\Data" AutoSave="1" AutoCom="1"/>
+		<CondPorts Count="2">
+			<c id="0" Units="mV" Source="2"/>
+			<c id="6" Units=""/>
+		</CondPorts>
+		<ForceOP/>
+		<Talkers/>
+	</Sample>
+	<App>
+		<WPlace flags="0" showc="1" minx="-1" miny="-1" maxx="-1" maxy="-1" t="552" b="1474" l="103" r="1566"/>
+	</App>
+</CEDResources>
