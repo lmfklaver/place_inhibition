@@ -23,11 +23,16 @@ sizeChunk     = p.Results.sizeChunk;
         endId = 0;
         nChunks = floor(length(double(lfp.data))/sizeChunk);
         for iChunk = 1:nChunks
-            startId = endId+1;
+            if iChunk == 1;
+            startId  = endId+1;
+            else
+            startId = endId-(sizeChunk/2)+1;%endId+1;
+            end
             endId = endId+sizeChunk;
             selLFP = double(lfp.data(startId:endId));
             spec_temp = amri_sig_fractal(selLFP,1250,'detrend',1,'frange',[1 150]);
             spec_freq = [spec_freq;spec_temp.freq'];
             spec_osci = [spec_osci;spec_temp.osci']; 
         end
+
 end
